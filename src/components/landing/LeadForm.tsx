@@ -302,7 +302,7 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
           className="mt-0.5"
         />
         <div>
-          <Label htmlFor="consent" className="text-sm font-normal leading-relaxed">
+          <Label htmlFor="consent" className="text-sm font-normal leading-relaxed text-foreground">
             Autorizo o contato da equipe da {SITE.name} pelos dados informados.
           </Label>
           <p id="consent-help" className="mt-1 text-xs text-muted-foreground">
@@ -361,7 +361,9 @@ function Field({
 }) {
   return (
     <div className="space-y-1.5">
-      <Label htmlFor={id}>{label}</Label>
+      <Label htmlFor={id} className="text-foreground">
+        {label}
+      </Label>
       {children}
       {error ? (
         <p role="alert" className="text-xs font-medium text-destructive">
