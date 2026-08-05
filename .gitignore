@@ -15,6 +15,11 @@ dist-ssr
 .tanstack/**
 .nitro
 *.local
+backend/.env
+backend/coverage/
+backend/dist/
+backend/node_modules/
+backend/*.tsbuildinfo
 
 # Wrangler / Cloudflare
 .wrangler/

@@ -1,0 +1,406 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  administrador
+  gestor
+  comercial
+  gestor_trafego
+  desenvolvedor
+}
+
+enum UserStatus {
+  ativo
+  inativo
+  convidado
+}
+
+enum LeadStage {
+  novo_contato
+  contato_iniciado
+  perfil_identificado
+  opcoes_apresentadas
+  proposta_adesao
+  documentacao_pendente
+  adesao_concluida
+  nao_convertido
+}
+
+enum Priority {
+  baixa
+  media
+  alta
+}
+
+enum TaskStatus {
+  pendente
+  concluida
+  atrasada
+}
+
+model Association {
+  id           String                   @id @default(uuid()) @db.Uuid
+  name         String
+  createdAt    DateTime                 @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime                 @updatedAt @map("updated_at") @db.Timestamptz
+  users        User[]
+  sessions     RefreshSession[]
+  leads        Lead[]
+  leadConsents LeadConsent[]
+  leadTracking LeadTracking[]
+  activities   LeadActivity[]
+  tasks        LeadTask[]
+  stageHistory LeadStageHistory[]
+  assignments  LeadAssignmentHistory[]
+  members      Member[]
+  vehicles     Vehicle[]
+  memberships  Membership[]
+  campaigns    Campaign[]
+  metrics      TrafficMetricDaily[]
+  integrations IntegrationCatalogItem[]
+  audits       AuditEntry[]
+
+  @@map("associations")
+}
+
+model User {
+  id            String           @id @default(uuid()) @db.Uuid
+  associationId String           @map("association_id") @db.Uuid
+  association   Association      @relation(fields: [associationId], references: [id])
+  name          String
+  email         String
+  passwordHash  String           @map("password_hash")
+  role          UserRole
+  status        UserStatus       @default(ativo)
+  lastAccessAt  DateTime?        @map("last_access_at") @db.Timestamptz
+  createdAt     DateTime         @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime         @updatedAt @map("updated_at") @db.Timestamptz
+  version       Int              @default(1)
+  sessions      RefreshSession[]
+  activities    LeadActivity[]
+  ownedLeads    Lead[]           @relation("LeadOwner")
+  tasks         LeadTask[]
+
+  @@unique([associationId, email])
+  @@map("users")
+}
+
+model RefreshSession {
+  id            String      @id @default(uuid()) @db.Uuid
+  associationId String      @map("association_id") @db.Uuid
+  association   Association @relation(fields: [associationId], references: [id])
+  userId        String      @map("user_id") @db.Uuid
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash     String      @unique @map("token_hash")
+  expiresAt     DateTime    @map("expires_at") @db.Timestamptz
+  revokedAt     DateTime?   @map("revoked_at") @db.Timestamptz
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([userId, expiresAt])
+  @@map("refresh_sessions")
+}
+
+model Lead {
+  id                String                  @id @default(uuid()) @db.Uuid
+  associationId     String                  @map("association_id") @db.Uuid
+  association       Association             @relation(fields: [associationId], references: [id])
+  name              String
+  whatsapp          String
+  plate             String
+  city              String
+  vehicleType       String?                 @map("vehicle_type")
+  vehicleYear       String?                 @map("vehicle_year")
+  bestTime          String?                 @map("best_time")
+  contactPreference String?                 @map("contact_preference")
+  stage             LeadStage               @default(novo_contato)
+  priority          Priority                @default(media)
+  ownerId           String?                 @map("owner_id") @db.Uuid
+  owner             User?                   @relation("LeadOwner", fields: [ownerId], references: [id])
+  source            String                  @default("Direto")
+  campaign          String?
+  tags              String[]                @default([])
+  lossReason        String?                 @map("loss_reason")
+  notes             String?
+  idempotencyKey    String?                 @map("idempotency_key")
+  createdAt         DateTime                @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime                @updatedAt @map("updated_at") @db.Timestamptz
+  stageChangedAt    DateTime                @default(now()) @map("stage_changed_at") @db.Timestamptz
+  version           Int                     @default(1)
+  consent           LeadConsent?
+  tracking          LeadTracking?
+  activities        LeadActivity[]
+  tasks             LeadTask[]
+  stageHistory      LeadStageHistory[]
+  assignments       LeadAssignmentHistory[]
+  membership        Membership?
+
+  @@unique([associationId, idempotencyKey])
+  @@index([associationId, stage, createdAt])
+  @@index([associationId, ownerId, createdAt])
+  @@map("leads")
+}
+
+model LeadConsent {
+  id            String      @id @default(uuid()) @db.Uuid
+  associationId String      @map("association_id") @db.Uuid
+  association   Association @relation(fields: [associationId], references: [id])
+  leadId        String      @unique @map("lead_id") @db.Uuid
+  lead          Lead        @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  granted       Boolean
+  version       String
+  grantedAt     DateTime    @default(now()) @map("granted_at") @db.Timestamptz
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("lead_consents")
+}
+
+model LeadTracking {
+  id              String      @id @default(uuid()) @db.Uuid
+  associationId   String      @map("association_id") @db.Uuid
+  association     Association @relation(fields: [associationId], references: [id])
+  leadId          String      @unique @map("lead_id") @db.Uuid
+  lead            Lead        @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  utmSource       String?     @map("utm_source")
+  utmMedium       String?     @map("utm_medium")
+  utmCampaign     String?     @map("utm_campaign")
+  utmTerm         String?     @map("utm_term")
+  utmContent      String?     @map("utm_content")
+  referrer        String?
+  landingPage     String?     @map("landing_page")
+  gclid           String?
+  gbraid          String?
+  wbraid          String?
+  fbclid          String?
+  deviceType      String?     @map("device_type")
+  browser         String?
+  operatingSystem String?     @map("operating_system")
+  firstVisitAt    DateTime?   @map("first_visit_at") @db.Timestamptz
+  conversionPage  String?     @map("conversion_page")
+  conversionCta   String?     @map("conversion_cta")
+  createdAt       DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([associationId, utmSource, utmCampaign])
+  @@map("lead_tracking")
+}
+
+model LeadActivity {
+  id            String      @id @default(uuid()) @db.Uuid
+  associationId String      @map("association_id") @db.Uuid
+  association   Association @relation(fields: [associationId], references: [id])
+  leadId        String      @map("lead_id") @db.Uuid
+  lead          Lead        @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  authorId      String?     @map("author_id") @db.Uuid
+  author        User?       @relation(fields: [authorId], references: [id])
+  type          String
+  title         String
+  description   String?
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([associationId, leadId, createdAt])
+  @@map("lead_activities")
+}
+
+model LeadTask {
+  id            String      @id @default(uuid()) @db.Uuid
+  associationId String      @map("association_id") @db.Uuid
+  association   Association @relation(fields: [associationId], references: [id])
+  leadId        String      @map("lead_id") @db.Uuid
+  lead          Lead        @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  ownerId       String      @map("owner_id") @db.Uuid
+  owner         User        @relation(fields: [ownerId], references: [id])
+  title         String
+  dueAt         DateTime    @map("due_at") @db.Timestamptz
+  status        TaskStatus  @default(pendente)
+  completedAt   DateTime?   @map("completed_at") @db.Timestamptz
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+  version       Int         @default(1)
+
+  @@index([associationId, ownerId, status])
+  @@map("lead_tasks")
+}
+
+model LeadStageHistory {
+  id            String      @id @default(uuid()) @db.Uuid
+  associationId String      @map("association_id") @db.Uuid
+  association   Association @relation(fields: [associationId], references: [id])
+  leadId        String      @map("lead_id") @db.Uuid
+  lead          Lead        @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  fromStage     LeadStage?  @map("from_stage")
+  toStage       LeadStage   @map("to_stage")
+  changedById   String?     @map("changed_by_id") @db.Uuid
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("lead_stage_history")
+}
+
+model LeadAssignmentHistory {
+  id            String      @id @default(uuid()) @db.Uuid
+  associationId String      @map("association_id") @db.Uuid
+  association   Association @relation(fields: [associationId], references: [id])
+  leadId        String      @map("lead_id") @db.Uuid
+  lead          Lead        @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  fromUserId    String?     @map("from_user_id") @db.Uuid
+  toUserId      String      @map("to_user_id") @db.Uuid
+  changedById   String      @map("changed_by_id") @db.Uuid
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("lead_assignment_history")
+}
+
+model Member {
+  id                 String       @id @default(uuid()) @db.Uuid
+  associationId      String       @map("association_id") @db.Uuid
+  association        Association  @relation(fields: [associationId], references: [id])
+  code               String
+  name               String
+  cpfMasked          String       @map("cpf_masked")
+  whatsapp           String
+  email              String
+  city               String
+  address            String
+  status             String
+  joinedAt           DateTime     @map("joined_at") @db.Timestamptz
+  financialSituation String       @map("financial_situation")
+  sourceSystem       String       @default("interno") @map("source_system")
+  createdAt          DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt          DateTime     @updatedAt @map("updated_at") @db.Timestamptz
+  version            Int          @default(1)
+  vehicles           Vehicle[]
+  memberships        Membership[]
+
+  @@unique([associationId, code])
+  @@map("members")
+}
+
+model Vehicle {
+  id               String      @id @default(uuid()) @db.Uuid
+  associationId    String      @map("association_id") @db.Uuid
+  association      Association @relation(fields: [associationId], references: [id])
+  memberId         String      @map("member_id") @db.Uuid
+  member           Member      @relation(fields: [memberId], references: [id])
+  plate            String
+  brand            String
+  model            String
+  year             Int
+  category         String
+  status           String
+  inspectionStatus String      @map("inspection_status")
+  tracker          Boolean     @default(false)
+  protectionOption String      @map("protection_option")
+  sourceSystem     String      @default("interno") @map("source_system")
+  createdAt        DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt        DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+  version          Int         @default(1)
+
+  @@unique([associationId, plate])
+  @@map("vehicles")
+}
+
+model Membership {
+  id                String      @id @default(uuid()) @db.Uuid
+  associationId     String      @map("association_id") @db.Uuid
+  association       Association @relation(fields: [associationId], references: [id])
+  leadId            String?     @unique @map("lead_id") @db.Uuid
+  lead              Lead?       @relation(fields: [leadId], references: [id])
+  memberId          String?     @map("member_id") @db.Uuid
+  member            Member?     @relation(fields: [memberId], references: [id])
+  candidateName     String      @map("candidate_name")
+  candidateWhatsapp String      @map("candidate_whatsapp")
+  city              String
+  vehicleSummary    String      @map("vehicle_summary")
+  stage             String
+  startedAt         DateTime    @map("started_at") @db.Timestamptz
+  activatedAt       DateTime?   @map("activated_at") @db.Timestamptz
+  createdAt         DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+  version           Int         @default(1)
+
+  @@map("memberships")
+}
+
+model Campaign {
+  id            String               @id @default(uuid()) @db.Uuid
+  associationId String               @map("association_id") @db.Uuid
+  association   Association          @relation(fields: [associationId], references: [id])
+  externalKey   String               @map("external_key")
+  name          String
+  channel       String
+  status        String
+  objective     String
+  demoData      Boolean              @default(true) @map("demo_data")
+  createdAt     DateTime             @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime             @updatedAt @map("updated_at") @db.Timestamptz
+  metrics       TrafficMetricDaily[]
+
+  @@unique([associationId, externalKey])
+  @@map("campaigns")
+}
+
+model TrafficMetricDaily {
+  id            String      @id @default(uuid()) @db.Uuid
+  associationId String      @map("association_id") @db.Uuid
+  association   Association @relation(fields: [associationId], references: [id])
+  campaignId    String      @map("campaign_id") @db.Uuid
+  campaign      Campaign    @relation(fields: [campaignId], references: [id])
+  date          DateTime    @db.Date
+  investment    Decimal     @db.Decimal(14, 2)
+  impressions   Int
+  clicks        Int
+  demoData      Boolean     @default(true) @map("demo_data")
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@unique([campaignId, date])
+  @@map("traffic_metrics_daily")
+}
+
+model IntegrationCatalogItem {
+  id            String      @id @default(uuid()) @db.Uuid
+  associationId String      @map("association_id") @db.Uuid
+  association   Association @relation(fields: [associationId], references: [id])
+  provider      String
+  name          String
+  description   String
+  status        String
+  category      String
+  requestedAt   DateTime?   @map("requested_at") @db.Timestamptz
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+  version       Int         @default(1)
+
+  @@unique([associationId, provider])
+  @@map("integration_catalog_items")
+}
+
+model AuditEntry {
+  id            String      @id @default(uuid()) @db.Uuid
+  associationId String      @map("association_id") @db.Uuid
+  association   Association @relation(fields: [associationId], references: [id])
+  userId        String?     @map("user_id") @db.Uuid
+  userName      String      @map("user_name")
+  action        String
+  resource      String
+  resourceId    String?     @map("resource_id")
+  result        String
+  maskedIp      String      @map("masked_ip")
+  device        String
+  metadata      Json?
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([associationId, createdAt])
+  @@map("audit_entries")
+}
