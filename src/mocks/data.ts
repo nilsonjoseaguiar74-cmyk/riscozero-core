@@ -107,6 +107,8 @@ export const ROLE_DEFINITIONS: RoleDefinition[] = [
     permissions: [
       "dashboard.view",
       "integrations.manage",
+      "integrations.view",
+      "sync.manage",
       "developer.access",
       "audit.view",
       "reports.view",
