@@ -27,7 +27,7 @@ export const BENEFITS: ContentItem[] = [
     icon: ShieldCheck,
     title: "Proteção patrimonial",
     description:
-      "Cobertura mutualista para eventos como colisão, incêndio, furto e roubo, conforme a opção contratada e o regulamento da associação.",
+      "Proteção para eventos como colisão, incêndio, furto e roubo quando prevista na opção apresentada e no regulamento aplicável.",
   },
   {
     icon: Truck,
@@ -39,19 +39,19 @@ export const BENEFITS: ContentItem[] = [
     icon: KeyRound,
     title: "Chaveiro e vidros",
     description:
-      "Apoio para perda de chaves, travamento e reparo ou substituição de vidros, faróis, lanternas e retrovisores.",
+      "Possibilidade de apoio para chaves e vidros, conforme disponibilidade, limites e condições aplicáveis.",
   },
   {
     icon: Car,
     title: "Carro reserva",
     description:
-      "Disponibilização de veículo reserva por período determinado para manter a rotina do participante em movimento.",
+      "Possibilidade de veículo reserva pelo período e nas situações previstos na opção e no regulamento aplicável.",
   },
   {
     icon: Fuel,
     title: "Pane seca e bateria",
     description:
-      "Auxílio para falta de combustível, troca de pneus e recarga ou substituição de bateria em deslocamentos.",
+      "Auxílio sujeito às hipóteses, aos limites e às condições da opção apresentada e do regulamento aplicável.",
   },
   {
     icon: Users,
@@ -63,13 +63,13 @@ export const BENEFITS: ContentItem[] = [
     icon: Wrench,
     title: "Rede de reparo",
     description:
-      "Rede de oficinas e prestadores homologados na Grande Florianópolis para atendimento com padrão de qualidade.",
+      "Atendimento por oficinas e prestadores conforme rede efetivamente disponível e condições aplicáveis.",
   },
   {
     icon: LifeBuoy,
     title: "Atendimento humano",
     description:
-      "Equipe local disponível pelo WhatsApp para acompanhar o participante do primeiro contato ao encerramento da ocorrência.",
+      "Canal de atendimento pelo WhatsApp sujeito aos horários, à disponibilidade e às condições operacionais informadas.",
   },
 ];
 
@@ -111,13 +111,13 @@ export const DIFFERENTIALS: ContentItem[] = [
     icon: MapPinned,
     title: "Atuação regional",
     description:
-      "Presença consolidada em São José, Florianópolis, Palhoça, Biguaçu e demais localidades da Grande Florianópolis.",
+      "Atendimento concentrado em São José, Florianópolis, Palhoça e Biguaçu, sujeito à confirmação da área atendida.",
   },
   {
     icon: Clock,
     title: "Resposta rápida",
     description:
-      "Retorno das solicitações em horário comercial, com registro de cada atendimento na plataforma da associação.",
+      "Proposta de retorno em horário comercial, com base preparada para registrar o histórico de atendimento.",
   },
   {
     icon: Users,
@@ -129,9 +129,9 @@ export const DIFFERENTIALS: ContentItem[] = [
 
 export const FAQS = [
   {
-    question: "A Risco Zero é uma seguradora?",
+    question: "Proteção veicular é igual a seguro tradicional?",
     answer:
-      "Não. A Risco Zero atua no modelo associativo de proteção patrimonial mutualista. Os participantes contribuem para um fundo comum utilizado no atendimento das ocorrências previstas em regulamento, o que é diferente de um contrato de seguro.",
+      "Não. São operações com estruturas, contratos e regras diferentes. A proteção patrimonial mutualista possui funcionamento baseado nas regras do grupo, no regulamento e no rateio das despesas entre os participantes. Desde a Lei Complementar nº 213/2025, essas operações passaram a integrar um processo específico de regulamentação e supervisão da Susep. Antes da adesão, a Risco Zero deve apresentar claramente as condições, os benefícios, os limites, as obrigações do participante e o regulamento aplicável.",
   },
   {
     question: "Quais veículos podem participar?",
@@ -166,6 +166,6 @@ export const FAQS = [
   {
     question: "Quais dados são solicitados no primeiro contato?",
     answer:
-      "Nome, WhatsApp, placa, cidade, tipo e ano aproximado do veículo. Esses dados são utilizados exclusivamente para apresentar as opções de proteção e assistência.",
+      "Nome, WhatsApp, placa, cidade, tipo e ano aproximado do veículo. Esses dados são utilizados para responder à solicitação, analisar o perfil informado, apresentar opções e, quando configurado e autorizado, medir a origem do contato.",
   },
 ];

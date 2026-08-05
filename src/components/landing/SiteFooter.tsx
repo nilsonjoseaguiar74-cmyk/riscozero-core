@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { MapPin, MessageCircle } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
-import { SITE, REGIONS, whatsappLink } from "@/config/site";
+import { CITIES, SITE, whatsappLink } from "@/config/site";
 import { trackEvent } from "@/services/tracking";
 
 export function SiteFooter() {
@@ -11,8 +11,11 @@ export function SiteFooter() {
         <div className="space-y-4">
           <Logo size="lg" />
           <p className="max-w-xs text-sm leading-relaxed text-brand-foreground/75">
-            Associação de proteção patrimonial mutualista, assistência e benefícios para
-            participantes da Grande Florianópolis.
+            Proteção patrimonial mutualista, assistência e benefícios para participantes da Grande
+            Florianópolis, sujeitos à validação e ao regulamento aplicável.
+          </p>
+          <p className="max-w-xs text-xs leading-relaxed text-brand-foreground/55">
+            Validação documental pendente
           </p>
           <div className="h-0.5 w-16 gold-rule" />
         </div>
@@ -92,8 +95,8 @@ export function SiteFooter() {
             {SITE.address}
           </a>
           <p className="text-xs leading-relaxed text-brand-foreground/60">
-            Regiões atendidas: {REGIONS.slice(0, 6).join(", ")} e demais localidades da Grande
-            Florianópolis.
+            Municípios atendidos: {CITIES.join(", ")}. Consulte a página de regiões para bairros,
+            localidades e corredores de deslocamento.
           </p>
         </div>
       </div>

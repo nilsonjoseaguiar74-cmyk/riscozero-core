@@ -51,27 +51,29 @@ const PILLARS = [
   {
     icon: Users,
     title: "Aquisição conectada",
-    text: "Landing page, formulários e WhatsApp convergem para uma entrada única de oportunidades.",
+    text: "Landing page e formulários têm base preparada para captar oportunidades; o WhatsApp exige identificação e integração próprias.",
   },
   {
     icon: Gauge,
     title: "Operação rastreável",
-    text: "Atendimento, responsáveis, etapas e tarefas formam um histórico claro para a gestão.",
+    text: "Atendimento, responsáveis, etapas e tarefas deverão formar um histórico verificável para a gestão.",
   },
   {
     icon: BarChart3,
     title: "Decisão orientada por dados",
-    text: "Indicadores comerciais e de mídia transformam movimento em leitura executiva.",
+    text: "Indicadores comerciais e de mídia deverão conectar investimento, atendimento e resultado.",
   },
 ];
 
-const PRODUCT_MODULES = [
-  ["Experiência pública", "Landing responsiva, benefícios, regiões, FAQ e captação de leads."],
-  ["CRM comercial", "Funil, qualificação, responsável, atividades, tarefas e histórico."],
-  ["BI executivo", "Visão de conversão, origem, campanhas, desempenho e operação."],
-  ["Gestão de tráfego", "Leitura por canal e base preparada para integrações de mídia."],
-  ["Administração", "Usuários, perfis, permissões, auditoria e configurações."],
-  ["Integrações", "Contratos para conectores, webhooks, importação e exportação."],
+const DOCUMENT_CHECKLIST = [
+  "Razão social",
+  "CNPJ",
+  "Status cadastral perante a Susep",
+  "Regulamento vigente",
+  "Benefícios efetivamente disponíveis",
+  "Limites, carências e condições",
+  "Terminologia autorizada para comunicação",
+  "Documentos ou evidências usados como fonte",
 ];
 
 const ROLES = [
@@ -82,6 +84,72 @@ const ROLES = [
   ["Administrador", "Governança, usuários, permissões e auditoria."],
 ];
 
+const PLATFORM_STATUS = [
+  {
+    title: "Demonstrável agora",
+    text: "Site público responsivo, formulário com modo mock, login demonstrativo, shell administrativo e este Blueprint.",
+  },
+  {
+    title: "Fundação técnica existente",
+    text: "Backend NestJS com PostgreSQL, migration, autenticação JWT, RBAC, leads, tarefas, dashboard básico, auditoria e testes.",
+  },
+  {
+    title: "Integração pendente",
+    text: "Conectar o frontend ao backend, completar o transporte da sessão e materializar as telas de CRM e BI sobre dados reais.",
+  },
+  {
+    title: "Planejado",
+    text: "Mídia paga, WhatsApp, webhooks, SIPROV, SGA, monitoramento, backups e deploy operacional.",
+  },
+  {
+    title: "Produção validada",
+    text: "Nenhum módulo possui evidência de produção validada no repositório. Requer operação controlada, segurança e observabilidade.",
+  },
+];
+
+const REGIONAL_GROUPS = [
+  ["Municípios", ["São José", "Florianópolis", "Palhoça", "Biguaçu"]],
+  ["Bairros e localidades de São José", ["Campinas", "Kobrasol", "Barreiros", "Forquilhinhas"]],
+  ["Corredores de deslocamento", ["BR-101", "Via Expressa"]],
+] as const;
+
+const TRACKING_FIELDS = [
+  "Origem",
+  "Canal",
+  "Campanha",
+  "Conjunto de anúncios",
+  "Anúncio",
+  "Página de entrada",
+  "Município, bairro ou região",
+  "Data e hora",
+  "Identificador do clique",
+  "Forma de conversão",
+  "Primeiro contato",
+  "Resultado comercial",
+];
+
+const FUNNEL_STAGES = [
+  "Clique no WhatsApp",
+  "Conversa iniciada",
+  "Lead identificado",
+  "Lead válido",
+  "Lead duplicado",
+  "Lead qualificado",
+  "Cotação enviada",
+  "Contratação confirmada",
+];
+
+const FORMULAS = [
+  ["CTR", "cliques ÷ impressões × 100"],
+  ["CPC", "investimento ÷ cliques"],
+  ["Taxa de conversão da landing page", "leads válidos ÷ visitantes da página × 100"],
+  ["CPL", "investimento em mídia ÷ leads válidos"],
+  ["Taxa de qualificação", "leads qualificados ÷ leads válidos × 100"],
+  ["Taxa de cotação", "cotações enviadas ÷ leads válidos × 100"],
+  ["Taxa de conversão comercial", "contratações confirmadas ÷ leads válidos × 100"],
+  ["Custo por aquisição", "investimento em mídia ÷ contratações confirmadas"],
+];
+
 const CHAPTERS: Chapter[] = [
   {
     id: "capa",
@@ -89,7 +157,7 @@ const CHAPTERS: Chapter[] = [
     eyebrow: "Blueprint executivo · 2026",
     title: "Do primeiro contato à inteligência de gestão.",
     summary:
-      "Uma plataforma integrada para aquisição, atendimento, CRM e leitura executiva da operação Risco Zero.",
+      "Blueprint de uma plataforma para conectar aquisição, atendimento, CRM e leitura executiva, com integração e validação de produção ainda pendentes.",
     content: (
       <div className="grid gap-4 sm:grid-cols-3">
         {["Aquisição", "Operação", "Inteligência"].map((item, index) => (
@@ -107,7 +175,7 @@ const CHAPTERS: Chapter[] = [
     eyebrow: "Manifesto e posicionamento",
     title: "Tecnologia para aproximar pessoas, organizar decisões e proteger valor.",
     summary:
-      "A Risco Zero combina atendimento humano regional com uma operação digital rastreável — sem transformar relacionamento em burocracia.",
+      "A proposta combina atendimento humano regional com uma operação digital rastreável, condicionada à validação documental e à implantação das integrações.",
     content: (
       <div className="grid gap-4 md:grid-cols-3">
         {PILLARS.map(({ icon: Icon, title, text }) => (
@@ -121,21 +189,336 @@ const CHAPTERS: Chapter[] = [
     ),
   },
   {
-    id: "produto",
-    label: "Produto",
-    eyebrow: "Ecossistema modular",
-    title: "Uma jornada contínua, da campanha ao acompanhamento comercial.",
+    id: "conformidade",
+    label: "Conformidade",
+    eyebrow: "Contexto regulatório",
+    title: "Proteção patrimonial mutualista não é seguro tradicional.",
     summary:
-      "O produto elimina ilhas entre marketing, atendimento e gestão, preservando módulos claros para evolução segura.",
+      "São operações com estruturas, contratos e regras diferentes. A condição específica da Risco Zero exige comprovação documental e consulta oficial.",
     content: (
-      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-        {PRODUCT_MODULES.map(([title, text], index) => (
+      <div className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">
+        <article className="rounded-2xl border border-white/10 bg-white/5 p-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-light">
+            Proteção veicular é igual a seguro tradicional?
+          </p>
+          <p className="mt-4 text-base font-semibold text-white">
+            Não. São operações com estruturas, contratos e regras diferentes.
+          </p>
+          <div className="mt-3 space-y-3 text-sm leading-6 text-white/65">
+            <p>
+              A proteção patrimonial mutualista possui funcionamento baseado nas regras do grupo, no
+              regulamento e no rateio das despesas entre os participantes. Desde a Lei Complementar
+              nº 213/2025, essas operações passaram a integrar um processo específico de
+              regulamentação e supervisão da Susep.
+            </p>
+            <p>
+              Antes da adesão, a Risco Zero deve apresentar claramente as condições, os benefícios,
+              os limites, as obrigações do participante e o regulamento aplicável.
+            </p>
+          </div>
+        </article>
+        <aside className="rounded-2xl border border-gold/25 bg-gold/5 p-6">
+          <ShieldCheck className="size-5 text-gold" aria-hidden="true" />
+          <h3 className="mt-4 font-semibold text-white">Situação específica</h3>
+          <p className="mt-2 text-sm leading-6 text-white/65">
+            Cadastramento não significa regularidade definitiva. Razão social, CNPJ, regulamento e
+            status cadastral não estão comprovados no repositório.
+          </p>
+          <p className="mt-4 text-sm font-semibold text-gold-light">
+            Validação documental pendente
+          </p>
+        </aside>
+        <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs lg:col-span-2">
+          <a
+            href="https://www.planalto.gov.br/ccivil_03/leis/lcp/Lcp213.htm"
+            target="_blank"
+            rel="noreferrer"
+            className="text-white/60 underline underline-offset-4 hover:text-white"
+          >
+            Lei Complementar nº 213/2025
+          </a>
+          <a
+            href="https://www.gov.br/susep/pt-br/assuntos/protecao-patrimonial-mutualista/associacoes-de-protecao-patrimonial-mutualista"
+            target="_blank"
+            rel="noreferrer"
+            className="text-white/60 underline underline-offset-4 hover:text-white"
+          >
+            Orientações oficiais da Susep
+          </a>
+          <a
+            href="https://www.gov.br/susep/pt-br/central-de-conteudos/noticias/2026/maio/publicadas-as-normas-que-regulamentam-protecao-patrimonial-mutualista-e-cooperativas-de-seguro"
+            target="_blank"
+            rel="noreferrer"
+            className="text-white/60 underline underline-offset-4 hover:text-white"
+          >
+            Resolução CNSP nº 491/2026
+          </a>
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: "validacao",
+    label: "Validação",
+    eyebrow: "Validação necessária antes da apresentação",
+    title: "A narrativa comercial depende de evidência verificável.",
+    summary:
+      "Itens sem comprovação permanecem pendentes e não podem sustentar promessas regulatórias ou comerciais.",
+    content: (
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {DOCUMENT_CHECKLIST.map((item) => (
+          <article key={item} className="rounded-xl border border-white/10 bg-white/5 p-5">
+            <Check className="size-4 text-white/35" aria-hidden="true" />
+            <h3 className="mt-4 text-sm font-semibold text-white">{item}</h3>
+            <p className="mt-2 text-xs font-medium text-amber-200">Validação documental pendente</p>
+          </article>
+        ))}
+      </div>
+    ),
+  },
+  {
+    id: "status",
+    label: "Status",
+    eyebrow: "Estado real da plataforma",
+    title: "Protótipo, fundação, integração e produção são estágios distintos.",
+    summary:
+      "A classificação abaixo reflete evidências do código atual e evita apresentar mocks ou telas demonstrativas como operação implantada.",
+    content: (
+      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-5">
+        {PLATFORM_STATUS.map(({ title, text }, index) => (
           <article key={title} className="rounded-xl border border-white/10 bg-white/5 p-5">
-            <div className="flex items-center justify-between gap-4">
-              <h3 className="font-semibold text-white">{title}</h3>
-              <span className="text-xs font-semibold text-gold-light">0{index + 1}</span>
+            <CircleDot
+              className={index === 4 ? "size-5 text-amber-200" : "size-5 text-gold"}
+              aria-hidden="true"
+            />
+            <h3 className="mt-4 font-semibold text-white">{title}</h3>
+            <p className="mt-2 text-sm leading-6 text-white/55">{text}</p>
+          </article>
+        ))}
+      </div>
+    ),
+  },
+  {
+    id: "regioes",
+    label: "Regiões",
+    eyebrow: "Classificação geográfica",
+    title: "Municípios, localidades e corredores têm funções diferentes.",
+    summary:
+      "A comunicação regional deve preservar a hierarquia territorial e não apresentar bairros de São José como cidades.",
+    content: (
+      <div className="grid gap-4 md:grid-cols-3">
+        {REGIONAL_GROUPS.map(([title, items]) => (
+          <article key={title} className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-gold-light">
+              {title}
+            </h3>
+            <ul className="mt-5 space-y-2 text-sm text-white/70">
+              {items.map((item) => (
+                <li key={item} className="flex items-center gap-2">
+                  <CircleDot className="size-3 text-gold" aria-hidden="true" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    ),
+  },
+  {
+    id: "rastreamento",
+    label: "Atribuição",
+    eyebrow: "Rastreamento e atribuição",
+    title: "Origem identificável depende de configuração e continuidade do dado.",
+    summary:
+      "Anúncios utilizarão parâmetros de campanha e identificadores de rastreamento; a plataforma deverá preservar esses sinais até o resultado comercial.",
+    content: (
+      <div className="grid gap-4 lg:grid-cols-[1fr_0.9fr]">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {TRACKING_FIELDS.map((field) => (
+            <div key={field} className="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5">
+              <p className="text-xs leading-5 text-white/65">{field}</p>
             </div>
-            <p className="mt-3 text-sm leading-6 text-white/60">{text}</p>
+          ))}
+        </div>
+        <article className="rounded-2xl border border-gold/25 bg-gold/5 p-6">
+          <Sparkles className="size-5 text-gold" aria-hidden="true" />
+          <h3 className="mt-4 font-semibold text-white">
+            Formulário e WhatsApp não são equivalentes
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-white/65">
+            O rastreamento pelo formulário tende a ser mais preciso. No WhatsApp, serão necessários
+            links identificados, mensagens predefinidas ou integração com o CRM.
+          </p>
+          <p className="mt-3 text-sm leading-6 text-white/65">
+            Sem essa configuração, é possível medir cliques no botão, mas não afirmar
+            automaticamente que cada clique se transformou em lead ou contratação.
+          </p>
+        </article>
+      </div>
+    ),
+  },
+  {
+    id: "funil",
+    label: "Funil",
+    eyebrow: "Funil comercial",
+    title: "Interação, oportunidade e resultado não são o mesmo evento.",
+    summary:
+      "Cada etapa precisa de definição, data, responsável e regra de validação próprias para evitar métricas infladas.",
+    content: (
+      <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {FUNNEL_STAGES.map((stage, index) => (
+          <li key={stage} className="rounded-xl border border-white/10 bg-white/5 p-5">
+            <p className="text-xs font-semibold text-gold-light">
+              {String(index + 1).padStart(2, "0")}
+            </p>
+            <p className="mt-5 text-sm font-semibold text-white">{stage}</p>
+          </li>
+        ))}
+      </ol>
+    ),
+  },
+  {
+    id: "indicadores",
+    label: "Indicadores",
+    eyebrow: "Métricas e fórmulas",
+    title: "Indicadores comparáveis exigem denominadores consistentes.",
+    summary:
+      "Cliques, visitantes, leads válidos, cotações e contratações devem permanecer eventos distintos em todos os cálculos.",
+    content: (
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {FORMULAS.map(([name, formula]) => (
+          <article key={name} className="rounded-xl border border-white/10 bg-white/5 p-5">
+            <h3 className="text-sm font-semibold text-white">{name}</h3>
+            <p className="mt-3 text-xs leading-5 text-white/60">{formula}</p>
+          </article>
+        ))}
+        <p className="rounded-xl border border-gold/25 bg-gold/5 p-4 text-xs leading-5 text-white/65 sm:col-span-2 lg:col-span-4">
+          Regra técnica: quando o denominador for zero, o indicador deve retornar “não disponível”
+          ou valor nulo — nunca infinito, erro ou percentual artificial.
+        </p>
+      </div>
+    ),
+  },
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    eyebrow: "Leitura gerencial",
+    title: "Aquisição, operação comercial e resultado em dimensões separadas.",
+    summary:
+      "A proposta é organizar a decisão executiva sem antecipar uma integração ainda pendente.",
+    content: (
+      <div className="grid gap-4 md:grid-cols-3">
+        {[
+          [
+            "Aquisição",
+            "Quanto foi investido, quais campanhas atraíram contatos e qual foi o custo de cada oportunidade.",
+          ],
+          [
+            "Operação comercial",
+            "Quantos contatos foram atendidos, quanto tempo demorou o primeiro atendimento e quantas cotações foram enviadas.",
+          ],
+          [
+            "Resultado",
+            "Quantos leads foram qualificados, quantas contratações foram confirmadas, quais regiões tiveram melhor desempenho e quais são os principais motivos de perda.",
+          ],
+        ].map(([title, text]) => (
+          <article key={title} className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <BarChart3 className="size-5 text-gold" aria-hidden="true" />
+            <h3 className="mt-4 font-semibold text-white">{title}</h3>
+            <p className="mt-2 text-sm leading-6 text-white/60">{text}</p>
+          </article>
+        ))}
+        <p className="rounded-xl border border-gold/25 bg-gold/5 p-4 text-center text-sm font-medium text-white/75 md:col-span-3">
+          “O objetivo é conectar investimento, atendimento e resultado comercial em uma única
+          leitura gerencial.”
+        </p>
+      </div>
+    ),
+  },
+  {
+    id: "privacidade",
+    label: "Privacidade",
+    eyebrow: "Privacidade e proteção de dados",
+    title: "Proteção de dados é requisito contínuo, não selo antecipado.",
+    summary:
+      "O protótipo possui consentimento e bases de rastreamento, mas adequação jurídica, retenção, governança e integrações exigem validação e implantação.",
+    content: (
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          "Aviso de privacidade próximo ao formulário e finalidade clara",
+          "Acesso aos dados conforme perfil e proteção contra acessos indevidos",
+          "Registro das movimentações e rastreabilidade das ações",
+          "Prazo formal de retenção e descarte",
+          "Procedimento para correção ou exclusão",
+          "Controle das integrações com plataformas de anúncios",
+          "Política de cookies e tecnologias de rastreamento",
+          "Auditoria técnica, jurídica e operacional antes de produção",
+        ].map((item) => (
+          <article key={item} className="rounded-xl border border-white/10 bg-white/5 p-5">
+            <LockKeyhole className="size-4 text-gold" aria-hidden="true" />
+            <p className="mt-4 text-sm leading-6 text-white/65">{item}</p>
+            <p className="mt-2 text-xs text-amber-200">Requisito do projeto</p>
+          </article>
+        ))}
+      </div>
+    ),
+  },
+  {
+    id: "arquitetura",
+    label: "Arquitetura",
+    eyebrow: "Fundação tecnológica",
+    title: "Monólito modular, contratos claros e evolução sem ruptura.",
+    summary:
+      "A fundação separa experiência, aplicação e dados; a conexão completa do frontend e a validação de produção permanecem pendentes.",
+    content: (
+      <div className="grid gap-3 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:items-stretch">
+        {[
+          [MonitorPlay, "Experiência", "React 19 · Vite · TanStack · mocks por padrão"],
+          [Boxes, "Aplicação", "NestJS · API REST modular · integração pendente"],
+          [Database, "Dados", "Prisma · PostgreSQL · ambiente local validado"],
+        ].map(([Icon, title, text], index) => {
+          const Component = Icon as typeof MonitorPlay;
+          return (
+            <div key={String(title)} className="contents">
+              <article className="rounded-2xl border border-white/10 bg-white/5 p-6">
+                <Component className="size-5 text-gold" aria-hidden="true" />
+                <h3 className="mt-5 font-semibold text-white">{String(title)}</h3>
+                <p className="mt-2 text-sm leading-6 text-white/55">{String(text)}</p>
+              </article>
+              {index < 2 ? (
+                <ArrowRight
+                  className="m-auto hidden size-5 text-gold/70 lg:block"
+                  aria-hidden="true"
+                />
+              ) : null}
+            </div>
+          );
+        })}
+        <div className="rounded-xl border border-gold/25 bg-gold/5 p-4 lg:col-span-5">
+          <p className="flex items-center gap-2 text-sm text-white/70">
+            <LockKeyhole className="size-4 text-gold" aria-hidden="true" />
+            JWT, refresh cookie HttpOnly, RBAC e auditoria existem na fundação do backend; operação
+            integrada e segurança de produção ainda requerem validação.
+          </p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: "perfis",
+    label: "Perfis",
+    eyebrow: "Governança de acesso",
+    title: "Cada profissional deve enxergar apenas o necessário.",
+    summary:
+      "A matriz de permissões existe no frontend demonstrativo e no backend; a cobertura completa das telas administrativas ainda é planejada.",
+    content: (
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {ROLES.map(([role, description]) => (
+          <article key={role} className="rounded-xl border border-white/10 bg-white/5 p-5">
+            <ShieldCheck className="size-5 text-gold" aria-hidden="true" />
+            <h3 className="mt-4 font-semibold text-white">{role}</h3>
+            <p className="mt-2 text-sm leading-6 text-white/55">{description}</p>
           </article>
         ))}
       </div>
@@ -169,106 +552,7 @@ const CHAPTERS: Chapter[] = [
               Redesenhar, distorcer, recolorir ou substituir símbolo e tipografia.
             </p>
           </article>
-          <article className="rounded-2xl border border-white/10 bg-white/5 p-5 sm:col-span-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-light">
-              Versões autorizadas
-            </p>
-            <p className="mt-3 text-sm leading-6 text-white/65">
-              Original, all black e all white — sempre a partir do arquivo oficial correspondente.
-            </p>
-          </article>
         </div>
-      </div>
-    ),
-  },
-  {
-    id: "arquitetura",
-    label: "Arquitetura",
-    eyebrow: "Fundação tecnológica",
-    title: "Monólito modular, contratos claros e evolução sem ruptura.",
-    summary:
-      "A arquitetura separa experiência, aplicação e dados, mantendo autenticação e governança como capacidades transversais.",
-    content: (
-      <div className="grid gap-3 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:items-stretch">
-        {[
-          [MonitorPlay, "Experiência", "React 19 · Vite · TanStack"],
-          [Boxes, "Aplicação", "NestJS · API REST modular"],
-          [Database, "Dados", "Prisma · PostgreSQL"],
-        ].map(([Icon, title, text], index) => {
-          const Component = Icon as typeof MonitorPlay;
-          return (
-            <div key={String(title)} className="contents">
-              <article className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                <Component className="size-5 text-gold" aria-hidden="true" />
-                <h3 className="mt-5 font-semibold text-white">{String(title)}</h3>
-                <p className="mt-2 text-sm text-white/55">{String(text)}</p>
-              </article>
-              {index < 2 ? (
-                <ArrowRight
-                  className="m-auto hidden size-5 text-gold/70 lg:block"
-                  aria-hidden="true"
-                />
-              ) : null}
-            </div>
-          );
-        })}
-        <div className="rounded-xl border border-gold/25 bg-gold/5 p-4 lg:col-span-5">
-          <p className="flex items-center gap-2 text-sm text-white/70">
-            <LockKeyhole className="size-4 text-gold" aria-hidden="true" />
-            JWT, cookie HttpOnly, RBAC e auditoria sustentam acesso e rastreabilidade.
-          </p>
-        </div>
-      </div>
-    ),
-  },
-  {
-    id: "perfis",
-    label: "Perfis",
-    eyebrow: "Governança de acesso",
-    title: "Cada profissional enxerga o necessário para executar bem.",
-    summary:
-      "Perfis e permissões reduzem exposição de dados e organizam responsabilidades sem fragmentar a operação.",
-    content: (
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-        {ROLES.map(([role, description]) => (
-          <article key={role} className="rounded-xl border border-white/10 bg-white/5 p-5">
-            <ShieldCheck className="size-5 text-gold" aria-hidden="true" />
-            <h3 className="mt-4 font-semibold text-white">{role}</h3>
-            <p className="mt-2 text-sm leading-6 text-white/55">{description}</p>
-          </article>
-        ))}
-      </div>
-    ),
-  },
-  {
-    id: "status",
-    label: "Status",
-    eyebrow: "Estado demonstrável",
-    title: "Base funcional preservada. Integração evolui por checkpoints.",
-    summary:
-      "A demonstração atual prioriza experiência pública e fluxos simulados; o backend já possui fundação para substituir mocks gradualmente.",
-    content: (
-      <div className="grid gap-4 md:grid-cols-3">
-        {[
-          [
-            "Demonstrável agora",
-            "Landing pública, captação, login por perfil e navegação do protótipo.",
-          ],
-          [
-            "Fundação concluída",
-            "API NestJS, PostgreSQL, autenticação, permissões e auditoria no backend.",
-          ],
-          [
-            "Próximo incremento",
-            "Conectar dashboards e CRM ao backend, validar integrações e preparar o deploy.",
-          ],
-        ].map(([title, text], index) => (
-          <article key={title} className="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <CircleDot className={index === 2 ? "size-5 text-gold" : "size-5 text-emerald-300"} />
-            <h3 className="mt-5 font-semibold text-white">{title}</h3>
-            <p className="mt-2 text-sm leading-6 text-white/60">{text}</p>
-          </article>
-        ))}
       </div>
     ),
   },
@@ -276,16 +560,42 @@ const CHAPTERS: Chapter[] = [
     id: "roadmap",
     label: "Roadmap",
     eyebrow: "Evolução controlada",
-    title: "Demonstrar, validar, integrar e operar.",
+    title: "Validar documentos antes de integrar e operar.",
     summary:
-      "O roadmap reduz risco técnico e comercial ao transformar cada etapa em uma entrega verificável.",
+      "A primeira decisão é regulatória e documental; tecnologia e comunicação avançam sobre uma base comprovada.",
     content: (
-      <ol className="grid gap-3 md:grid-cols-4">
+      <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {[
-          ["01", "Demonstração", "Validar narrativa, navegação e perfis."],
-          ["02", "Integração", "Conectar autenticação, leads e indicadores."],
-          ["03", "Piloto", "Operar com usuários, dados e métricas controladas."],
-          ["04", "Produção", "Deploy, monitoramento e integrações oficiais."],
+          [
+            "01",
+            "Validação regulatória e documental",
+            "Confirmar a razão social, o CNPJ, o status cadastral perante a Susep e o regulamento aplicável à operação.",
+          ],
+          [
+            "02",
+            "Validação da narrativa e dos benefícios",
+            "Aprovar terminologia, disponibilidade, limites, carências e condições com evidências.",
+          ],
+          [
+            "03",
+            "Integração de autenticação, leads e CRM",
+            "Conectar o frontend à API e validar sessão, perfis e fluxo comercial.",
+          ],
+          [
+            "04",
+            "Rastreamento e atribuição",
+            "Configurar campanhas, eventos, consentimento e continuidade dos identificadores.",
+          ],
+          [
+            "05",
+            "Piloto com dados controlados",
+            "Medir qualidade dos dados, operação, segurança e indicadores com escopo limitado.",
+          ],
+          [
+            "06",
+            "Produção e integrações oficiais",
+            "Executar deploy, monitoramento, backups e conectores aprovados pelos fornecedores.",
+          ],
         ].map(([number, title, text]) => (
           <li key={number} className="rounded-2xl border border-white/10 bg-white/5 p-6">
             <p className="text-xs font-semibold text-gold-light">{number}</p>
@@ -300,9 +610,9 @@ const CHAPTERS: Chapter[] = [
     id: "demo",
     label: "Demo",
     eyebrow: "Próximo passo",
-    title: "Uma apresentação objetiva, seguida da experiência real.",
+    title: "Uma apresentação transparente, seguida da experiência demonstrativa.",
     summary:
-      "Comece pelo problema e pelo valor, percorra produto e arquitetura, e encerre abrindo a plataforma demonstrativa.",
+      "A demonstração comprova a experiência e a fundação técnica sem representar integração completa, condição regulatória ou produção validada.",
     content: (
       <div className="flex flex-wrap gap-3">
         <Button asChild size="lg" className="bg-gold text-gold-foreground hover:bg-gold-light">

@@ -32,7 +32,7 @@ const SECTIONS = [
   },
   {
     title: "3. Modelo associativo",
-    body: "A atuação ocorre no modelo de proteção patrimonial mutualista. A disponibilidade de benefícios, limites e assistências depende da opção contratada, da análise de perfil e do cumprimento do regulamento.",
+    body: "A comunicação apresenta o modelo de proteção patrimonial mutualista. Razão social, CNPJ, status cadastral perante a Susep e regulamento aplicável permanecem com validação documental pendente. A disponibilidade de benefícios, limites e assistências depende da opção apresentada e dos documentos vigentes.",
   },
   {
     title: "4. Uso adequado",

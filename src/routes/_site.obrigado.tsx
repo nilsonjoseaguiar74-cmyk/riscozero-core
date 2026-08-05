@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/landing/Section";
-import { SITE, whatsappLink } from "@/config/site";
+import { APP_CONFIG, SITE, whatsappLink } from "@/config/site";
 import { trackEvent } from "@/services/tracking";
 
 export const Route = createFileRoute("/_site/obrigado")({
@@ -11,13 +11,16 @@ export const Route = createFileRoute("/_site/obrigado")({
       { title: "Solicitação recebida | Risco Zero Proteção Veicular" },
       {
         name: "description",
-        content:
-          "Sua solicitação foi registrada. A equipe da Risco Zero entrará em contato pelo WhatsApp para apresentar as opções disponíveis.",
+        content: APP_CONFIG.useMockApi
+          ? "Confirmação do fluxo demonstrativo do formulário da Risco Zero."
+          : "Sua solicitação foi registrada para atendimento pela equipe da Risco Zero.",
       },
       { property: "og:title", content: "Solicitação recebida | Risco Zero" },
       {
         property: "og:description",
-        content: "Recebemos seus dados e a equipe dará sequência ao atendimento.",
+        content: APP_CONFIG.useMockApi
+          ? "Ambiente demonstrativo: nenhum atendimento comercial real foi iniciado."
+          : "Recebemos seus dados e a equipe dará sequência ao atendimento.",
       },
       { name: "robots", content: "noindex" },
     ],
@@ -25,11 +28,17 @@ export const Route = createFileRoute("/_site/obrigado")({
   component: ThankYouPage,
 });
 
-const NEXT_STEPS = [
-  "A solicitação foi registrada na plataforma da associação.",
-  "A equipe comercial verifica o perfil do veículo e da região.",
-  "O retorno é feito pelo WhatsApp informado, no horário escolhido.",
-];
+const NEXT_STEPS = APP_CONFIG.useMockApi
+  ? [
+      "O formulário demonstrativo validou e processou os dados localmente.",
+      "Nenhum lead ou atendimento real é criado enquanto a integração permanecer desativada.",
+      "Use os canais oficiais se desejar iniciar uma conversa com a equipe.",
+    ]
+  : [
+      "A solicitação foi registrada para atendimento.",
+      "A equipe comercial verifica o perfil do veículo e da região.",
+      "O retorno é feito pelo canal e no horário informados.",
+    ];
 
 function ThankYouPage() {
   return (
@@ -38,10 +47,13 @@ function ThankYouPage() {
         <span className="mx-auto inline-flex size-14 items-center justify-center rounded-full bg-success/10 text-success">
           <CheckCircle2 className="size-7" aria-hidden="true" />
         </span>
-        <h1 className="display-2 mt-6 text-foreground">Solicitação recebida</h1>
+        <h1 className="display-2 mt-6 text-foreground">
+          {APP_CONFIG.useMockApi ? "Demonstração concluída" : "Solicitação recebida"}
+        </h1>
         <p className="lead-text mt-3 text-muted-foreground">
-          Obrigado pelo contato. A equipe da {SITE.name} dará sequência ao atendimento e apresentará
-          as opções compatíveis com o seu perfil.
+          {APP_CONFIG.useMockApi
+            ? "Este ambiente comprova a experiência do formulário, mas ainda não inicia um fluxo comercial real."
+            : `Obrigado pelo contato. A equipe da ${SITE.name} dará sequência ao atendimento e apresentará as opções compatíveis com o seu perfil.`}
         </p>
         <ol className="mt-8 space-y-3 text-left">
           {NEXT_STEPS.map((step, index) => (
