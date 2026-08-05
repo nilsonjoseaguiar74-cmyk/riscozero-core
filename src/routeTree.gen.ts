@@ -9,50 +9,397 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as SiteRouteImport } from './routes/_site'
+import { Route as PainelRouteImport } from './routes/painel'
+import { Route as AuthEsqueciMinhaSenhaRouteImport } from './routes/_auth.esqueci-minha-senha'
+import { Route as AuthLoginRouteImport } from './routes/_auth.login'
+import { Route as AuthRedefinirSenhaRouteImport } from './routes/_auth.redefinir-senha'
+import { Route as AuthVerificarAcessoRouteImport } from './routes/_auth.verificar-acesso'
+import { Route as SiteIndexRouteImport } from './routes/_site.index'
+import { Route as SiteBeneficiosRouteImport } from './routes/_site.beneficios'
+import { Route as SiteComoFuncionaRouteImport } from './routes/_site.como-funciona'
+import { Route as SiteContatoRouteImport } from './routes/_site.contato'
+import { Route as SiteObrigadoRouteImport } from './routes/_site.obrigado'
+import { Route as SitePerguntasFrequentesRouteImport } from './routes/_site.perguntas-frequentes'
+import { Route as SitePoliticaDePrivacidadeRouteImport } from './routes/_site.politica-de-privacidade'
+import { Route as SiteRegioesRouteImport } from './routes/_site.regioes'
+import { Route as SiteSolicitarCotacaoRouteImport } from './routes/_site.solicitar-cotacao'
+import { Route as SiteTermosDeUsoRouteImport } from './routes/_site.termos-de-uso'
 
-const IndexRoute = IndexRouteImport.update({
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiteRoute = SiteRouteImport.update({
+  id: '/_site',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PainelRoute = PainelRouteImport.update({
+  id: '/painel',
+  path: '/painel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthEsqueciMinhaSenhaRoute = AuthEsqueciMinhaSenhaRouteImport.update({
+  id: '/esqueci-minha-senha',
+  path: '/esqueci-minha-senha',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthRedefinirSenhaRoute = AuthRedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthVerificarAcessoRoute = AuthVerificarAcessoRouteImport.update({
+  id: '/verificar-acesso',
+  path: '/verificar-acesso',
+  getParentRoute: () => AuthRoute,
+} as any)
+const SiteIndexRoute = SiteIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteBeneficiosRoute = SiteBeneficiosRouteImport.update({
+  id: '/beneficios',
+  path: '/beneficios',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteComoFuncionaRoute = SiteComoFuncionaRouteImport.update({
+  id: '/como-funciona',
+  path: '/como-funciona',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteContatoRoute = SiteContatoRouteImport.update({
+  id: '/contato',
+  path: '/contato',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteObrigadoRoute = SiteObrigadoRouteImport.update({
+  id: '/obrigado',
+  path: '/obrigado',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePerguntasFrequentesRoute = SitePerguntasFrequentesRouteImport.update({
+  id: '/perguntas-frequentes',
+  path: '/perguntas-frequentes',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePoliticaDePrivacidadeRoute =
+  SitePoliticaDePrivacidadeRouteImport.update({
+    id: '/politica-de-privacidade',
+    path: '/politica-de-privacidade',
+    getParentRoute: () => SiteRoute,
+  } as any)
+const SiteRegioesRoute = SiteRegioesRouteImport.update({
+  id: '/regioes',
+  path: '/regioes',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteSolicitarCotacaoRoute = SiteSolicitarCotacaoRouteImport.update({
+  id: '/solicitar-cotacao',
+  path: '/solicitar-cotacao',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteTermosDeUsoRoute = SiteTermosDeUsoRouteImport.update({
+  id: '/termos-de-uso',
+  path: '/termos-de-uso',
+  getParentRoute: () => SiteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof SiteIndexRoute
+  '/painel': typeof PainelRoute
+  '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
+  '/login': typeof AuthLoginRoute
+  '/redefinir-senha': typeof AuthRedefinirSenhaRoute
+  '/verificar-acesso': typeof AuthVerificarAcessoRoute
+  '/beneficios': typeof SiteBeneficiosRoute
+  '/como-funciona': typeof SiteComoFuncionaRoute
+  '/contato': typeof SiteContatoRoute
+  '/obrigado': typeof SiteObrigadoRoute
+  '/perguntas-frequentes': typeof SitePerguntasFrequentesRoute
+  '/politica-de-privacidade': typeof SitePoliticaDePrivacidadeRoute
+  '/regioes': typeof SiteRegioesRoute
+  '/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
+  '/termos-de-uso': typeof SiteTermosDeUsoRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof SiteIndexRoute
+  '/painel': typeof PainelRoute
+  '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
+  '/login': typeof AuthLoginRoute
+  '/redefinir-senha': typeof AuthRedefinirSenhaRoute
+  '/verificar-acesso': typeof AuthVerificarAcessoRoute
+  '/beneficios': typeof SiteBeneficiosRoute
+  '/como-funciona': typeof SiteComoFuncionaRoute
+  '/contato': typeof SiteContatoRoute
+  '/obrigado': typeof SiteObrigadoRoute
+  '/perguntas-frequentes': typeof SitePerguntasFrequentesRoute
+  '/politica-de-privacidade': typeof SitePoliticaDePrivacidadeRoute
+  '/regioes': typeof SiteRegioesRoute
+  '/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
+  '/termos-de-uso': typeof SiteTermosDeUsoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/_site': typeof SiteRouteWithChildren
+  '/painel': typeof PainelRoute
+  '/_auth/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/redefinir-senha': typeof AuthRedefinirSenhaRoute
+  '/_auth/verificar-acesso': typeof AuthVerificarAcessoRoute
+  '/_site/beneficios': typeof SiteBeneficiosRoute
+  '/_site/como-funciona': typeof SiteComoFuncionaRoute
+  '/_site/contato': typeof SiteContatoRoute
+  '/_site/obrigado': typeof SiteObrigadoRoute
+  '/_site/perguntas-frequentes': typeof SitePerguntasFrequentesRoute
+  '/_site/politica-de-privacidade': typeof SitePoliticaDePrivacidadeRoute
+  '/_site/regioes': typeof SiteRegioesRoute
+  '/_site/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
+  '/_site/termos-de-uso': typeof SiteTermosDeUsoRoute
+  '/_site/': typeof SiteIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/painel'
+    | '/esqueci-minha-senha'
+    | '/login'
+    | '/redefinir-senha'
+    | '/verificar-acesso'
+    | '/beneficios'
+    | '/como-funciona'
+    | '/contato'
+    | '/obrigado'
+    | '/perguntas-frequentes'
+    | '/politica-de-privacidade'
+    | '/regioes'
+    | '/solicitar-cotacao'
+    | '/termos-de-uso'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/painel'
+    | '/esqueci-minha-senha'
+    | '/login'
+    | '/redefinir-senha'
+    | '/verificar-acesso'
+    | '/beneficios'
+    | '/como-funciona'
+    | '/contato'
+    | '/obrigado'
+    | '/perguntas-frequentes'
+    | '/politica-de-privacidade'
+    | '/regioes'
+    | '/solicitar-cotacao'
+    | '/termos-de-uso'
+  id:
+    | '__root__'
+    | '/_auth'
+    | '/_site'
+    | '/painel'
+    | '/_auth/esqueci-minha-senha'
+    | '/_auth/login'
+    | '/_auth/redefinir-senha'
+    | '/_auth/verificar-acesso'
+    | '/_site/beneficios'
+    | '/_site/como-funciona'
+    | '/_site/contato'
+    | '/_site/obrigado'
+    | '/_site/perguntas-frequentes'
+    | '/_site/politica-de-privacidade'
+    | '/_site/regioes'
+    | '/_site/solicitar-cotacao'
+    | '/_site/termos-de-uso'
+    | '/_site/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRouteWithChildren
+  SiteRoute: typeof SiteRouteWithChildren
+  PainelRoute: typeof PainelRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_site': {
+      id: '/_site'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof SiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/painel': {
+      id: '/painel'
+      path: '/painel'
+      fullPath: '/painel'
+      preLoaderRoute: typeof PainelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth/esqueci-minha-senha': {
+      id: '/_auth/esqueci-minha-senha'
+      path: '/esqueci-minha-senha'
+      fullPath: '/esqueci-minha-senha'
+      preLoaderRoute: typeof AuthEsqueciMinhaSenhaRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/redefinir-senha': {
+      id: '/_auth/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/redefinir-senha'
+      preLoaderRoute: typeof AuthRedefinirSenhaRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/verificar-acesso': {
+      id: '/_auth/verificar-acesso'
+      path: '/verificar-acesso'
+      fullPath: '/verificar-acesso'
+      preLoaderRoute: typeof AuthVerificarAcessoRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_site/': {
+      id: '/_site/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof SiteIndexRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/beneficios': {
+      id: '/_site/beneficios'
+      path: '/beneficios'
+      fullPath: '/beneficios'
+      preLoaderRoute: typeof SiteBeneficiosRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/como-funciona': {
+      id: '/_site/como-funciona'
+      path: '/como-funciona'
+      fullPath: '/como-funciona'
+      preLoaderRoute: typeof SiteComoFuncionaRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/contato': {
+      id: '/_site/contato'
+      path: '/contato'
+      fullPath: '/contato'
+      preLoaderRoute: typeof SiteContatoRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/obrigado': {
+      id: '/_site/obrigado'
+      path: '/obrigado'
+      fullPath: '/obrigado'
+      preLoaderRoute: typeof SiteObrigadoRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/perguntas-frequentes': {
+      id: '/_site/perguntas-frequentes'
+      path: '/perguntas-frequentes'
+      fullPath: '/perguntas-frequentes'
+      preLoaderRoute: typeof SitePerguntasFrequentesRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/politica-de-privacidade': {
+      id: '/_site/politica-de-privacidade'
+      path: '/politica-de-privacidade'
+      fullPath: '/politica-de-privacidade'
+      preLoaderRoute: typeof SitePoliticaDePrivacidadeRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/regioes': {
+      id: '/_site/regioes'
+      path: '/regioes'
+      fullPath: '/regioes'
+      preLoaderRoute: typeof SiteRegioesRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/solicitar-cotacao': {
+      id: '/_site/solicitar-cotacao'
+      path: '/solicitar-cotacao'
+      fullPath: '/solicitar-cotacao'
+      preLoaderRoute: typeof SiteSolicitarCotacaoRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/termos-de-uso': {
+      id: '/_site/termos-de-uso'
+      path: '/termos-de-uso'
+      fullPath: '/termos-de-uso'
+      preLoaderRoute: typeof SiteTermosDeUsoRouteImport
+      parentRoute: typeof SiteRoute
     }
   }
 }
 
+interface AuthRouteChildren {
+  AuthEsqueciMinhaSenhaRoute: typeof AuthEsqueciMinhaSenhaRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthRedefinirSenhaRoute: typeof AuthRedefinirSenhaRoute
+  AuthVerificarAcessoRoute: typeof AuthVerificarAcessoRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthEsqueciMinhaSenhaRoute: AuthEsqueciMinhaSenhaRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthRedefinirSenhaRoute: AuthRedefinirSenhaRoute,
+  AuthVerificarAcessoRoute: AuthVerificarAcessoRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+interface SiteRouteChildren {
+  SiteBeneficiosRoute: typeof SiteBeneficiosRoute
+  SiteComoFuncionaRoute: typeof SiteComoFuncionaRoute
+  SiteContatoRoute: typeof SiteContatoRoute
+  SiteObrigadoRoute: typeof SiteObrigadoRoute
+  SitePerguntasFrequentesRoute: typeof SitePerguntasFrequentesRoute
+  SitePoliticaDePrivacidadeRoute: typeof SitePoliticaDePrivacidadeRoute
+  SiteRegioesRoute: typeof SiteRegioesRoute
+  SiteSolicitarCotacaoRoute: typeof SiteSolicitarCotacaoRoute
+  SiteTermosDeUsoRoute: typeof SiteTermosDeUsoRoute
+  SiteIndexRoute: typeof SiteIndexRoute
+}
+
+const SiteRouteChildren: SiteRouteChildren = {
+  SiteBeneficiosRoute: SiteBeneficiosRoute,
+  SiteComoFuncionaRoute: SiteComoFuncionaRoute,
+  SiteContatoRoute: SiteContatoRoute,
+  SiteObrigadoRoute: SiteObrigadoRoute,
+  SitePerguntasFrequentesRoute: SitePerguntasFrequentesRoute,
+  SitePoliticaDePrivacidadeRoute: SitePoliticaDePrivacidadeRoute,
+  SiteRegioesRoute: SiteRegioesRoute,
+  SiteSolicitarCotacaoRoute: SiteSolicitarCotacaoRoute,
+  SiteTermosDeUsoRoute: SiteTermosDeUsoRoute,
+  SiteIndexRoute: SiteIndexRoute,
+}
+
+const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  AuthRoute: AuthRouteWithChildren,
+  SiteRoute: SiteRouteWithChildren,
+  PainelRoute: PainelRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
