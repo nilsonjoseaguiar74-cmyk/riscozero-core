@@ -156,7 +156,7 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
       onSubmit={onSubmit}
       onFocusCapture={onFirstInteraction}
       noValidate
-      className="card-elevated space-y-4 p-5 sm:p-6"
+      className="card-elevated space-y-4 p-5 text-foreground sm:p-6"
       aria-label="Formulário de cotação"
     >
       <div>
