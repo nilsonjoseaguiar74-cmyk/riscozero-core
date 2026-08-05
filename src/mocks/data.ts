@@ -252,9 +252,7 @@ function buildLeads(count: number): Lead[] {
     const stage = pick(STAGE_WEIGHTS);
     const owner = rand() > 0.15 ? pick(MOCK_USERS.filter((u) => u.role === "comercial")) : null;
     const createdAt = new Date(NOW - Math.floor(rand() * 60) * DAY - Math.floor(rand() * DAY));
-    const stageChangedAt = new Date(
-      createdAt.getTime() + Math.floor(rand() * 6) * DAY + 3600000,
-    );
+    const stageChangedAt = new Date(createdAt.getTime() + Math.floor(rand() * 6) * DAY + 3600000);
     const source = pick(SOURCE_LIST);
     const paid = source === "Google Ads" || source === "Meta Ads";
     leads.push({

@@ -18,7 +18,7 @@ function seeded(seed: number) {
   };
 }
 const rand = seeded(918273645);
-const pick = <T,>(list: readonly T[], r = rand()): T => list[Math.floor(r * list.length)]!;
+const pick = <T>(list: readonly T[], r = rand()): T => list[Math.floor(r * list.length)]!;
 const isoDaysAgo = (d: number) => new Date(Date.now() - d * 86400000).toISOString();
 
 function makeEntities(entities: SyncEntityConfig["entity"][], base: number): SyncEntityConfig[] {
@@ -68,7 +68,10 @@ export const MOCK_CONNECTORS: ConnectorConfig[] = [
     secretMasked: "••••91BC",
     direction: "import",
     schedule: { mode: "manual" },
-    entidades: makeEntities(["associados", "veiculos", "consultores", "vistorias", "situacao_financeira"], 2),
+    entidades: makeEntities(
+      ["associados", "veiculos", "consultores", "vistorias", "situacao_financeira"],
+      2,
+    ),
     timeoutMs: 20000,
     retryPolicy: { maxAttempts: 2, backoffSeconds: 45 },
     status: "conectada_com_alertas",
@@ -141,20 +144,127 @@ export const MOCK_CONNECTORS: ConnectorConfig[] = [
 ];
 
 export const MOCK_FIELD_MAPPINGS: FieldMapping[] = [
-  { id: "map-1", connectorId: "conn-siprov-1", entidade: "associados", campoInterno: "whatsapp", rotuloInterno: "Telefone", campoExterno: "telefone_contato", rotuloExterno: "Telefone de contato", obrigatorio: true },
-  { id: "map-2", connectorId: "conn-siprov-1", entidade: "associados", campoInterno: "documento", rotuloInterno: "CPF", campoExterno: "cpf_cnpj", rotuloExterno: "CPF/CNPJ", obrigatorio: true },
-  { id: "map-3", connectorId: "conn-siprov-1", entidade: "veiculos", campoInterno: "plate", rotuloInterno: "Placa", campoExterno: "placa_veiculo", rotuloExterno: "Placa do veículo", obrigatorio: true },
-  { id: "map-4", connectorId: "conn-siprov-1", entidade: "associados", campoInterno: "city", rotuloInterno: "Cidade", campoExterno: "municipio", rotuloExterno: "Município", obrigatorio: false },
-  { id: "map-5", connectorId: "conn-siprov-1", entidade: "ocorrencias", campoInterno: "status", rotuloInterno: "Status", campoExterno: "status_ocorrencia", rotuloExterno: "Status da ocorrência", obrigatorio: true, transformacao: "mapa_de_valores" },
-  { id: "map-6", connectorId: "conn-sga-1", entidade: "consultores", campoInterno: "ownerName", rotuloInterno: "Consultor", campoExterno: "id_consultor", rotuloExterno: "Identificador do consultor", obrigatorio: true },
-  { id: "map-7", connectorId: "conn-sga-1", entidade: "associados", campoInterno: "id", rotuloInterno: "Código externo", campoExterno: "matricula_associado", rotuloExterno: "Matrícula do associado", obrigatorio: true },
-  { id: "map-8", connectorId: "conn-sga-1", entidade: "adesoes", campoInterno: "protocol", rotuloInterno: "Protocolo", campoExterno: "codigo_proposta", rotuloExterno: "Código da proposta", obrigatorio: true },
-  { id: "map-9", connectorId: "conn-sga-1", entidade: "situacao_financeira", campoInterno: "status", rotuloInterno: "Situação financeira", campoExterno: "saldo_devedor", rotuloExterno: "Saldo devedor", obrigatorio: false },
-  { id: "map-10", connectorId: "conn-generic-1", entidade: "leads", campoInterno: "whatsapp", rotuloInterno: "Telefone", campoExterno: "phone", rotuloExterno: "Phone", obrigatorio: true },
+  {
+    id: "map-1",
+    connectorId: "conn-siprov-1",
+    entidade: "associados",
+    campoInterno: "whatsapp",
+    rotuloInterno: "Telefone",
+    campoExterno: "telefone_contato",
+    rotuloExterno: "Telefone de contato",
+    obrigatorio: true,
+  },
+  {
+    id: "map-2",
+    connectorId: "conn-siprov-1",
+    entidade: "associados",
+    campoInterno: "documento",
+    rotuloInterno: "CPF",
+    campoExterno: "cpf_cnpj",
+    rotuloExterno: "CPF/CNPJ",
+    obrigatorio: true,
+  },
+  {
+    id: "map-3",
+    connectorId: "conn-siprov-1",
+    entidade: "veiculos",
+    campoInterno: "plate",
+    rotuloInterno: "Placa",
+    campoExterno: "placa_veiculo",
+    rotuloExterno: "Placa do veículo",
+    obrigatorio: true,
+  },
+  {
+    id: "map-4",
+    connectorId: "conn-siprov-1",
+    entidade: "associados",
+    campoInterno: "city",
+    rotuloInterno: "Cidade",
+    campoExterno: "municipio",
+    rotuloExterno: "Município",
+    obrigatorio: false,
+  },
+  {
+    id: "map-5",
+    connectorId: "conn-siprov-1",
+    entidade: "ocorrencias",
+    campoInterno: "status",
+    rotuloInterno: "Status",
+    campoExterno: "status_ocorrencia",
+    rotuloExterno: "Status da ocorrência",
+    obrigatorio: true,
+    transformacao: "mapa_de_valores",
+  },
+  {
+    id: "map-6",
+    connectorId: "conn-sga-1",
+    entidade: "consultores",
+    campoInterno: "ownerName",
+    rotuloInterno: "Consultor",
+    campoExterno: "id_consultor",
+    rotuloExterno: "Identificador do consultor",
+    obrigatorio: true,
+  },
+  {
+    id: "map-7",
+    connectorId: "conn-sga-1",
+    entidade: "associados",
+    campoInterno: "id",
+    rotuloInterno: "Código externo",
+    campoExterno: "matricula_associado",
+    rotuloExterno: "Matrícula do associado",
+    obrigatorio: true,
+  },
+  {
+    id: "map-8",
+    connectorId: "conn-sga-1",
+    entidade: "adesoes",
+    campoInterno: "protocol",
+    rotuloInterno: "Protocolo",
+    campoExterno: "codigo_proposta",
+    rotuloExterno: "Código da proposta",
+    obrigatorio: true,
+  },
+  {
+    id: "map-9",
+    connectorId: "conn-sga-1",
+    entidade: "situacao_financeira",
+    campoInterno: "status",
+    rotuloInterno: "Situação financeira",
+    campoExterno: "saldo_devedor",
+    rotuloExterno: "Saldo devedor",
+    obrigatorio: false,
+  },
+  {
+    id: "map-10",
+    connectorId: "conn-generic-1",
+    entidade: "leads",
+    campoInterno: "whatsapp",
+    rotuloInterno: "Telefone",
+    campoExterno: "phone",
+    rotuloExterno: "Phone",
+    obrigatorio: true,
+  },
 ];
 
-const OPERACOES = ["Importação de associados", "Importação de veículos", "Exportação de leads", "Sincronização de status", "Importação de ocorrências", "Atualização de situação financeira"];
-const ENTIDADES: SyncLog["entidade"][] = ["associados", "veiculos", "leads", "status_adesao", "ocorrencias", "situacao_financeira", "adesoes", "cobrancas"];
+const OPERACOES = [
+  "Importação de associados",
+  "Importação de veículos",
+  "Exportação de leads",
+  "Sincronização de status",
+  "Importação de ocorrências",
+  "Atualização de situação financeira",
+];
+const ENTIDADES: SyncLog["entidade"][] = [
+  "associados",
+  "veiculos",
+  "leads",
+  "status_adesao",
+  "ocorrencias",
+  "situacao_financeira",
+  "adesoes",
+  "cobrancas",
+];
 const RESULTADOS: SyncLog["resultado"][] = ["sucesso", "sucesso", "sucesso", "parcial", "falha"];
 
 export const MOCK_SYNC_LOGS: SyncLog[] = Array.from({ length: 82 }, (_, i) => {
@@ -177,13 +287,28 @@ export const MOCK_SYNC_LOGS: SyncLog[] = Array.from({ length: 82 }, (_, i) => {
     registrosCriados: criados,
     registrosAtualizados: atualizados,
     registrosIgnorados: ignorados,
-    erros: resultado === "falha" ? 1 + Math.floor(rand() * 5) : resultado === "parcial" ? 1 + Math.floor(rand() * 2) : 0,
+    erros:
+      resultado === "falha"
+        ? 1 + Math.floor(rand() * 5)
+        : resultado === "parcial"
+          ? 1 + Math.floor(rand() * 2)
+          : 0,
     resultado,
     correlationId: `corr-${1000 + i}`,
   };
 });
 
-const CAMPOS_CONFLITO = ["telefone", "cpf", "placa", "cidade", "status", "consultor", "codigo_externo", "protocolo", "situacao_financeira"];
+const CAMPOS_CONFLITO = [
+  "telefone",
+  "cpf",
+  "placa",
+  "cidade",
+  "status",
+  "consultor",
+  "codigo_externo",
+  "protocolo",
+  "situacao_financeira",
+];
 
 export const MOCK_SYNC_CONFLICTS: SyncConflict[] = Array.from({ length: 25 }, (_, i) => {
   const connector = pick(MOCK_CONNECTORS);
@@ -204,16 +329,23 @@ export const MOCK_SYNC_CONFLICTS: SyncConflict[] = Array.from({ length: 25 }, (_
 });
 
 export const MOCK_WEBHOOK_EVENTS: WebhookEvent[] = Array.from({ length: 18 }, (_, i) => {
-  const connector = pick(MOCK_CONNECTORS.filter((c) => c.fornecedor === "webhook" || c.fornecedor === "sga_hinova"));
+  const connector = pick(
+    MOCK_CONNECTORS.filter((c) => c.fornecedor === "webhook" || c.fornecedor === "sga_hinova"),
+  );
   return {
     id: `wev-${i + 1}`,
     connectorId: connector?.id ?? "conn-webhook-1",
     fornecedor: connector?.fornecedor ?? "webhook",
-    evento: pick(["adesao.concluida", "ocorrencia.criada", "status.atualizado", "associado.atualizado"]),
+    evento: pick([
+      "adesao.concluida",
+      "ocorrencia.criada",
+      "status.atualizado",
+      "associado.atualizado",
+    ]),
     entidade: pick(["status_adesao", "ocorrencias", "adesoes", "associados"] as const),
     status: pick(["recebido", "processado", "processado", "falha", "ignorado"] as const),
     recebidoEm: isoDaysAgo(rand() * 20),
-    payloadResumo: "{ \"id\": \"evt-" + (i + 1) + "\", \"tipo\": \"evento_simulado\" }",
+    payloadResumo: '{ "id": "evt-' + (i + 1) + '", "tipo": "evento_simulado" }',
   };
 });
 
@@ -229,13 +361,55 @@ export const MOCK_WEBHOOK_DELIVERIES: WebhookDelivery[] = MOCK_WEBHOOK_EVENTS.ma
 }));
 
 export const MOCK_MEDIA_INTEGRATIONS: MediaIntegrationCard[] = [
-  { fornecedor: "google_ads", nome: "Google Ads", descricao: "Importação de campanhas e conversões de aquisição.", status: "nao_configurada", categoria: "aquisicao" },
-  { fornecedor: "meta_ads", nome: "Meta Ads", descricao: "Importação de campanhas do Facebook e Instagram.", status: "nao_configurada", categoria: "aquisicao" },
-  { fornecedor: "ga4", nome: "Google Analytics 4", descricao: "Eventos de navegação e conversão do site.", status: "aguardando_credenciais", categoria: "analytics" },
-  { fornecedor: "gtm", nome: "Google Tag Manager", descricao: "Gerenciamento de tags de rastreamento.", status: "nao_configurada", categoria: "analytics" },
-  { fornecedor: "whatsapp", nome: "WhatsApp Business", descricao: "Envio e recebimento de mensagens com associados.", status: "configuracao_incompleta", categoria: "mensageria" },
-  { fornecedor: "offline_conversions", nome: "Conversões offline", descricao: "Envio de adesões concluídas para plataformas de mídia.", status: "nao_configurada", categoria: "conversao" },
-  { fornecedor: "webhook", nome: "Webhook de eventos", descricao: "Recepção de eventos externos em tempo real.", status: "erro", categoria: "conversao" },
+  {
+    fornecedor: "google_ads",
+    nome: "Google Ads",
+    descricao: "Importação de campanhas e conversões de aquisição.",
+    status: "nao_configurada",
+    categoria: "aquisicao",
+  },
+  {
+    fornecedor: "meta_ads",
+    nome: "Meta Ads",
+    descricao: "Importação de campanhas do Facebook e Instagram.",
+    status: "nao_configurada",
+    categoria: "aquisicao",
+  },
+  {
+    fornecedor: "ga4",
+    nome: "Google Analytics 4",
+    descricao: "Eventos de navegação e conversão do site.",
+    status: "aguardando_credenciais",
+    categoria: "analytics",
+  },
+  {
+    fornecedor: "gtm",
+    nome: "Google Tag Manager",
+    descricao: "Gerenciamento de tags de rastreamento.",
+    status: "nao_configurada",
+    categoria: "analytics",
+  },
+  {
+    fornecedor: "whatsapp",
+    nome: "WhatsApp Business",
+    descricao: "Envio e recebimento de mensagens com associados.",
+    status: "configuracao_incompleta",
+    categoria: "mensageria",
+  },
+  {
+    fornecedor: "offline_conversions",
+    nome: "Conversões offline",
+    descricao: "Envio de adesões concluídas para plataformas de mídia.",
+    status: "nao_configurada",
+    categoria: "conversao",
+  },
+  {
+    fornecedor: "webhook",
+    nome: "Webhook de eventos",
+    descricao: "Recepção de eventos externos em tempo real.",
+    status: "erro",
+    categoria: "conversao",
+  },
 ];
 
 export function connectorSummaries(): ConnectorSummary[] {
@@ -251,8 +425,12 @@ export function connectorSummaries(): ConnectorSummary[] {
       ultimaSincronizacaoAt: c.entidades[0]?.ultimaSincronizacaoAt,
       proximaSincronizacaoAt: c.schedule.nextRunAt,
       entidadesAtivas: c.entidades.filter((e) => e.habilitada).length,
-      alertasAbertos: MOCK_SYNC_CONFLICTS.filter((cf) => cf.connectorId === c.id && cf.status === "pendente").length,
-      taxaSucesso7dPercent: logs.length ? Number(((successCount / logs.length) * 100).toFixed(1)) : 100,
+      alertasAbertos: MOCK_SYNC_CONFLICTS.filter(
+        (cf) => cf.connectorId === c.id && cf.status === "pendente",
+      ).length,
+      taxaSucesso7dPercent: logs.length
+        ? Number(((successCount / logs.length) * 100).toFixed(1))
+        : 100,
     };
   });
 }

@@ -3,11 +3,7 @@
 export type UUID = string;
 
 export type UserRole =
-  | "comercial"
-  | "gestor"
-  | "gestor_trafego"
-  | "desenvolvedor"
-  | "administrador";
+  "comercial" | "gestor" | "gestor_trafego" | "desenvolvedor" | "administrador";
 
 export const USER_ROLE_LABEL: Record<UserRole, string> = {
   comercial: "Comercial",
@@ -206,13 +202,7 @@ export interface PaginatedResponse<T> {
 }
 
 export type ActivityType =
-  | "whatsapp"
-  | "ligacao"
-  | "mensagem"
-  | "observacao"
-  | "etapa"
-  | "responsavel"
-  | "sistema";
+  "whatsapp" | "ligacao" | "mensagem" | "observacao" | "etapa" | "responsavel" | "sistema";
 
 export interface Activity {
   id: UUID;

@@ -1,4 +1,10 @@
-import type { ConnectorConfig, SyncError, SyncResult, SyncEntity, SyncDirection } from "@/types/integration";
+import type {
+  ConnectorConfig,
+  SyncError,
+  SyncResult,
+  SyncEntity,
+  SyncDirection,
+} from "@/types/integration";
 
 /**
  * Helpers compartilhados pelos conectores mockados.
@@ -58,7 +64,9 @@ export function buildSyncResult(params: {
   };
 }
 
-export function assertConfigured(config: ConnectorConfig | undefined): asserts config is ConnectorConfig {
+export function assertConfigured(
+  config: ConnectorConfig | undefined,
+): asserts config is ConnectorConfig {
   if (!config) {
     throw new Error("Conector não configurado.");
   }

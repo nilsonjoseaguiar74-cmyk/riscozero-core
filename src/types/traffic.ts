@@ -18,11 +18,7 @@ export const CAMPAIGN_STATUS_LABEL: Record<CampaignStatus, string> = {
 };
 
 export type CampaignObjective =
-  | "geracao_leads"
-  | "trafego"
-  | "reconhecimento"
-  | "conversao"
-  | "remarketing";
+  "geracao_leads" | "trafego" | "reconhecimento" | "conversao" | "remarketing";
 
 export const CAMPAIGN_OBJECTIVE_LABEL: Record<CampaignObjective, string> = {
   geracao_leads: "Geração de leads",
@@ -175,11 +171,7 @@ export interface ChannelPerformance {
 }
 
 export type AttributionModel =
-  | "primeiro_contato"
-  | "ultimo_contato"
-  | "linear"
-  | "posicao"
-  | "configuravel";
+  "primeiro_contato" | "ultimo_contato" | "linear" | "posicao" | "configuravel";
 
 export const ATTRIBUTION_MODEL_LABEL: Record<AttributionModel, string> = {
   primeiro_contato: "Primeiro contato",

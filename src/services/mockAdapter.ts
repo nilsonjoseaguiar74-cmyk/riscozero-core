@@ -484,7 +484,11 @@ export const mockAdapter: ServiceRegistry = {
             { key: "origem", label: "Origem" },
             { key: "leads", label: "Leads", format: "number" },
           ],
-          rows: data.bySource.map((row, i) => ({ id: `a-${i}`, origem: row.label, leads: row.value })),
+          rows: data.bySource.map((row, i) => ({
+            id: `a-${i}`,
+            origem: row.label,
+            leads: row.value,
+          })),
         },
         productivity: {
           title: "Produtividade por consultor",
@@ -504,7 +508,11 @@ export const mockAdapter: ServiceRegistry = {
             { key: "cidade", label: "Cidade" },
             { key: "leads", label: "Leads", format: "number" },
           ],
-          rows: data.byCity.map((row, i) => ({ id: `r-${i}`, cidade: row.label, leads: row.value })),
+          rows: data.byCity.map((row, i) => ({
+            id: `r-${i}`,
+            cidade: row.label,
+            leads: row.value,
+          })),
         },
       };
       const table = tables[kind];

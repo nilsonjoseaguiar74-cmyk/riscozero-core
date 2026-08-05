@@ -48,7 +48,8 @@ const query = (filters: TrafficFilters): Record<string, string | number | boolea
 
 export const trafficHttp: TrafficServiceRegistry = {
   trafficAnalytics: {
-    overview: (filters) => httpRequest<TrafficDashboard>("traffic/overview", { query: query(filters) }),
+    overview: (filters) =>
+      httpRequest<TrafficDashboard>("traffic/overview", { query: query(filters) }),
     byChannel: (filters) =>
       httpRequest<ChannelPerformance[]>("traffic/by-channel", { query: query(filters) }),
   },
@@ -56,7 +57,9 @@ export const trafficHttp: TrafficServiceRegistry = {
   trafficCampaigns: {
     listAccounts: () => httpRequest<AdAccount[]>("traffic/accounts"),
     list: (filters) =>
-      httpRequest<PaginatedResponse<TrafficCampaign>>("traffic/campaigns", { query: query(filters) }),
+      httpRequest<PaginatedResponse<TrafficCampaign>>("traffic/campaigns", {
+        query: query(filters),
+      }),
     getById: (id) => httpRequest<TrafficCampaignDetail>(`traffic/campaigns/${id}`),
     listAdSets: (campaignId) => httpRequest<AdSet[]>(`traffic/campaigns/${campaignId}/ad-sets`),
     listAds: (adSetId) => httpRequest<Ad[]>(`traffic/ad-sets/${adSetId}/ads`),
@@ -65,7 +68,10 @@ export const trafficHttp: TrafficServiceRegistry = {
   attribution: {
     getSettings: () => httpRequest<AttributionSettings>("traffic/attribution/settings"),
     updateSettings: (payload) =>
-      httpRequest<AttributionSettings>("traffic/attribution/settings", { method: "PATCH", body: payload }),
+      httpRequest<AttributionSettings>("traffic/attribution/settings", {
+        method: "PATCH",
+        body: payload,
+      }),
     calculate: (filters) =>
       httpRequest<AttributionResult>("traffic/attribution/calculate", { query: query(filters) }),
     journeys: (filters) =>
@@ -75,25 +81,32 @@ export const trafficHttp: TrafficServiceRegistry = {
   },
 
   landingAnalytics: {
-    list: (filters) => httpRequest<LandingPagePerformance[]>("traffic/landing-pages", { query: query(filters) }),
+    list: (filters) =>
+      httpRequest<LandingPagePerformance[]>("traffic/landing-pages", { query: query(filters) }),
     getByPath: (path) =>
-      httpRequest<LandingPagePerformance | null>("traffic/landing-pages/by-path", { query: { path } }),
+      httpRequest<LandingPagePerformance | null>("traffic/landing-pages/by-path", {
+        query: { path },
+      }),
   },
 
   conversions: {
     list: (filters) =>
-      httpRequest<PaginatedResponse<ConversionRow>>("traffic/conversions", { query: query(filters) }),
+      httpRequest<PaginatedResponse<ConversionRow>>("traffic/conversions", {
+        query: query(filters),
+      }),
   },
 
   costs: {
-    list: (filters) => httpRequest<PaginatedResponse<CostRow>>("traffic/costs", { query: query(filters) }),
+    list: (filters) =>
+      httpRequest<PaginatedResponse<CostRow>>("traffic/costs", { query: query(filters) }),
     exportCsv: (filters) => httpRequest<string>("traffic/costs/export", { query: query(filters) }),
   },
 
   utm: {
     build: (params) => httpRequest<string>("traffic/utm/build", { method: "POST", body: params }),
     validate: (url) => httpRequest("traffic/utm/validate", { method: "POST", body: { url } }),
-    normalize: (url) => httpRequest<string>("traffic/utm/normalize", { method: "POST", body: { url } }),
+    normalize: (url) =>
+      httpRequest<string>("traffic/utm/normalize", { method: "POST", body: { url } }),
     history: () => httpRequest<UtmHistoryEntry[]>("traffic/utm/history"),
     presets: () => httpRequest<UtmPreset[]>("traffic/utm/presets"),
     savePreset: (preset) =>

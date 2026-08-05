@@ -43,54 +43,123 @@ export class CsvExportConnector implements AssociationSystemConnector {
     await delay(80);
     const fields: ExternalFieldDefinition[] = [
       { campo: "nome", rotulo: "Nome", tipo: "texto", obrigatorio: true, entidade: "leads" },
-      { campo: "telefone", rotulo: "Telefone", tipo: "texto", obrigatorio: true, entidade: "leads" },
-      { campo: "protocolo_adesao", rotulo: "Protocolo de adesão", tipo: "texto", obrigatorio: true, entidade: "adesoes" },
+      {
+        campo: "telefone",
+        rotulo: "Telefone",
+        tipo: "texto",
+        obrigatorio: true,
+        entidade: "leads",
+      },
+      {
+        campo: "protocolo_adesao",
+        rotulo: "Protocolo de adesão",
+        tipo: "texto",
+        obrigatorio: true,
+        entidade: "adesoes",
+      },
     ];
     return entidade ? fields.filter((f) => f.entidade === entidade) : fields;
   }
 
   async importAssociates(config: ConnectorConfig): Promise<SyncResult> {
     await delay(300);
-    return buildSyncResult({ connectorId: config.id, entidade: "associados", direction: "export", seedKey: `${config.id}-csvexp-associados`, durationMs: 300 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "associados",
+      direction: "export",
+      seedKey: `${config.id}-csvexp-associados`,
+      durationMs: 300,
+    });
   }
 
   async importVehicles(config: ConnectorConfig): Promise<SyncResult> {
     await delay(300);
-    return buildSyncResult({ connectorId: config.id, entidade: "veiculos", direction: "export", seedKey: `${config.id}-csvexp-veiculos`, durationMs: 300 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "veiculos",
+      direction: "export",
+      seedKey: `${config.id}-csvexp-veiculos`,
+      durationMs: 300,
+    });
   }
 
   async importMemberships(config: ConnectorConfig): Promise<SyncResult> {
     await delay(300);
-    return buildSyncResult({ connectorId: config.id, entidade: "adesoes", direction: "export", seedKey: `${config.id}-csvexp-adesoes`, durationMs: 300 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "adesoes",
+      direction: "export",
+      seedKey: `${config.id}-csvexp-adesoes`,
+      durationMs: 300,
+    });
   }
 
   async importOccurrences(config: ConnectorConfig): Promise<SyncResult> {
     await delay(250);
-    return buildSyncResult({ connectorId: config.id, entidade: "ocorrencias", direction: "export", seedKey: `${config.id}-csvexp-ocorrencias`, durationMs: 250 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "ocorrencias",
+      direction: "export",
+      seedKey: `${config.id}-csvexp-ocorrencias`,
+      durationMs: 250,
+    });
   }
 
   async importFinancialSummary(config: ConnectorConfig): Promise<SyncResult> {
     await delay(250);
-    return buildSyncResult({ connectorId: config.id, entidade: "situacao_financeira", direction: "export", seedKey: `${config.id}-csvexp-financeiro`, durationMs: 250 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "situacao_financeira",
+      direction: "export",
+      seedKey: `${config.id}-csvexp-financeiro`,
+      durationMs: 250,
+    });
   }
 
   async exportLead(config: ConnectorConfig, leadId: string): Promise<SyncResult> {
     await delay(300);
-    return buildSyncResult({ connectorId: config.id, entidade: "leads", direction: "export", seedKey: `${config.id}-csvexp-lead-${leadId}`, durationMs: 300 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "leads",
+      direction: "export",
+      seedKey: `${config.id}-csvexp-lead-${leadId}`,
+      durationMs: 300,
+    });
   }
 
-  async exportMembership(config: ConnectorConfig, request: MembershipExportRequest): Promise<SyncResult> {
+  async exportMembership(
+    config: ConnectorConfig,
+    request: MembershipExportRequest,
+  ): Promise<SyncResult> {
     await delay(300);
-    return buildSyncResult({ connectorId: config.id, entidade: "adesoes", direction: "export", seedKey: `${config.id}-csvexp-${request.membershipId}`, durationMs: 300 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "adesoes",
+      direction: "export",
+      seedKey: `${config.id}-csvexp-${request.membershipId}`,
+      durationMs: 300,
+    });
   }
 
   async syncStatus(config: ConnectorConfig, entidade: SyncEntity): Promise<SyncResult> {
     await delay(180);
-    return buildSyncResult({ connectorId: config.id, entidade, direction: "export", seedKey: `${config.id}-csvexp-status-${entidade}`, durationMs: 180 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade,
+      direction: "export",
+      seedKey: `${config.id}-csvexp-status-${entidade}`,
+      durationMs: 180,
+    });
   }
 
   async retryOperation(config: ConnectorConfig, correlationId: string): Promise<SyncResult> {
     await delay(250);
-    return buildSyncResult({ connectorId: config.id, entidade: "leads", direction: "export", seedKey: `retry-csvexp-${correlationId}`, durationMs: 250 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "leads",
+      direction: "export",
+      seedKey: `retry-csvexp-${correlationId}`,
+      durationMs: 250,
+    });
   }
 }

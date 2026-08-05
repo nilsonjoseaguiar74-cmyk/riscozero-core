@@ -51,7 +51,8 @@ const reports: TrafficReport[] = [];
 
 function applyCampaignFilters(list: TrafficCampaign[], filters: TrafficFilters): TrafficCampaign[] {
   return list.filter((c) => {
-    if (filters.channel && filters.channel !== "todos" && c.channel !== filters.channel) return false;
+    if (filters.channel && filters.channel !== "todos" && c.channel !== filters.channel)
+      return false;
     if (filters.accountId && c.accountId !== filters.accountId) return false;
     if (filters.campaignId && c.id !== filters.campaignId) return false;
     if (filters.from && c.updatedAt < filters.from) return false;
@@ -60,7 +61,11 @@ function applyCampaignFilters(list: TrafficCampaign[], filters: TrafficFilters):
   });
 }
 
-function sumSeries(list: TrafficCampaign[], picker: (c: TrafficCampaign) => number, days = 90): SeriesPoint[] {
+function sumSeries(
+  list: TrafficCampaign[],
+  picker: (c: TrafficCampaign) => number,
+  days = 90,
+): SeriesPoint[] {
   const totals = new Array<number>(days).fill(0);
   list.forEach((campaign) => {
     const daily = buildDailySeries(campaign, days);
@@ -101,22 +106,70 @@ function buildDashboard(filters: TrafficFilters): TrafficDashboard {
   const frequency = reach ? impressions / reach : 0;
 
   const metrics: MetricSummary[] = [
-    { key: "investment", label: "Investimento", value: round2(investment), format: "currency", deltaPercent: 5.2 },
-    { key: "impressions", label: "Impressões", value: impressions, format: "number", deltaPercent: 3.1 },
+    {
+      key: "investment",
+      label: "Investimento",
+      value: round2(investment),
+      format: "currency",
+      deltaPercent: 5.2,
+    },
+    {
+      key: "impressions",
+      label: "Impressões",
+      value: impressions,
+      format: "number",
+      deltaPercent: 3.1,
+    },
     { key: "reach", label: "Alcance", value: reach, format: "number", deltaPercent: 2.4 },
-    { key: "frequency", label: "Frequência", value: round2(frequency), format: "number", deltaPercent: 0.8 },
+    {
+      key: "frequency",
+      label: "Frequência",
+      value: round2(frequency),
+      format: "number",
+      deltaPercent: 0.8,
+    },
     { key: "clicks", label: "Cliques", value: clicks, format: "number", deltaPercent: 4.6 },
     { key: "ctr", label: "CTR", value: round2(ctr), format: "percent", deltaPercent: 1.1 },
     { key: "cpc", label: "CPC", value: round2(cpc), format: "currency", deltaPercent: -1.4 },
     { key: "sessions", label: "Sessões", value: sessions, format: "number", deltaPercent: 3.9 },
     { key: "leads", label: "Leads", value: leads, format: "number", deltaPercent: 8.3 },
     { key: "cpl", label: "CPL", value: round2(cpl), format: "currency", deltaPercent: -2.6 },
-    { key: "qualifiedLeads", label: "Leads qualificados", value: qualifiedLeads, format: "number", deltaPercent: 6.5 },
-    { key: "costPerQualified", label: "Custo por lead qualificado", value: round2(costPerQualified), format: "currency", deltaPercent: -1.9 },
-    { key: "proposals", label: "Propostas de adesão", value: propostas, format: "number", deltaPercent: 7.2 },
-    { key: "adhesions", label: "Adesões concluídas", value: adhesions, format: "number", deltaPercent: 9.8 },
+    {
+      key: "qualifiedLeads",
+      label: "Leads qualificados",
+      value: qualifiedLeads,
+      format: "number",
+      deltaPercent: 6.5,
+    },
+    {
+      key: "costPerQualified",
+      label: "Custo por lead qualificado",
+      value: round2(costPerQualified),
+      format: "currency",
+      deltaPercent: -1.9,
+    },
+    {
+      key: "proposals",
+      label: "Propostas de adesão",
+      value: propostas,
+      format: "number",
+      deltaPercent: 7.2,
+    },
+    {
+      key: "adhesions",
+      label: "Adesões concluídas",
+      value: adhesions,
+      format: "number",
+      deltaPercent: 9.8,
+    },
     { key: "cpa", label: "CPA", value: round2(cpa), format: "currency", deltaPercent: -3.1 },
-    { key: "revenue", label: "Receita atribuída", value: round2(revenue), format: "currency", deltaPercent: 11.4 },
+    {
+      key: "revenue",
+      label: "Receita atribuída",
+      value: round2(revenue),
+      format: "currency",
+      deltaPercent: 11.4,
+    },
     { key: "roas", label: "ROAS", value: round2(roas), format: "number", deltaPercent: 6.7 },
   ];
 
@@ -175,7 +228,10 @@ function buildDashboard(filters: TrafficFilters): TrafficDashboard {
   };
 }
 
-function paginate<T>(list: T[], filters: { page?: number | undefined; pageSize?: number | undefined }): PaginatedResponse<T> {
+function paginate<T>(
+  list: T[],
+  filters: { page?: number | undefined; pageSize?: number | undefined },
+): PaginatedResponse<T> {
   const page = filters.page ?? 1;
   const pageSize = filters.pageSize ?? 20;
   const start = (page - 1) * pageSize;
@@ -309,7 +365,10 @@ export const trafficMock: TrafficServiceRegistry = {
       });
       const result: AttributionResult = {
         model: attributionSettings.model,
-        byChannel: [...byChannel.entries()].map(([label, value]) => ({ label, value: round2(value) })),
+        byChannel: [...byChannel.entries()].map(([label, value]) => ({
+          label,
+          value: round2(value),
+        })),
         byCampaign,
         totalRevenue: round2(totalRevenue),
         totalAdhesions,
@@ -342,7 +401,10 @@ export const trafficMock: TrafficServiceRegistry = {
       await delay(340);
       const rows: ConversionRow[] = MOCK_LEAD_JOURNEYS.filter((j) => j.convertedAt).map((j, i) => {
         const last = j.touchpoints[j.touchpoints.length - 1];
-        const channel = last?.channel === "google_ads" || last?.channel === "meta_ads" ? last.channel : "google_ads";
+        const channel =
+          last?.channel === "google_ads" || last?.channel === "meta_ads"
+            ? last.channel
+            : "google_ads";
         return {
           id: `conv-${i + 1}`,
           date: j.convertedAt ?? new Date().toISOString(),
@@ -355,7 +417,8 @@ export const trafficMock: TrafficServiceRegistry = {
         } satisfies ConversionRow;
       });
       const filtered = rows.filter((r) => {
-        if (filters.channel && filters.channel !== "todos" && r.channel !== filters.channel) return false;
+        if (filters.channel && filters.channel !== "todos" && r.channel !== filters.channel)
+          return false;
         if (filters.from && r.date < filters.from) return false;
         if (filters.to && r.date > filters.to) return false;
         return true;
@@ -422,7 +485,8 @@ export const trafficMock: TrafficServiceRegistry = {
         const parsed = new URL(url, "https://riscozero.com.br");
         if (!parsed.searchParams.get("utm_source")) issues.push("Parâmetro utm_source ausente.");
         if (!parsed.searchParams.get("utm_medium")) issues.push("Parâmetro utm_medium ausente.");
-        if (!parsed.searchParams.get("utm_campaign")) issues.push("Parâmetro utm_campaign ausente.");
+        if (!parsed.searchParams.get("utm_campaign"))
+          issues.push("Parâmetro utm_campaign ausente.");
       } catch {
         issues.push("URL inválida.");
       }
@@ -433,7 +497,8 @@ export const trafficMock: TrafficServiceRegistry = {
       try {
         const parsed = new URL(url, "https://riscozero.com.br");
         parsed.searchParams.forEach((value, key) => {
-          if (key.startsWith("utm_")) parsed.searchParams.set(key, value.trim().toLowerCase().replace(/\s+/g, "_"));
+          if (key.startsWith("utm_"))
+            parsed.searchParams.set(key, value.trim().toLowerCase().replace(/\s+/g, "_"));
         });
         return parsed.toString();
       } catch {
@@ -450,7 +515,11 @@ export const trafficMock: TrafficServiceRegistry = {
     },
     async savePreset(preset) {
       await delay(260);
-      const created: UtmPreset = { ...preset, id: `utm-preset-${Date.now()}`, createdAt: new Date().toISOString() };
+      const created: UtmPreset = {
+        ...preset,
+        id: `utm-preset-${Date.now()}`,
+        createdAt: new Date().toISOString(),
+      };
       utmPresets.unshift(created);
       return created;
     },
@@ -460,7 +529,8 @@ export const trafficMock: TrafficServiceRegistry = {
     async list(filters) {
       await delay(360);
       const filtered = MOCK_TRACKING_EVENTS.filter((e) => {
-        if (filters.channel && filters.channel !== "todos" && e.channel !== filters.channel) return false;
+        if (filters.channel && filters.channel !== "todos" && e.channel !== filters.channel)
+          return false;
         if (filters.from && e.occurredAt < filters.from) return false;
         if (filters.to && e.occurredAt > filters.to) return false;
         if (filters.landingPage && e.landingPage !== filters.landingPage) return false;
@@ -482,7 +552,8 @@ export const trafficMock: TrafficServiceRegistry = {
     async list(filters) {
       await delay(300);
       return MOCK_CREATIVES.filter((c) => {
-        if (filters.channel && filters.channel !== "todos" && c.channel !== filters.channel) return false;
+        if (filters.channel && filters.channel !== "todos" && c.channel !== filters.channel)
+          return false;
         if (filters.campaignId) {
           const campaign = campaigns.find((camp) => camp.id === filters.campaignId);
           if (campaign && c.campaign !== campaign.name) return false;

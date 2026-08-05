@@ -70,7 +70,11 @@ export interface MembershipsService {
 export interface OccurrencesService {
   list(filters: OccurrenceFilters): Promise<PaginatedResult<Occurrence>>;
   getById(id: string): Promise<Occurrence>;
-  addTimelineEntry(id: string, titulo: string, descricao?: string): Promise<OccurrenceTimelineEntry>;
+  addTimelineEntry(
+    id: string,
+    titulo: string,
+    descricao?: string,
+  ): Promise<OccurrenceTimelineEntry>;
   updateStatus(id: string, status: OccurrenceStatus): Promise<Occurrence>;
 }
 
@@ -90,9 +94,10 @@ export interface InspectionsService {
 
 export interface FinanceService {
   summary(filters: { from?: string | undefined; to?: string | undefined }): Promise<FinanceSummary>;
-  delinquency(filters: { city?: string | undefined; search?: string | undefined }): Promise<
-    DelinquencyRow[]
-  >;
+  delinquency(filters: {
+    city?: string | undefined;
+    search?: string | undefined;
+  }): Promise<DelinquencyRow[]>;
   apportionments(): Promise<Apportionment[]>;
 }
 

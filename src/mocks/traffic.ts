@@ -76,21 +76,111 @@ export const MOCK_AD_ACCOUNTS: AdAccount[] = [
   },
 ];
 
-const CAMPAIGN_DEFS: { name: string; channel: TrafficChannel; accountId: string; objective: TrafficCampaign["objective"]; status: TrafficCampaign["status"] }[] = [
-  { name: "Search Marca - Grande Fpolis", channel: "google_ads", accountId: "acc-google-1", objective: "conversao", status: "ativa" },
-  { name: "Search Proteção Veicular", channel: "google_ads", accountId: "acc-google-1", objective: "geracao_leads", status: "ativa" },
-  { name: "Performance Max - Regional", channel: "google_ads", accountId: "acc-google-1", objective: "geracao_leads", status: "ativa" },
-  { name: "Search Concorrentes", channel: "google_ads", accountId: "acc-google-1", objective: "conversao", status: "pausada" },
-  { name: "Display Remarketing Cotação", channel: "google_ads", accountId: "acc-google-1", objective: "remarketing", status: "ativa" },
-  { name: "Search Regiões Atendidas", channel: "google_ads", accountId: "acc-google-1", objective: "trafego", status: "encerrada" },
-  { name: "Meta Advantage+ Leads", channel: "meta_ads", accountId: "acc-meta-1", objective: "geracao_leads", status: "ativa" },
-  { name: "Meta Feed Benefícios", channel: "meta_ads", accountId: "acc-meta-1", objective: "reconhecimento", status: "ativa" },
-  { name: "Meta Stories Cotação Rápida", channel: "meta_ads", accountId: "acc-meta-1", objective: "geracao_leads", status: "ativa" },
-  { name: "Meta Reels Como Funciona", channel: "meta_ads", accountId: "acc-meta-1", objective: "trafego", status: "ativa" },
-  { name: "Remarketing Cotação", channel: "meta_ads", accountId: "acc-meta-2", objective: "remarketing", status: "ativa" },
-  { name: "Meta Lookalike Associados", channel: "meta_ads", accountId: "acc-meta-1", objective: "geracao_leads", status: "pausada" },
-  { name: "Meta Instant Experience Regiões", channel: "meta_ads", accountId: "acc-meta-1", objective: "reconhecimento", status: "encerrada" },
-  { name: "Meta Carrossel Assistência 24h", channel: "meta_ads", accountId: "acc-meta-2", objective: "conversao", status: "ativa" },
+const CAMPAIGN_DEFS: {
+  name: string;
+  channel: TrafficChannel;
+  accountId: string;
+  objective: TrafficCampaign["objective"];
+  status: TrafficCampaign["status"];
+}[] = [
+  {
+    name: "Search Marca - Grande Fpolis",
+    channel: "google_ads",
+    accountId: "acc-google-1",
+    objective: "conversao",
+    status: "ativa",
+  },
+  {
+    name: "Search Proteção Veicular",
+    channel: "google_ads",
+    accountId: "acc-google-1",
+    objective: "geracao_leads",
+    status: "ativa",
+  },
+  {
+    name: "Performance Max - Regional",
+    channel: "google_ads",
+    accountId: "acc-google-1",
+    objective: "geracao_leads",
+    status: "ativa",
+  },
+  {
+    name: "Search Concorrentes",
+    channel: "google_ads",
+    accountId: "acc-google-1",
+    objective: "conversao",
+    status: "pausada",
+  },
+  {
+    name: "Display Remarketing Cotação",
+    channel: "google_ads",
+    accountId: "acc-google-1",
+    objective: "remarketing",
+    status: "ativa",
+  },
+  {
+    name: "Search Regiões Atendidas",
+    channel: "google_ads",
+    accountId: "acc-google-1",
+    objective: "trafego",
+    status: "encerrada",
+  },
+  {
+    name: "Meta Advantage+ Leads",
+    channel: "meta_ads",
+    accountId: "acc-meta-1",
+    objective: "geracao_leads",
+    status: "ativa",
+  },
+  {
+    name: "Meta Feed Benefícios",
+    channel: "meta_ads",
+    accountId: "acc-meta-1",
+    objective: "reconhecimento",
+    status: "ativa",
+  },
+  {
+    name: "Meta Stories Cotação Rápida",
+    channel: "meta_ads",
+    accountId: "acc-meta-1",
+    objective: "geracao_leads",
+    status: "ativa",
+  },
+  {
+    name: "Meta Reels Como Funciona",
+    channel: "meta_ads",
+    accountId: "acc-meta-1",
+    objective: "trafego",
+    status: "ativa",
+  },
+  {
+    name: "Remarketing Cotação",
+    channel: "meta_ads",
+    accountId: "acc-meta-2",
+    objective: "remarketing",
+    status: "ativa",
+  },
+  {
+    name: "Meta Lookalike Associados",
+    channel: "meta_ads",
+    accountId: "acc-meta-1",
+    objective: "geracao_leads",
+    status: "pausada",
+  },
+  {
+    name: "Meta Instant Experience Regiões",
+    channel: "meta_ads",
+    accountId: "acc-meta-1",
+    objective: "reconhecimento",
+    status: "encerrada",
+  },
+  {
+    name: "Meta Carrossel Assistência 24h",
+    channel: "meta_ads",
+    accountId: "acc-meta-2",
+    objective: "conversao",
+    status: "ativa",
+  },
 ];
 
 const accountNameById = Object.fromEntries(MOCK_AD_ACCOUNTS.map((a) => [a.id, a.name]));
@@ -264,7 +354,8 @@ export const MOCK_EXPERIMENTS: Experiment[] = [
     periodStart: new Date(NOW - 60 * DAY).toISOString(),
     periodEnd: new Date(NOW - 30 * DAY).toISOString(),
     status: "concluido",
-    result: "A variante B aumentou a conversão em 18% sem perda perceptível de qualidade dos leads.",
+    result:
+      "A variante B aumentou a conversão em 18% sem perda perceptível de qualidade dos leads.",
     variantAConversion: 9.4,
     variantBConversion: 11.1,
     winner: "B",
@@ -324,7 +415,8 @@ export const MOCK_EXPERIMENTS: Experiment[] = [
     periodStart: new Date(NOW - 90 * DAY).toISOString(),
     periodEnd: new Date(NOW - 70 * DAY).toISOString(),
     status: "concluido",
-    result: "A variante com vídeo aumentou o tempo médio na página, sem impacto direto na conversão.",
+    result:
+      "A variante com vídeo aumentou o tempo médio na página, sem impacto direto na conversão.",
     variantAConversion: 7.8,
     variantBConversion: 8.0,
     winner: "inconclusivo",
@@ -386,7 +478,8 @@ export const MOCK_UTM_HISTORY: UtmHistoryEntry[] = Array.from({ length: 16 }, (_
     utmMedium: pick(UTM_MEDIUMS),
     utmCampaign: campaign.name.toLowerCase().replace(/\s+/g, "_"),
     utmTerm: source === "google" ? "protecao_veicular" : undefined,
-    utmContent: source === "meta" ? pick(["criativo_a", "criativo_b", "criativo_video"]) : undefined,
+    utmContent:
+      source === "meta" ? pick(["criativo_a", "criativo_b", "criativo_video"]) : undefined,
     createdAt: new Date(NOW - i * 3 * DAY).toISOString(),
     authorName: pick(["Camila Deschamps", "Ana Beatriz Corrêa"]),
   } satisfies UtmHistoryEntry;
@@ -421,7 +514,9 @@ export const MOCK_TRACKING_EVENTS: TrackingEventRow[] = Array.from({ length: 200
   return {
     id: `evt-${i + 1}`,
     name: pick(EVENT_NAMES),
-    occurredAt: new Date(NOW - Math.floor(rand() * 30) * DAY - Math.floor(rand() * DAY)).toISOString(),
+    occurredAt: new Date(
+      NOW - Math.floor(rand() * 30) * DAY - Math.floor(rand() * DAY),
+    ).toISOString(),
     landingPage: pick(LANDING_PAGES).path,
     channel,
     campaign: campaign?.name,

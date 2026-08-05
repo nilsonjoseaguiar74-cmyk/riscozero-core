@@ -44,8 +44,20 @@ export class GenericApiConnector implements AssociationSystemConnector {
   async getFieldDefinitions(entidade?: SyncEntity): Promise<ExternalFieldDefinition[]> {
     await delay(120);
     const fields: ExternalFieldDefinition[] = [
-      { campo: "external_id", rotulo: "Identificador externo", tipo: "texto", obrigatorio: true, entidade: "leads" },
-      { campo: "full_name", rotulo: "Nome completo", tipo: "texto", obrigatorio: true, entidade: "leads" },
+      {
+        campo: "external_id",
+        rotulo: "Identificador externo",
+        tipo: "texto",
+        obrigatorio: true,
+        entidade: "leads",
+      },
+      {
+        campo: "full_name",
+        rotulo: "Nome completo",
+        tipo: "texto",
+        obrigatorio: true,
+        entidade: "leads",
+      },
       { campo: "phone", rotulo: "Telefone", tipo: "texto", obrigatorio: false, entidade: "leads" },
     ];
     return entidade ? fields.filter((f) => f.entidade === entidade) : fields;
@@ -53,46 +65,103 @@ export class GenericApiConnector implements AssociationSystemConnector {
 
   async importAssociates(config: ConnectorConfig): Promise<SyncResult> {
     await delay(600);
-    return buildSyncResult({ connectorId: config.id, entidade: "associados", direction: "import", seedKey: `${config.id}-generic-associados`, durationMs: 600 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "associados",
+      direction: "import",
+      seedKey: `${config.id}-generic-associados`,
+      durationMs: 600,
+    });
   }
 
   async importVehicles(config: ConnectorConfig): Promise<SyncResult> {
     await delay(600);
-    return buildSyncResult({ connectorId: config.id, entidade: "veiculos", direction: "import", seedKey: `${config.id}-generic-veiculos`, durationMs: 600 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "veiculos",
+      direction: "import",
+      seedKey: `${config.id}-generic-veiculos`,
+      durationMs: 600,
+    });
   }
 
   async importMemberships(config: ConnectorConfig): Promise<SyncResult> {
     await delay(600);
-    return buildSyncResult({ connectorId: config.id, entidade: "adesoes", direction: "import", seedKey: `${config.id}-generic-adesoes`, durationMs: 600 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "adesoes",
+      direction: "import",
+      seedKey: `${config.id}-generic-adesoes`,
+      durationMs: 600,
+    });
   }
 
   async importOccurrences(config: ConnectorConfig): Promise<SyncResult> {
     await delay(500);
-    return buildSyncResult({ connectorId: config.id, entidade: "ocorrencias", direction: "import", seedKey: `${config.id}-generic-ocorrencias`, durationMs: 500 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "ocorrencias",
+      direction: "import",
+      seedKey: `${config.id}-generic-ocorrencias`,
+      durationMs: 500,
+    });
   }
 
   async importFinancialSummary(config: ConnectorConfig): Promise<SyncResult> {
     await delay(500);
-    return buildSyncResult({ connectorId: config.id, entidade: "situacao_financeira", direction: "import", seedKey: `${config.id}-generic-financeiro`, durationMs: 500 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "situacao_financeira",
+      direction: "import",
+      seedKey: `${config.id}-generic-financeiro`,
+      durationMs: 500,
+    });
   }
 
   async exportLead(config: ConnectorConfig, leadId: string): Promise<SyncResult> {
     await delay(350);
-    return buildSyncResult({ connectorId: config.id, entidade: "leads", direction: "export", seedKey: `${config.id}-generic-lead-${leadId}`, durationMs: 350 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "leads",
+      direction: "export",
+      seedKey: `${config.id}-generic-lead-${leadId}`,
+      durationMs: 350,
+    });
   }
 
-  async exportMembership(config: ConnectorConfig, request: MembershipExportRequest): Promise<SyncResult> {
+  async exportMembership(
+    config: ConnectorConfig,
+    request: MembershipExportRequest,
+  ): Promise<SyncResult> {
     await delay(350);
-    return buildSyncResult({ connectorId: config.id, entidade: "adesoes", direction: "export", seedKey: `${config.id}-generic-${request.membershipId}`, durationMs: 350 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "adesoes",
+      direction: "export",
+      seedKey: `${config.id}-generic-${request.membershipId}`,
+      durationMs: 350,
+    });
   }
 
   async syncStatus(config: ConnectorConfig, entidade: SyncEntity): Promise<SyncResult> {
     await delay(250);
-    return buildSyncResult({ connectorId: config.id, entidade, direction: "import", seedKey: `${config.id}-generic-status-${entidade}`, durationMs: 250 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade,
+      direction: "import",
+      seedKey: `${config.id}-generic-status-${entidade}`,
+      durationMs: 250,
+    });
   }
 
   async retryOperation(config: ConnectorConfig, correlationId: string): Promise<SyncResult> {
     await delay(300);
-    return buildSyncResult({ connectorId: config.id, entidade: "leads", direction: "export", seedKey: `retry-generic-${correlationId}`, durationMs: 300 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "leads",
+      direction: "export",
+      seedKey: `retry-generic-${correlationId}`,
+      durationMs: 300,
+    });
   }
 }

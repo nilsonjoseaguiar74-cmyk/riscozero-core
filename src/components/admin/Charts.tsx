@@ -105,7 +105,12 @@ export function BarsChart({
         layout={horizontal ? "vertical" : "horizontal"}
         margin={{ top: 4, right: 12, bottom: 0, left: horizontal ? 8 : -12 }}
       >
-        <CartesianGrid stroke={GRID} strokeDasharray="3 3" vertical={horizontal} horizontal={!horizontal} />
+        <CartesianGrid
+          stroke={GRID}
+          strokeDasharray="3 3"
+          vertical={horizontal}
+          horizontal={!horizontal}
+        />
         {horizontal ? (
           <>
             <XAxis type="number" tick={AXIS} tickLine={false} axisLine={false} />

@@ -288,14 +288,7 @@ export interface OccurrenceFilters extends BasePeriodFilter {
 /* ------------------------------ Assistência -------------------------------- */
 
 export type AssistanceType =
-  | "reboque"
-  | "pane"
-  | "chaveiro"
-  | "pneu"
-  | "bateria"
-  | "pane_seca"
-  | "carro_reserva"
-  | "outro";
+  "reboque" | "pane" | "chaveiro" | "pneu" | "bateria" | "pane_seca" | "carro_reserva" | "outro";
 
 export const ASSISTANCE_TYPE_LABEL: Record<AssistanceType, string> = {
   reboque: "Reboque",
@@ -471,7 +464,7 @@ export interface Consultant {
   taxaConversao: number;
 }
 
-export interface ConsultantFilters extends BasePeriodFilter {}
+export type ConsultantFilters = BasePeriodFilter;
 
 /* -------------------------------- Prestadores -------------------------------- */
 

@@ -44,7 +44,11 @@ export function SiteHeader() {
 
       <header className="sticky top-0 z-50 surface-brand shadow-subtle">
         <div className="container-page grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-3">
-          <Link to="/" className="flex min-w-0 items-center" aria-label={`${SITE.fullName} — início`}>
+          <Link
+            to="/"
+            className="flex min-w-0 items-center"
+            aria-label={`${SITE.fullName} — início`}
+          >
             <Logo size="md" />
           </Link>
 
@@ -67,7 +71,10 @@ export function SiteHeader() {
               size="sm"
               className="hidden bg-gold text-gold-foreground hover:bg-gold-light sm:inline-flex"
             >
-              <Link to="/solicitar-cotacao" onClick={() => trackEvent("cta_click", { local: "header" })}>
+              <Link
+                to="/solicitar-cotacao"
+                onClick={() => trackEvent("cta_click", { local: "header" })}
+              >
                 Solicitar cotação
               </Link>
             </Button>
@@ -83,7 +90,10 @@ export function SiteHeader() {
                   <Menu className="size-5" aria-hidden="true" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[88vw] max-w-sm surface-brand border-white/10">
+              <SheetContent
+                side="right"
+                className="w-[88vw] max-w-sm surface-brand border-white/10"
+              >
                 <SheetTitle className="sr-only">Navegação</SheetTitle>
                 <div className="flex flex-col gap-6 p-6">
                   <Logo size="lg" />

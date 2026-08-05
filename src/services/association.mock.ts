@@ -69,7 +69,9 @@ function groupBy<T>(list: T[], key: (item: T) => string | undefined): SeriesPoin
     if (!label) return;
     map.set(label, (map.get(label) ?? 0) + 1);
   });
-  return [...map.entries()].map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
+  return [...map.entries()]
+    .map(([label, value]) => ({ label, value }))
+    .sort((a, b) => b.value - a.value);
 }
 
 function inRange(dateIso: string, from?: string | undefined, to?: string | undefined): boolean {
@@ -91,13 +93,23 @@ export const associationMock: AssociationServiceRegistry = {
       const emAnalise = filteredMembers.filter((m) => m.status === "em_analise").length;
       const inativos = filteredMembers.filter((m) => m.status === "inativo").length;
       const novasAdesoes = memberships.filter(
-        (m) => m.stage === "ativa" && inRange(m.ativadaEm ?? m.atualizadaEm, filters.from, filters.to),
+        (m) =>
+          m.stage === "ativa" && inRange(m.ativadaEm ?? m.atualizadaEm, filters.from, filters.to),
       ).length;
       const veiculosAtivos = vehicles.filter((v) => v.status === "ativo").length;
       const ocorrenciasAbertas = occurrences.filter((o) =>
-        ["comunicada", "documentacao_pendente", "em_analise", "aguardando_terceiro", "aguardando_orcamento", "em_reparo"].includes(o.status),
+        [
+          "comunicada",
+          "documentacao_pendente",
+          "em_analise",
+          "aguardando_terceiro",
+          "aguardando_orcamento",
+          "em_reparo",
+        ].includes(o.status),
       ).length;
-      const assistenciasMes = assistances.filter((a) => inRange(a.solicitadaEm, filters.from, filters.to)).length;
+      const assistenciasMes = assistances.filter((a) =>
+        inRange(a.solicitadaEm, filters.from, filters.to),
+      ).length;
       const vistoriasPendentes = inspections.filter((i) =>
         ["solicitada", "agendada", "em_andamento"].includes(i.status),
       ).length;
@@ -105,7 +117,9 @@ export const associationMock: AssociationServiceRegistry = {
       const pagas = billings.filter((b) => b.status === "paga").length;
       const vencidas = billings.filter((b) => b.status === "vencida").length;
       const valorPrevisto = billings.reduce((acc, b) => acc + b.valor, 0);
-      const valorRecebido = billings.filter((b) => b.status === "paga").reduce((acc, b) => acc + b.valor, 0);
+      const valorRecebido = billings
+        .filter((b) => b.status === "paga")
+        .reduce((acc, b) => acc + b.valor, 0);
       const taxaInadimplencia = billings.length ? (vencidas / billings.length) * 100 : 0;
       const leadsConvertidos = memberships.filter((m) => m.leadId).length;
       const tempoMedioDias =
@@ -116,29 +130,128 @@ export const associationMock: AssociationServiceRegistry = {
         }, 0) / Math.max(1, memberships.length);
 
       const metrics: MetricSummary[] = [
-        { key: "associados_ativos", label: "Associados ativos", value: ativos, format: "number", deltaPercent: 4.2 },
-        { key: "novas_adesoes", label: "Novas adesões", value: novasAdesoes, format: "number", deltaPercent: 6.8 },
-        { key: "adesoes_em_analise", label: "Adesões em análise", value: memberships.filter((m) => m.stage === "em_analise").length, format: "number", deltaPercent: -1.4 },
-        { key: "associados_inativos", label: "Associados inativos", value: inativos, format: "number", deltaPercent: -2.1 },
-        { key: "veiculos_ativos", label: "Veículos ativos", value: veiculosAtivos, format: "number", deltaPercent: 3.1 },
-        { key: "ocorrencias_abertas", label: "Ocorrências abertas", value: ocorrenciasAbertas, format: "number", deltaPercent: -3.6 },
-        { key: "assistencias", label: "Assistências no período", value: assistenciasMes, format: "number", deltaPercent: 5.4 },
-        { key: "vistorias_pendentes", label: "Vistorias pendentes", value: vistoriasPendentes, format: "number", deltaPercent: -0.8 },
-        { key: "cobrancas_emitidas", label: "Cobranças emitidas", value: emitidas, format: "number", deltaPercent: 2.2 },
-        { key: "cobrancas_recebidas", label: "Cobranças recebidas", value: pagas, format: "number", deltaPercent: 3.9 },
-        { key: "cobrancas_vencidas", label: "Cobranças vencidas", value: vencidas, format: "number", deltaPercent: -4.5 },
-        { key: "taxa_inadimplencia", label: "Taxa de inadimplência", value: Number(taxaInadimplencia.toFixed(1)), format: "percent", deltaPercent: -1.1 },
-        { key: "valor_previsto", label: "Valor previsto", value: valorPrevisto, format: "currency", deltaPercent: 4.0 },
-        { key: "valor_recebido", label: "Valor recebido", value: valorRecebido, format: "currency", deltaPercent: 5.1 },
-        { key: "leads_convertidos", label: "Leads convertidos", value: leadsConvertidos, format: "number", deltaPercent: 7.3 },
-        { key: "tempo_medio_conversao", label: "Tempo médio lead-adesão", value: Number(tempoMedioDias.toFixed(1)), format: "duration", deltaPercent: -6.2, helper: "Dias entre o início e a ativação da adesão" },
+        {
+          key: "associados_ativos",
+          label: "Associados ativos",
+          value: ativos,
+          format: "number",
+          deltaPercent: 4.2,
+        },
+        {
+          key: "novas_adesoes",
+          label: "Novas adesões",
+          value: novasAdesoes,
+          format: "number",
+          deltaPercent: 6.8,
+        },
+        {
+          key: "adesoes_em_analise",
+          label: "Adesões em análise",
+          value: memberships.filter((m) => m.stage === "em_analise").length,
+          format: "number",
+          deltaPercent: -1.4,
+        },
+        {
+          key: "associados_inativos",
+          label: "Associados inativos",
+          value: inativos,
+          format: "number",
+          deltaPercent: -2.1,
+        },
+        {
+          key: "veiculos_ativos",
+          label: "Veículos ativos",
+          value: veiculosAtivos,
+          format: "number",
+          deltaPercent: 3.1,
+        },
+        {
+          key: "ocorrencias_abertas",
+          label: "Ocorrências abertas",
+          value: ocorrenciasAbertas,
+          format: "number",
+          deltaPercent: -3.6,
+        },
+        {
+          key: "assistencias",
+          label: "Assistências no período",
+          value: assistenciasMes,
+          format: "number",
+          deltaPercent: 5.4,
+        },
+        {
+          key: "vistorias_pendentes",
+          label: "Vistorias pendentes",
+          value: vistoriasPendentes,
+          format: "number",
+          deltaPercent: -0.8,
+        },
+        {
+          key: "cobrancas_emitidas",
+          label: "Cobranças emitidas",
+          value: emitidas,
+          format: "number",
+          deltaPercent: 2.2,
+        },
+        {
+          key: "cobrancas_recebidas",
+          label: "Cobranças recebidas",
+          value: pagas,
+          format: "number",
+          deltaPercent: 3.9,
+        },
+        {
+          key: "cobrancas_vencidas",
+          label: "Cobranças vencidas",
+          value: vencidas,
+          format: "number",
+          deltaPercent: -4.5,
+        },
+        {
+          key: "taxa_inadimplencia",
+          label: "Taxa de inadimplência",
+          value: Number(taxaInadimplencia.toFixed(1)),
+          format: "percent",
+          deltaPercent: -1.1,
+        },
+        {
+          key: "valor_previsto",
+          label: "Valor previsto",
+          value: valorPrevisto,
+          format: "currency",
+          deltaPercent: 4.0,
+        },
+        {
+          key: "valor_recebido",
+          label: "Valor recebido",
+          value: valorRecebido,
+          format: "currency",
+          deltaPercent: 5.1,
+        },
+        {
+          key: "leads_convertidos",
+          label: "Leads convertidos",
+          value: leadsConvertidos,
+          format: "number",
+          deltaPercent: 7.3,
+        },
+        {
+          key: "tempo_medio_conversao",
+          label: "Tempo médio lead-adesão",
+          value: Number(tempoMedioDias.toFixed(1)),
+          format: "duration",
+          deltaPercent: -6.2,
+          helper: "Dias entre o início e a ativação da adesão",
+        },
       ];
 
       const months = 6;
       const associadosAoLongoTempo: SeriesPoint[] = Array.from({ length: months }, (_, i) => {
         const date = new Date(Date.now() - (months - 1 - i) * 30 * 86400000);
         const label = date.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
-        const value = members.filter((m) => new Date(m.dataAdesao).getTime() <= date.getTime() && m.status !== "inativo").length;
+        const value = members.filter(
+          (m) => new Date(m.dataAdesao).getTime() <= date.getTime() && m.status !== "inativo",
+        ).length;
         return { label, value };
       });
 
@@ -146,7 +259,9 @@ export const associationMock: AssociationServiceRegistry = {
         const date = new Date(Date.now() - (months - 1 - i) * 30 * 86400000);
         const label = date.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
         const value = memberships.filter(
-          (m) => new Date(m.iniciadaEm).getMonth() === date.getMonth() && new Date(m.iniciadaEm).getFullYear() === date.getFullYear(),
+          (m) =>
+            new Date(m.iniciadaEm).getMonth() === date.getMonth() &&
+            new Date(m.iniciadaEm).getFullYear() === date.getFullYear(),
         ).length;
         return { label, value };
       });
@@ -159,8 +274,14 @@ export const associationMock: AssociationServiceRegistry = {
         ocorrenciasPorCategoria: groupBy(occurrences, (o) => o.tipo),
         ocorrenciasPorStatus: groupBy(occurrences, (o) => o.status),
         assistenciasPorTipo: groupBy(assistances, (a) => a.tipo),
-        inadimplenciaPorPeriodo: adesoesPorPeriodo.map((p, i) => ({ label: p.label, value: Number((6 + (i % 4)).toFixed(1)) })),
-        arrecadacaoPorPeriodo: associadosAoLongoTempo.map((p) => ({ label: p.label, value: Math.round(p.value * 92) })),
+        inadimplenciaPorPeriodo: adesoesPorPeriodo.map((p, i) => ({
+          label: p.label,
+          value: Number((6 + (i % 4)).toFixed(1)),
+        })),
+        arrecadacaoPorPeriodo: associadosAoLongoTempo.map((p) => ({
+          label: p.label,
+          value: Math.round(p.value * 92),
+        })),
         adesoesPorConsultor: groupBy(memberships, (m) => m.consultorNome),
         associadosPorCidade: groupBy(members, (m) => m.cidade),
         origemDosAssociados: groupBy(members, (m) => m.sistemaOrigem),
@@ -184,12 +305,14 @@ export const associationMock: AssociationServiceRegistry = {
           `${m.nome} ${m.codigoInterno} ${m.whatsapp} ${m.cidade}`.toLowerCase().includes(search),
         );
       }
-      if (filters.status && filters.status !== "todos") list = list.filter((m) => m.status === filters.status);
+      if (filters.status && filters.status !== "todos")
+        list = list.filter((m) => m.status === filters.status);
       if (filters.situacaoFinanceira && filters.situacaoFinanceira !== "todas")
         list = list.filter((m) => m.situacaoFinanceira === filters.situacaoFinanceira);
       if (filters.city) list = list.filter((m) => m.cidade === filters.city);
       if (filters.consultantId) list = list.filter((m) => m.consultorId === filters.consultantId);
-      if (filters.sistemaOrigem) list = list.filter((m) => m.sistemaOrigem === filters.sistemaOrigem);
+      if (filters.sistemaOrigem)
+        list = list.filter((m) => m.sistemaOrigem === filters.sistemaOrigem);
       if (filters.from) list = list.filter((m) => m.dataAdesao >= filters.from!);
       if (filters.to) list = list.filter((m) => m.dataAdesao <= filters.to!);
       const sortBy = filters.sortBy ?? "dataAdesao";
@@ -272,10 +395,18 @@ export const associationMock: AssociationServiceRegistry = {
     },
     async exportCsv(filters) {
       await delay(650);
-      const { items } = await associationMock.members.list({ ...filters, page: 1, pageSize: 10000 });
+      const { items } = await associationMock.members.list({
+        ...filters,
+        page: 1,
+        pageSize: 10000,
+      });
       const header = "codigo;nome;cidade;status;situacao_financeira;data_adesao";
       const body = items
-        .map((m) => [m.codigoInterno, m.nome, m.cidade, m.status, m.situacaoFinanceira, m.dataAdesao].join(";"))
+        .map((m) =>
+          [m.codigoInterno, m.nome, m.cidade, m.status, m.situacaoFinanceira, m.dataAdesao].join(
+            ";",
+          ),
+        )
         .join("\n");
       return `${header}\n${body}`;
     },
@@ -292,13 +423,19 @@ export const associationMock: AssociationServiceRegistry = {
       await delay();
       let list = vehicles.slice();
       const search = filters.search?.trim().toLowerCase();
-      if (search) list = list.filter((v) => `${v.placa} ${v.marca} ${v.modelo}`.toLowerCase().includes(search));
-      if (filters.status && filters.status !== "todos") list = list.filter((v) => v.status === filters.status);
-      if (filters.categoria && filters.categoria !== "todos") list = list.filter((v) => v.categoria === filters.categoria);
+      if (search)
+        list = list.filter((v) =>
+          `${v.placa} ${v.marca} ${v.modelo}`.toLowerCase().includes(search),
+        );
+      if (filters.status && filters.status !== "todos")
+        list = list.filter((v) => v.status === filters.status);
+      if (filters.categoria && filters.categoria !== "todos")
+        list = list.filter((v) => v.categoria === filters.categoria);
       if (filters.vistoriaStatus && filters.vistoriaStatus !== "todas")
         list = list.filter((v) => v.vistoriaStatus === filters.vistoriaStatus);
       if (filters.memberId) list = list.filter((v) => v.memberId === filters.memberId);
-      if (filters.sistemaOrigem) list = list.filter((v) => v.sistemaOrigem === filters.sistemaOrigem);
+      if (filters.sistemaOrigem)
+        list = list.filter((v) => v.sistemaOrigem === filters.sistemaOrigem);
       return paginate(list, filters.page ?? 1, filters.pageSize ?? 20);
     },
     async getById(id) {
@@ -323,9 +460,15 @@ export const associationMock: AssociationServiceRegistry = {
     },
     async exportCsv(filters) {
       await delay(600);
-      const { items } = await associationMock.vehicles.list({ ...filters, page: 1, pageSize: 10000 });
+      const { items } = await associationMock.vehicles.list({
+        ...filters,
+        page: 1,
+        pageSize: 10000,
+      });
       const header = "placa;marca;modelo;ano;categoria;status";
-      const body = items.map((v) => [v.placa, v.marca, v.modelo, v.ano, v.categoria, v.status].join(";")).join("\n");
+      const body = items
+        .map((v) => [v.placa, v.marca, v.modelo, v.ano, v.categoria, v.status].join(";"))
+        .join("\n");
       return `${header}\n${body}`;
     },
   },
@@ -335,8 +478,10 @@ export const associationMock: AssociationServiceRegistry = {
       await delay();
       let list = memberships.slice();
       const search = filters.search?.trim().toLowerCase();
-      if (search) list = list.filter((m) => `${m.candidatoNome} ${m.cidade}`.toLowerCase().includes(search));
-      if (filters.stage && filters.stage !== "todas") list = list.filter((m) => m.stage === filters.stage);
+      if (search)
+        list = list.filter((m) => `${m.candidatoNome} ${m.cidade}`.toLowerCase().includes(search));
+      if (filters.stage && filters.stage !== "todas")
+        list = list.filter((m) => m.stage === filters.stage);
       if (filters.city) list = list.filter((m) => m.cidade === filters.city);
       if (filters.consultantId) list = list.filter((m) => m.consultorId === filters.consultantId);
       return paginate(list, filters.page ?? 1, filters.pageSize ?? 20);
@@ -367,7 +512,8 @@ export const associationMock: AssociationServiceRegistry = {
       await delay(240);
       const membership = memberships.find((m) => m.id === id);
       if (!membership) throw new ApiError("nao_encontrado", "Adesão não encontrada.", 404);
-      if (!membership.documentosPendentes.includes(documento)) membership.documentosPendentes.push(documento);
+      if (!membership.documentosPendentes.includes(documento))
+        membership.documentosPendentes.push(documento);
       membership.timeline.unshift({
         id: `adesao-${id}-${Date.now()}`,
         titulo: `Documento solicitado: ${documento}`,
@@ -421,9 +567,12 @@ export const associationMock: AssociationServiceRegistry = {
       await delay();
       let list = occurrences.slice();
       const search = filters.search?.trim().toLowerCase();
-      if (search) list = list.filter((o) => `${o.protocolo} ${o.local}`.toLowerCase().includes(search));
-      if (filters.status && filters.status !== "todos") list = list.filter((o) => o.status === filters.status);
-      if (filters.tipo && filters.tipo !== "todos") list = list.filter((o) => o.tipo === filters.tipo);
+      if (search)
+        list = list.filter((o) => `${o.protocolo} ${o.local}`.toLowerCase().includes(search));
+      if (filters.status && filters.status !== "todos")
+        list = list.filter((o) => o.status === filters.status);
+      if (filters.tipo && filters.tipo !== "todos")
+        list = list.filter((o) => o.tipo === filters.tipo);
       if (filters.memberId) list = list.filter((o) => o.memberId === filters.memberId);
       return paginate(list, filters.page ?? 1, filters.pageSize ?? 20);
     },
@@ -463,9 +612,12 @@ export const associationMock: AssociationServiceRegistry = {
       await delay();
       let list = assistances.slice();
       const search = filters.search?.trim().toLowerCase();
-      if (search) list = list.filter((a) => `${a.protocolo} ${a.local}`.toLowerCase().includes(search));
-      if (filters.status && filters.status !== "todos") list = list.filter((a) => a.status === filters.status);
-      if (filters.tipo && filters.tipo !== "todos") list = list.filter((a) => a.tipo === filters.tipo);
+      if (search)
+        list = list.filter((a) => `${a.protocolo} ${a.local}`.toLowerCase().includes(search));
+      if (filters.status && filters.status !== "todos")
+        list = list.filter((a) => a.status === filters.status);
+      if (filters.tipo && filters.tipo !== "todos")
+        list = list.filter((a) => a.tipo === filters.tipo);
       if (filters.memberId) list = list.filter((a) => a.memberId === filters.memberId);
       return paginate(list, filters.page ?? 1, filters.pageSize ?? 20);
     },
@@ -496,7 +648,8 @@ export const associationMock: AssociationServiceRegistry = {
     async list(filters) {
       await delay();
       let list = inspections.slice();
-      if (filters.status && filters.status !== "todas") list = list.filter((i) => i.status === filters.status);
+      if (filters.status && filters.status !== "todas")
+        list = list.filter((i) => i.status === filters.status);
       if (filters.memberId) list = list.filter((i) => i.memberId === filters.memberId);
       return paginate(list, filters.page ?? 1, filters.pageSize ?? 20);
     },
@@ -519,7 +672,8 @@ export const associationMock: AssociationServiceRegistry = {
       const inspection = inspections.find((i) => i.id === id);
       if (!inspection) throw new ApiError("nao_encontrado", "Vistoria não encontrada.", 404);
       inspection.status = status;
-      if (status === "aprovada" || status === "recusada") inspection.realizadaEm = new Date().toISOString();
+      if (status === "aprovada" || status === "recusada")
+        inspection.realizadaEm = new Date().toISOString();
       return inspection;
     },
   },
@@ -533,7 +687,9 @@ export const associationMock: AssociationServiceRegistry = {
       const vencidas = filtered.filter((b) => b.status === "vencida").length;
       return {
         valorPrevisto: filtered.reduce((acc, b) => acc + b.valor, 0),
-        valorRecebido: filtered.filter((b) => b.status === "paga").reduce((acc, b) => acc + b.valor, 0),
+        valorRecebido: filtered
+          .filter((b) => b.status === "paga")
+          .reduce((acc, b) => acc + b.valor, 0),
         taxaInadimplencia: emitidas ? Number(((vencidas / emitidas) * 100).toFixed(1)) : 0,
         cobrancasEmitidas: emitidas,
         cobrancasPagas: pagas,
@@ -558,7 +714,8 @@ export const associationMock: AssociationServiceRegistry = {
     async list(filters) {
       await delay();
       let list = billings.slice();
-      if (filters.status && filters.status !== "todas") list = list.filter((b) => b.status === filters.status);
+      if (filters.status && filters.status !== "todas")
+        list = list.filter((b) => b.status === filters.status);
       if (filters.memberId) list = list.filter((b) => b.memberId === filters.memberId);
       if (filters.from) list = list.filter((b) => b.emitidaEm >= filters.from!);
       if (filters.to) list = list.filter((b) => b.emitidaEm <= filters.to!);
@@ -626,7 +783,8 @@ export const associationMock: AssociationServiceRegistry = {
     async list(filters) {
       await delay();
       let list = providers.slice();
-      if (filters.tipo && filters.tipo !== "todos") list = list.filter((p) => p.tipo === filters.tipo);
+      if (filters.tipo && filters.tipo !== "todos")
+        list = list.filter((p) => p.tipo === filters.tipo);
       if (filters.city) list = list.filter((p) => p.cidade === filters.city);
       const search = filters.search?.trim().toLowerCase();
       if (search) list = list.filter((p) => p.nome.toLowerCase().includes(search));
@@ -651,8 +809,10 @@ export const associationMock: AssociationServiceRegistry = {
     async list(filters) {
       await delay();
       let list = documents.slice();
-      if (filters.categoria && filters.categoria !== "todas") list = list.filter((d) => d.categoria === filters.categoria);
-      if (filters.status && filters.status !== "todos") list = list.filter((d) => d.status === filters.status);
+      if (filters.categoria && filters.categoria !== "todas")
+        list = list.filter((d) => d.categoria === filters.categoria);
+      if (filters.status && filters.status !== "todos")
+        list = list.filter((d) => d.status === filters.status);
       if (filters.memberId) list = list.filter((d) => d.memberId === filters.memberId);
       const search = filters.search?.trim().toLowerCase();
       if (search) list = list.filter((d) => d.nomeArquivo.toLowerCase().includes(search));

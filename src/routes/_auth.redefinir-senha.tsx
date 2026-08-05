@@ -79,7 +79,7 @@ function ResetPasswordPage() {
           />
         </div>
 
-        {validation ?? reset.isError ? (
+        {(validation ?? reset.isError) ? (
           <Alert variant="destructive">
             <AlertDescription>{validation ?? apiErrorMessage(reset.error)}</AlertDescription>
           </Alert>
