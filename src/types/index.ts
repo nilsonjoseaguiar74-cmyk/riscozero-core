@@ -35,8 +35,8 @@ export interface AuthUser {
   email: string;
   role: UserRole;
   permissions: Permission[];
-  avatarUrl?: string;
-  lastAccessAt?: string;
+  avatarUrl?: string | undefined;
+  lastAccessAt?: string | undefined;
   status: "ativo" | "inativo" | "convidado";
 }
 
@@ -97,24 +97,24 @@ export type ContactPreference = "whatsapp" | "ligacao" | "qualquer";
 export type VehicleType = "carro" | "moto" | "caminhonete" | "utilitario" | "caminhao";
 
 export interface TrackingContext {
-  utmSource?: string;
-  utmMedium?: string;
-  utmCampaign?: string;
-  utmTerm?: string;
-  utmContent?: string;
-  referrer?: string;
-  landingPage?: string;
-  gclid?: string;
-  gbraid?: string;
-  wbraid?: string;
-  fbclid?: string;
-  deviceType?: "desktop" | "tablet" | "mobile";
-  browser?: string;
-  operatingSystem?: string;
-  firstVisitAt?: string;
-  conversionPage?: string;
-  conversionCta?: string;
-  consentVersion?: string;
+  utmSource?: string | undefined;
+  utmMedium?: string | undefined;
+  utmCampaign?: string | undefined;
+  utmTerm?: string | undefined;
+  utmContent?: string | undefined;
+  referrer?: string | undefined;
+  landingPage?: string | undefined;
+  gclid?: string | undefined;
+  gbraid?: string | undefined;
+  wbraid?: string | undefined;
+  fbclid?: string | undefined;
+  deviceType?: "desktop" | "tablet" | "mobile" | undefined;
+  browser?: string | undefined;
+  operatingSystem?: string | undefined;
+  firstVisitAt?: string | undefined;
+  conversionPage?: string | undefined;
+  conversionCta?: string | undefined;
+  consentVersion?: string | undefined;
 }
 
 export interface Lead {
@@ -131,12 +131,12 @@ export interface Lead {
   stage: LeadStage;
   priority: Priority;
   ownerId: UUID | null;
-  ownerName?: string;
+  ownerName?: string | undefined;
   source: string;
-  campaign?: string;
+  campaign?: string | undefined;
   tags: string[];
-  lossReason?: LossReason;
-  notes?: string;
+  lossReason?: LossReason | undefined;
+  notes?: string | undefined;
   tracking: TrackingContext;
   createdAt: string;
   updatedAt: string;
@@ -153,7 +153,7 @@ export interface CreateLeadRequest {
   bestTime: string;
   contactPreference: ContactPreference;
   consent: boolean;
-  tracking?: TrackingContext;
+  tracking?: TrackingContext | undefined;
 }
 
 export type UpdateLeadRequest = Partial<
@@ -173,19 +173,19 @@ export type UpdateLeadRequest = Partial<
 >;
 
 export interface LeadFilters {
-  search?: string;
-  stage?: LeadStage | "todas";
-  city?: string;
-  source?: string;
-  campaign?: string;
-  ownerId?: string;
-  vehicleType?: VehicleType | "todos";
-  from?: string;
-  to?: string;
-  page?: number;
-  pageSize?: number;
-  sortBy?: "createdAt" | "updatedAt" | "name";
-  sortDir?: "asc" | "desc";
+  search?: string | undefined;
+  stage?: LeadStage | "todas" | undefined;
+  city?: string | undefined;
+  source?: string | undefined;
+  campaign?: string | undefined;
+  ownerId?: string | undefined;
+  vehicleType?: VehicleType | "todos" | undefined;
+  from?: string | undefined;
+  to?: string | undefined;
+  page?: number | undefined;
+  pageSize?: number | undefined;
+  sortBy?: "createdAt" | "updatedAt" | "name" | undefined;
+  sortDir?: "asc" | "desc" | undefined;
 }
 
 export interface PaginatedResponse<T> {
@@ -210,7 +210,7 @@ export interface Activity {
   leadId: UUID;
   type: ActivityType;
   title: string;
-  description?: string;
+  description?: string | undefined;
   authorName: string;
   createdAt: string;
 }
@@ -218,7 +218,7 @@ export interface Activity {
 export interface CreateActivityRequest {
   type: ActivityType;
   title: string;
-  description?: string;
+  description?: string | undefined;
 }
 
 export type TaskStatus = "pendente" | "concluida" | "atrasada";
@@ -240,14 +240,14 @@ export interface CreateTaskRequest {
 }
 
 export interface AnalyticsFilters {
-  from?: string;
-  to?: string;
-  city?: string;
-  source?: string;
-  campaign?: string;
-  ownerId?: string;
-  stage?: LeadStage | "todas";
-  vehicleType?: VehicleType | "todos";
+  from?: string | undefined;
+  to?: string | undefined;
+  city?: string | undefined;
+  source?: string | undefined;
+  campaign?: string | undefined;
+  ownerId?: string | undefined;
+  stage?: LeadStage | "todas" | undefined;
+  vehicleType?: VehicleType | "todos" | undefined;
 }
 
 export interface MetricSummary {
@@ -256,13 +256,13 @@ export interface MetricSummary {
   value: number;
   format: "number" | "percent" | "duration" | "currency";
   deltaPercent: number;
-  helper?: string;
+  helper?: string | undefined;
 }
 
 export interface SeriesPoint {
   label: string;
   value: number;
-  secondary?: number;
+  secondary?: number | undefined;
 }
 
 export interface DashboardOverview {
@@ -346,7 +346,7 @@ export interface Integration {
   name: string;
   description: string;
   status: IntegrationStatus;
-  lastSyncAt?: string;
+  lastSyncAt?: string | undefined;
   category: "aquisicao" | "atendimento" | "analytics" | "desenvolvedor";
 }
 
@@ -383,8 +383,8 @@ export interface AuditEntry {
   result: "sucesso" | "falha";
   maskedIp: string;
   device: string;
-  before?: string;
-  after?: string;
+  before?: string | undefined;
+  after?: string | undefined;
 }
 
 export interface AppSettings {
@@ -440,6 +440,6 @@ export type TrackingEventName =
 
 export interface TrackingEvent {
   name: TrackingEventName;
-  payload?: Record<string, string | number | boolean | undefined>;
+  payload?: Record<string, string | number | boolean | undefined> | undefined;
   occurredAt: string;
 }
