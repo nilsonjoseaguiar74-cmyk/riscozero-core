@@ -24,11 +24,7 @@ import { maskPhone, normalizePlate } from "@/lib/format";
 import type { ContactPreference, VehicleType } from "@/types";
 
 const schema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(5, "Informe seu nome completo.")
-    .max(100, "Nome muito longo."),
+  name: z.string().trim().min(5, "Informe seu nome completo.").max(100, "Nome muito longo."),
   whatsapp: z
     .string()
     .trim()
@@ -39,13 +35,14 @@ const schema = z.object({
     .min(7, "Informe a placa com 7 caracteres.")
     .max(7, "Informe a placa com 7 caracteres."),
   city: z.string().min(1, "Selecione a cidade."),
-  vehicleType: z.string().min(1, "Selecione o tipo de veículo."),
+  vehicleType: z.string().optional(),
   vehicleYear: z
     .string()
     .trim()
-    .regex(/^(19|20)\d{2}$/, "Informe o ano aproximado com 4 dígitos."),
-  bestTime: z.string().min(1, "Selecione o melhor horário."),
-  contactPreference: z.string().min(1, "Selecione a preferência de atendimento."),
+    .regex(/^((19|20)\d{2})?$/, "Informe o ano aproximado com 4 dígitos.")
+    .optional(),
+  bestTime: z.string().optional(),
+  contactPreference: z.string().optional(),
   consent: z.literal(true, {
     errorMap: () => ({ message: "É necessário autorizar o contato para prosseguir." }),
   }),
@@ -78,7 +75,7 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
   });
 
   useEffect(() => {
-    trackEvent("form_view", { formulario: "cotacao" });
+    trackEvent("form_view", { formulario: compact ? "cotacao_hero" : "cotacao" });
     try {
       const raw = window.sessionStorage.getItem(DRAFT_KEY);
       if (raw) form.reset({ ...form.getValues(), ...(JSON.parse(raw) as Partial<FormValues>) });
@@ -101,22 +98,31 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
 
   const mutation = useMutation({
     mutationFn: async (values: FormValues) => {
-      trackEvent("form_submit", { formulario: "cotacao" });
+      trackEvent("form_submit", { formulario: compact ? "cotacao_hero" : "cotacao" });
       return services.leads.create({
         name: values.name,
         whatsapp: values.whatsapp,
         plate: normalizePlate(values.plate),
         city: values.city,
-        vehicleType: values.vehicleType as VehicleType,
-        vehicleYear: values.vehicleYear,
-        bestTime: values.bestTime,
-        contactPreference: values.contactPreference as ContactPreference,
+        ...(compact
+          ? {}
+          : {
+              vehicleType: (values.vehicleType || undefined) as VehicleType | undefined,
+              vehicleYear: values.vehicleYear || undefined,
+              bestTime: values.bestTime || undefined,
+              contactPreference: (values.contactPreference || undefined) as
+                | ContactPreference
+                | undefined,
+            }),
         consent: true,
-        tracking: { ...captureTracking(), conversionCta: compact ? "hero_form" : "pagina_cotacao" },
+        tracking: {
+          ...captureTracking(),
+          conversionCta: compact ? "hero_form" : "pagina_cotacao",
+        },
       });
     },
     onSuccess: () => {
-      trackEvent("form_success", { formulario: "cotacao" });
+      trackEvent("form_success", { formulario: compact ? "cotacao_hero" : "cotacao" });
       try {
         window.sessionStorage.removeItem(DRAFT_KEY);
       } catch {
@@ -126,7 +132,7 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
     },
     onError: () => {
       submittedRef.current = false;
-      trackEvent("form_error", { formulario: "cotacao" });
+      trackEvent("form_error", { formulario: compact ? "cotacao_hero" : "cotacao" });
     },
   });
 
@@ -140,7 +146,7 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
   const onFirstInteraction = () => {
     if (startedTracked) return;
     setStartedTracked(true);
-    trackEvent("form_start", { formulario: "cotacao" });
+    trackEvent("form_start", { formulario: compact ? "cotacao_hero" : "cotacao" });
   };
 
   const errors = form.formState.errors;
@@ -150,16 +156,13 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
       onSubmit={onSubmit}
       onFocusCapture={onFirstInteraction}
       noValidate
-      className="card-elevated space-y-5 p-5 sm:p-6"
+      className="card-elevated space-y-4 p-5 sm:p-6"
       aria-label="Formulário de cotação"
     >
       <div>
-        <h2 className="text-lg font-[650] text-foreground">
-          Encontre a opção ideal para o seu veículo
-        </h2>
+        <h2 className="text-lg font-[650] text-foreground">Receba as opções para o seu veículo</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Informe seus dados para que nossa equipe apresente as opções de proteção e benefícios
-          disponíveis para o seu perfil.
+          Preencha os dados essenciais e nossa equipe entrará em contato.
         </p>
       </div>
 
@@ -169,7 +172,7 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
         </Alert>
       ) : null}
 
-      <div className={compact ? "grid gap-4" : "grid gap-4 sm:grid-cols-2"}>
+      <div className={compact ? "grid gap-3.5" : "grid gap-4 sm:grid-cols-2"}>
         <Field id="name" label="Nome completo" error={errors.name?.message}>
           <Input id="name" autoComplete="name" {...form.register("name")} />
         </Field>
@@ -213,60 +216,72 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
           </Select>
         </Field>
 
-        <Field id="vehicleType" label="Tipo de veículo" error={errors.vehicleType?.message}>
-          <Select
-            value={form.watch("vehicleType")}
-            onValueChange={(v) => form.setValue("vehicleType", v)}
-          >
-            <SelectTrigger id="vehicleType">
-              <SelectValue placeholder="Selecione" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="carro">Carro</SelectItem>
-              <SelectItem value="moto">Moto</SelectItem>
-              <SelectItem value="caminhonete">Caminhonete</SelectItem>
-              <SelectItem value="utilitario">Utilitário</SelectItem>
-              <SelectItem value="caminhao">Caminhão</SelectItem>
-            </SelectContent>
-          </Select>
-        </Field>
+        {!compact ? (
+          <>
+            <Field id="vehicleType" label="Tipo de veículo (opcional)">
+              <Select
+                value={form.watch("vehicleType")}
+                onValueChange={(v) => form.setValue("vehicleType", v)}
+              >
+                <SelectTrigger id="vehicleType">
+                  <SelectValue placeholder="Selecione" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="carro">Carro</SelectItem>
+                  <SelectItem value="moto">Moto</SelectItem>
+                  <SelectItem value="caminhonete">Caminhonete</SelectItem>
+                  <SelectItem value="utilitario">Utilitário</SelectItem>
+                  <SelectItem value="caminhao">Caminhão</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
 
-        <Field id="vehicleYear" label="Ano aproximado" error={errors.vehicleYear?.message}>
-          <Input id="vehicleYear" inputMode="numeric" placeholder="2018" {...form.register("vehicleYear")} />
-        </Field>
+            <Field
+              id="vehicleYear"
+              label="Ano aproximado (opcional)"
+              error={errors.vehicleYear?.message}
+            >
+              <Input
+                id="vehicleYear"
+                inputMode="numeric"
+                placeholder="2018"
+                {...form.register("vehicleYear")}
+              />
+            </Field>
 
-        <Field id="bestTime" label="Melhor horário" error={errors.bestTime?.message}>
-          <Select value={form.watch("bestTime")} onValueChange={(v) => form.setValue("bestTime", v)}>
-            <SelectTrigger id="bestTime">
-              <SelectValue placeholder="Selecione" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Manhã">Manhã</SelectItem>
-              <SelectItem value="Tarde">Tarde</SelectItem>
-              <SelectItem value="Noite">Noite</SelectItem>
-            </SelectContent>
-          </Select>
-        </Field>
+            <Field id="bestTime" label="Melhor horário (opcional)">
+              <Select
+                value={form.watch("bestTime")}
+                onValueChange={(v) => form.setValue("bestTime", v)}
+              >
+                <SelectTrigger id="bestTime">
+                  <SelectValue placeholder="Selecione" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Manhã">Manhã</SelectItem>
+                  <SelectItem value="Tarde">Tarde</SelectItem>
+                  <SelectItem value="Noite">Noite</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
 
-        <Field
-          id="contactPreference"
-          label="Preferência de atendimento"
-          error={errors.contactPreference?.message}
-        >
-          <Select
-            value={form.watch("contactPreference")}
-            onValueChange={(v) => form.setValue("contactPreference", v)}
-          >
-            <SelectTrigger id="contactPreference">
-              <SelectValue placeholder="Selecione" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="whatsapp">WhatsApp</SelectItem>
-              <SelectItem value="ligacao">Ligação</SelectItem>
-              <SelectItem value="qualquer">Qualquer opção</SelectItem>
-            </SelectContent>
-          </Select>
-        </Field>
+            <Field id="contactPreference" label="Preferência de atendimento (opcional)">
+              <Select
+                value={form.watch("contactPreference")}
+                onValueChange={(v) => form.setValue("contactPreference", v)}
+              >
+                <SelectTrigger id="contactPreference">
+                  <SelectValue placeholder="Selecione" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="whatsapp">WhatsApp</SelectItem>
+                  <SelectItem value="ligacao">Ligação</SelectItem>
+                  <SelectItem value="qualquer">Qualquer opção</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
+          </>
+        ) : null}
       </div>
 
       <div className="hidden" aria-hidden="true">
@@ -288,8 +303,7 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
         />
         <div>
           <Label htmlFor="consent" className="text-sm font-normal leading-relaxed">
-            Autorizo o contato da equipe da {SITE.name} pelos dados informados e concordo com a
-            política de privacidade.
+            Autorizo o contato da equipe da {SITE.name} pelos dados informados.
           </Label>
           <p id="consent-help" className="mt-1 text-xs text-muted-foreground">
             Consentimento registrado na versão {SITE.consentVersion}.
@@ -309,12 +323,16 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
             Enviando solicitação
           </>
         ) : (
-          "Quero conhecer as opções"
+          "Solicitar cotação"
         )}
       </Button>
 
       <p className="text-xs leading-relaxed text-muted-foreground">
-        {SITE.disclaimer} Prefere conversar agora?{" "}
+        Cotação sem compromisso. Atendimento para São José e Grande Florianópolis.
+      </p>
+
+      <p className="text-xs leading-relaxed text-muted-foreground">
+        Prefere conversar agora?{" "}
         <a
           href={whatsappLink()}
           target="_blank"
