@@ -32,7 +32,7 @@ export function AdminSidebar() {
     <Sidebar collapsible="icon" className="border-r border-border">
       <SidebarHeader className="border-b border-border px-3 py-3">
         <Link to="/app/dashboard" className="flex items-center gap-2" aria-label="Início do painel">
-          <Logo variant="mark" className="size-8 shrink-0" />
+          <Logo size="sm" className="shrink-0" />
           {!collapsed ? (
             <span className="min-w-0">
               <span className="block truncate text-sm font-[650] leading-tight text-sidebar-foreground">
