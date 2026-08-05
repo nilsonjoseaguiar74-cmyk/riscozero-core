@@ -99,7 +99,7 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-page flex flex-col gap-2 py-5 text-xs text-brand-foreground/60 md:flex-row md:items-center md:justify-between">
+        <div className="container-page flex flex-col gap-2 pb-24 pt-5 text-xs text-brand-foreground/60 sm:py-5 md:flex-row md:items-center md:justify-between">
           <p>
             {SITE.fullName}. Proteção patrimonial mutualista, assistência e benefícios. Não se trata
             de seguro.
@@ -108,9 +108,9 @@ export function SiteFooter() {
             <p>{SITE.disclaimer}</p>
             <Link
               to="/login"
-              className="text-[11px] font-normal text-brand-foreground/45 underline-offset-2 hover:text-brand-foreground/70 hover:underline"
+              className="inline-flex min-h-10 items-center rounded-md border border-white/15 px-3 text-xs font-semibold text-brand-foreground/80 transition-colors hover:bg-white/10 hover:text-brand-foreground"
             >
-              Área restrita
+              Acessar plataforma
             </Link>
           </div>
         </div>
