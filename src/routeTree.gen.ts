@@ -14,8 +14,12 @@ import { Route as SiteIndexRouteImport } from './routes/_site.index'
 import { Route as SiteBeneficiosRouteImport } from './routes/_site.beneficios'
 import { Route as SiteComoFuncionaRouteImport } from './routes/_site.como-funciona'
 import { Route as SiteContatoRouteImport } from './routes/_site.contato'
+import { Route as SiteObrigadoRouteImport } from './routes/_site.obrigado'
 import { Route as SitePerguntasFrequentesRouteImport } from './routes/_site.perguntas-frequentes'
+import { Route as SitePoliticaDePrivacidadeRouteImport } from './routes/_site.politica-de-privacidade'
 import { Route as SiteRegioesRouteImport } from './routes/_site.regioes'
+import { Route as SiteSolicitarCotacaoRouteImport } from './routes/_site.solicitar-cotacao'
+import { Route as SiteTermosDeUsoRouteImport } from './routes/_site.termos-de-uso'
 
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
@@ -41,14 +45,35 @@ const SiteContatoRoute = SiteContatoRouteImport.update({
   path: '/contato',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteObrigadoRoute = SiteObrigadoRouteImport.update({
+  id: '/obrigado',
+  path: '/obrigado',
+  getParentRoute: () => SiteRoute,
+} as any)
 const SitePerguntasFrequentesRoute = SitePerguntasFrequentesRouteImport.update({
   id: '/perguntas-frequentes',
   path: '/perguntas-frequentes',
   getParentRoute: () => SiteRoute,
 } as any)
+const SitePoliticaDePrivacidadeRoute =
+  SitePoliticaDePrivacidadeRouteImport.update({
+    id: '/politica-de-privacidade',
+    path: '/politica-de-privacidade',
+    getParentRoute: () => SiteRoute,
+  } as any)
 const SiteRegioesRoute = SiteRegioesRouteImport.update({
   id: '/regioes',
   path: '/regioes',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteSolicitarCotacaoRoute = SiteSolicitarCotacaoRouteImport.update({
+  id: '/solicitar-cotacao',
+  path: '/solicitar-cotacao',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteTermosDeUsoRoute = SiteTermosDeUsoRouteImport.update({
+  id: '/termos-de-uso',
+  path: '/termos-de-uso',
   getParentRoute: () => SiteRoute,
 } as any)
 
@@ -57,15 +82,23 @@ export interface FileRoutesByFullPath {
   '/beneficios': typeof SiteBeneficiosRoute
   '/como-funciona': typeof SiteComoFuncionaRoute
   '/contato': typeof SiteContatoRoute
+  '/obrigado': typeof SiteObrigadoRoute
   '/perguntas-frequentes': typeof SitePerguntasFrequentesRoute
+  '/politica-de-privacidade': typeof SitePoliticaDePrivacidadeRoute
   '/regioes': typeof SiteRegioesRoute
+  '/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
+  '/termos-de-uso': typeof SiteTermosDeUsoRoute
 }
 export interface FileRoutesByTo {
   '/beneficios': typeof SiteBeneficiosRoute
   '/como-funciona': typeof SiteComoFuncionaRoute
   '/contato': typeof SiteContatoRoute
+  '/obrigado': typeof SiteObrigadoRoute
   '/perguntas-frequentes': typeof SitePerguntasFrequentesRoute
+  '/politica-de-privacidade': typeof SitePoliticaDePrivacidadeRoute
   '/regioes': typeof SiteRegioesRoute
+  '/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
+  '/termos-de-uso': typeof SiteTermosDeUsoRoute
   '/': typeof SiteIndexRoute
 }
 export interface FileRoutesById {
@@ -74,8 +107,12 @@ export interface FileRoutesById {
   '/_site/beneficios': typeof SiteBeneficiosRoute
   '/_site/como-funciona': typeof SiteComoFuncionaRoute
   '/_site/contato': typeof SiteContatoRoute
+  '/_site/obrigado': typeof SiteObrigadoRoute
   '/_site/perguntas-frequentes': typeof SitePerguntasFrequentesRoute
+  '/_site/politica-de-privacidade': typeof SitePoliticaDePrivacidadeRoute
   '/_site/regioes': typeof SiteRegioesRoute
+  '/_site/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
+  '/_site/termos-de-uso': typeof SiteTermosDeUsoRoute
   '/_site/': typeof SiteIndexRoute
 }
 export interface FileRouteTypes {
@@ -85,15 +122,23 @@ export interface FileRouteTypes {
     | '/beneficios'
     | '/como-funciona'
     | '/contato'
+    | '/obrigado'
     | '/perguntas-frequentes'
+    | '/politica-de-privacidade'
     | '/regioes'
+    | '/solicitar-cotacao'
+    | '/termos-de-uso'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/beneficios'
     | '/como-funciona'
     | '/contato'
+    | '/obrigado'
     | '/perguntas-frequentes'
+    | '/politica-de-privacidade'
     | '/regioes'
+    | '/solicitar-cotacao'
+    | '/termos-de-uso'
     | '/'
   id:
     | '__root__'
@@ -101,8 +146,12 @@ export interface FileRouteTypes {
     | '/_site/beneficios'
     | '/_site/como-funciona'
     | '/_site/contato'
+    | '/_site/obrigado'
     | '/_site/perguntas-frequentes'
+    | '/_site/politica-de-privacidade'
     | '/_site/regioes'
+    | '/_site/solicitar-cotacao'
+    | '/_site/termos-de-uso'
     | '/_site/'
   fileRoutesById: FileRoutesById
 }
@@ -147,11 +196,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteContatoRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/obrigado': {
+      id: '/_site/obrigado'
+      path: '/obrigado'
+      fullPath: '/obrigado'
+      preLoaderRoute: typeof SiteObrigadoRouteImport
+      parentRoute: typeof SiteRoute
+    }
     '/_site/perguntas-frequentes': {
       id: '/_site/perguntas-frequentes'
       path: '/perguntas-frequentes'
       fullPath: '/perguntas-frequentes'
       preLoaderRoute: typeof SitePerguntasFrequentesRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/politica-de-privacidade': {
+      id: '/_site/politica-de-privacidade'
+      path: '/politica-de-privacidade'
+      fullPath: '/politica-de-privacidade'
+      preLoaderRoute: typeof SitePoliticaDePrivacidadeRouteImport
       parentRoute: typeof SiteRoute
     }
     '/_site/regioes': {
@@ -161,6 +224,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteRegioesRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/solicitar-cotacao': {
+      id: '/_site/solicitar-cotacao'
+      path: '/solicitar-cotacao'
+      fullPath: '/solicitar-cotacao'
+      preLoaderRoute: typeof SiteSolicitarCotacaoRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/termos-de-uso': {
+      id: '/_site/termos-de-uso'
+      path: '/termos-de-uso'
+      fullPath: '/termos-de-uso'
+      preLoaderRoute: typeof SiteTermosDeUsoRouteImport
+      parentRoute: typeof SiteRoute
+    }
   }
 }
 
@@ -168,8 +245,12 @@ interface SiteRouteChildren {
   SiteBeneficiosRoute: typeof SiteBeneficiosRoute
   SiteComoFuncionaRoute: typeof SiteComoFuncionaRoute
   SiteContatoRoute: typeof SiteContatoRoute
+  SiteObrigadoRoute: typeof SiteObrigadoRoute
   SitePerguntasFrequentesRoute: typeof SitePerguntasFrequentesRoute
+  SitePoliticaDePrivacidadeRoute: typeof SitePoliticaDePrivacidadeRoute
   SiteRegioesRoute: typeof SiteRegioesRoute
+  SiteSolicitarCotacaoRoute: typeof SiteSolicitarCotacaoRoute
+  SiteTermosDeUsoRoute: typeof SiteTermosDeUsoRoute
   SiteIndexRoute: typeof SiteIndexRoute
 }
 
@@ -177,8 +258,12 @@ const SiteRouteChildren: SiteRouteChildren = {
   SiteBeneficiosRoute: SiteBeneficiosRoute,
   SiteComoFuncionaRoute: SiteComoFuncionaRoute,
   SiteContatoRoute: SiteContatoRoute,
+  SiteObrigadoRoute: SiteObrigadoRoute,
   SitePerguntasFrequentesRoute: SitePerguntasFrequentesRoute,
+  SitePoliticaDePrivacidadeRoute: SitePoliticaDePrivacidadeRoute,
   SiteRegioesRoute: SiteRegioesRoute,
+  SiteSolicitarCotacaoRoute: SiteSolicitarCotacaoRoute,
+  SiteTermosDeUsoRoute: SiteTermosDeUsoRoute,
   SiteIndexRoute: SiteIndexRoute,
 }
 
