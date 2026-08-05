@@ -29,7 +29,7 @@ import { PeriodSelector } from "@/components/admin/PeriodContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { NAV_GROUPS, visibleGroups } from "@/lib/rbac";
 import { notificationsService, NOTIFICATION_KIND_LABEL } from "@/services/notifications";
-import { formatRelative } from "@/lib/format";
+import { formatDateTime } from "@/lib/format";
 import { USER_ROLE_LABEL } from "@/types";
 import type { UserRole } from "@/types";
 
@@ -148,7 +148,7 @@ export function AdminHeader() {
                             {NOTIFICATION_KIND_LABEL[item.kind]}
                           </Badge>
                           <span className="ml-auto text-[10px] text-muted-foreground">
-                            {formatRelative(item.createdAt)}
+                            {formatDateTime(item.createdAt)}
                           </span>
                         </div>
                         <p className="mt-1 text-xs font-medium text-foreground">{item.title}</p>
