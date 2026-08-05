@@ -106,7 +106,7 @@ export const notificationsService = {
   async markAsRead(id: string): Promise<AppNotification> {
     await delay(120);
     const found = notifications.find((item) => item.id === id);
-    if (!found) throw new ApiError("Notificação não encontrada.", 404);
+    if (!found) throw new ApiError("nao_encontrado", "Notificação não encontrada.", 404);
     found.read = true;
     return { ...found };
   },
