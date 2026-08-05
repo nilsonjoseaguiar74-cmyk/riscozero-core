@@ -9,7 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as SiteRouteImport } from './routes/_site'
+import { Route as AuthEsqueciMinhaSenhaRouteImport } from './routes/_auth.esqueci-minha-senha'
+import { Route as AuthLoginRouteImport } from './routes/_auth.login'
+import { Route as AuthRedefinirSenhaRouteImport } from './routes/_auth.redefinir-senha'
+import { Route as AuthVerificarAcessoRouteImport } from './routes/_auth.verificar-acesso'
 import { Route as SiteIndexRouteImport } from './routes/_site.index'
 import { Route as SiteBeneficiosRouteImport } from './routes/_site.beneficios'
 import { Route as SiteComoFuncionaRouteImport } from './routes/_site.como-funciona'
@@ -21,9 +26,33 @@ import { Route as SiteRegioesRouteImport } from './routes/_site.regioes'
 import { Route as SiteSolicitarCotacaoRouteImport } from './routes/_site.solicitar-cotacao'
 import { Route as SiteTermosDeUsoRouteImport } from './routes/_site.termos-de-uso'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthEsqueciMinhaSenhaRoute = AuthEsqueciMinhaSenhaRouteImport.update({
+  id: '/esqueci-minha-senha',
+  path: '/esqueci-minha-senha',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthRedefinirSenhaRoute = AuthRedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthVerificarAcessoRoute = AuthVerificarAcessoRouteImport.update({
+  id: '/verificar-acesso',
+  path: '/verificar-acesso',
+  getParentRoute: () => AuthRoute,
 } as any)
 const SiteIndexRoute = SiteIndexRouteImport.update({
   id: '/',
@@ -79,6 +108,10 @@ const SiteTermosDeUsoRoute = SiteTermosDeUsoRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
+  '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
+  '/login': typeof AuthLoginRoute
+  '/redefinir-senha': typeof AuthRedefinirSenhaRoute
+  '/verificar-acesso': typeof AuthVerificarAcessoRoute
   '/beneficios': typeof SiteBeneficiosRoute
   '/como-funciona': typeof SiteComoFuncionaRoute
   '/contato': typeof SiteContatoRoute
@@ -90,6 +123,11 @@ export interface FileRoutesByFullPath {
   '/termos-de-uso': typeof SiteTermosDeUsoRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof SiteIndexRoute
+  '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
+  '/login': typeof AuthLoginRoute
+  '/redefinir-senha': typeof AuthRedefinirSenhaRoute
+  '/verificar-acesso': typeof AuthVerificarAcessoRoute
   '/beneficios': typeof SiteBeneficiosRoute
   '/como-funciona': typeof SiteComoFuncionaRoute
   '/contato': typeof SiteContatoRoute
@@ -99,11 +137,15 @@ export interface FileRoutesByTo {
   '/regioes': typeof SiteRegioesRoute
   '/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
   '/termos-de-uso': typeof SiteTermosDeUsoRoute
-  '/': typeof SiteIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_auth': typeof AuthRouteWithChildren
   '/_site': typeof SiteRouteWithChildren
+  '/_auth/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/redefinir-senha': typeof AuthRedefinirSenhaRoute
+  '/_auth/verificar-acesso': typeof AuthVerificarAcessoRoute
   '/_site/beneficios': typeof SiteBeneficiosRoute
   '/_site/como-funciona': typeof SiteComoFuncionaRoute
   '/_site/contato': typeof SiteContatoRoute
@@ -119,6 +161,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/esqueci-minha-senha'
+    | '/login'
+    | '/redefinir-senha'
+    | '/verificar-acesso'
     | '/beneficios'
     | '/como-funciona'
     | '/contato'
@@ -130,6 +176,11 @@ export interface FileRouteTypes {
     | '/termos-de-uso'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
+    | '/esqueci-minha-senha'
+    | '/login'
+    | '/redefinir-senha'
+    | '/verificar-acesso'
     | '/beneficios'
     | '/como-funciona'
     | '/contato'
@@ -139,10 +190,14 @@ export interface FileRouteTypes {
     | '/regioes'
     | '/solicitar-cotacao'
     | '/termos-de-uso'
-    | '/'
   id:
     | '__root__'
+    | '/_auth'
     | '/_site'
+    | '/_auth/esqueci-minha-senha'
+    | '/_auth/login'
+    | '/_auth/redefinir-senha'
+    | '/_auth/verificar-acesso'
     | '/_site/beneficios'
     | '/_site/como-funciona'
     | '/_site/contato'
@@ -156,17 +211,53 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AuthRoute: typeof AuthRouteWithChildren
   SiteRoute: typeof SiteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_site': {
       id: '/_site'
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof SiteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_auth/esqueci-minha-senha': {
+      id: '/_auth/esqueci-minha-senha'
+      path: '/esqueci-minha-senha'
+      fullPath: '/esqueci-minha-senha'
+      preLoaderRoute: typeof AuthEsqueciMinhaSenhaRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/redefinir-senha': {
+      id: '/_auth/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/redefinir-senha'
+      preLoaderRoute: typeof AuthRedefinirSenhaRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/verificar-acesso': {
+      id: '/_auth/verificar-acesso'
+      path: '/verificar-acesso'
+      fullPath: '/verificar-acesso'
+      preLoaderRoute: typeof AuthVerificarAcessoRouteImport
+      parentRoute: typeof AuthRoute
     }
     '/_site/': {
       id: '/_site/'
@@ -241,6 +332,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthRouteChildren {
+  AuthEsqueciMinhaSenhaRoute: typeof AuthEsqueciMinhaSenhaRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthRedefinirSenhaRoute: typeof AuthRedefinirSenhaRoute
+  AuthVerificarAcessoRoute: typeof AuthVerificarAcessoRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthEsqueciMinhaSenhaRoute: AuthEsqueciMinhaSenhaRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthRedefinirSenhaRoute: AuthRedefinirSenhaRoute,
+  AuthVerificarAcessoRoute: AuthVerificarAcessoRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 interface SiteRouteChildren {
   SiteBeneficiosRoute: typeof SiteBeneficiosRoute
   SiteComoFuncionaRoute: typeof SiteComoFuncionaRoute
@@ -270,6 +377,7 @@ const SiteRouteChildren: SiteRouteChildren = {
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  AuthRoute: AuthRouteWithChildren,
   SiteRoute: SiteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
