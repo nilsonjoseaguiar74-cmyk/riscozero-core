@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SiteRouteImport } from './routes/_site'
 import { Route as SiteIndexRouteImport } from './routes/_site.index'
 import { Route as SiteBeneficiosRouteImport } from './routes/_site.beneficios'
+import { Route as SiteComoFuncionaRouteImport } from './routes/_site.como-funciona'
 
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
@@ -27,27 +28,40 @@ const SiteBeneficiosRoute = SiteBeneficiosRouteImport.update({
   path: '/beneficios',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteComoFuncionaRoute = SiteComoFuncionaRouteImport.update({
+  id: '/como-funciona',
+  path: '/como-funciona',
+  getParentRoute: () => SiteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
   '/beneficios': typeof SiteBeneficiosRoute
+  '/como-funciona': typeof SiteComoFuncionaRoute
 }
 export interface FileRoutesByTo {
   '/beneficios': typeof SiteBeneficiosRoute
+  '/como-funciona': typeof SiteComoFuncionaRoute
   '/': typeof SiteIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_site': typeof SiteRouteWithChildren
   '/_site/beneficios': typeof SiteBeneficiosRoute
+  '/_site/como-funciona': typeof SiteComoFuncionaRoute
   '/_site/': typeof SiteIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/beneficios'
+  fullPaths: '/' | '/beneficios' | '/como-funciona'
   fileRoutesByTo: FileRoutesByTo
-  to: '/beneficios' | '/'
-  id: '__root__' | '/_site' | '/_site/beneficios' | '/_site/'
+  to: '/beneficios' | '/como-funciona' | '/'
+  id:
+    | '__root__'
+    | '/_site'
+    | '/_site/beneficios'
+    | '/_site/como-funciona'
+    | '/_site/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,16 +91,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteBeneficiosRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/como-funciona': {
+      id: '/_site/como-funciona'
+      path: '/como-funciona'
+      fullPath: '/como-funciona'
+      preLoaderRoute: typeof SiteComoFuncionaRouteImport
+      parentRoute: typeof SiteRoute
+    }
   }
 }
 
 interface SiteRouteChildren {
   SiteBeneficiosRoute: typeof SiteBeneficiosRoute
+  SiteComoFuncionaRoute: typeof SiteComoFuncionaRoute
   SiteIndexRoute: typeof SiteIndexRoute
 }
 
 const SiteRouteChildren: SiteRouteChildren = {
   SiteBeneficiosRoute: SiteBeneficiosRoute,
+  SiteComoFuncionaRoute: SiteComoFuncionaRoute,
   SiteIndexRoute: SiteIndexRoute,
 }
 
