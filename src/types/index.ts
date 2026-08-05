@@ -27,7 +27,16 @@ export type Permission =
   | "users.manage"
   | "audit.view"
   | "settings.manage"
-  | "developer.access";
+  | "developer.access"
+  | "association.view"
+  | "association.manage"
+  | "finance.view"
+  | "sensitive.view"
+  | "traffic.view"
+  | "traffic.manage"
+  | "integrations.view"
+  | "sync.manage"
+  | "documents.view";
 
 export interface AuthUser {
   id: UUID;
