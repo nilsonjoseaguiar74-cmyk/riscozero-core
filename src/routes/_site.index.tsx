@@ -64,7 +64,11 @@ function HomePage() {
               ))}
             </ul>
             <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
-              <Button asChild size="lg" className="bg-gold text-gold-foreground hover:bg-gold-light">
+              <Button
+                asChild
+                size="lg"
+                className="bg-gold text-gold-foreground hover:bg-gold-light"
+              >
                 <Link
                   to="/solicitar-cotacao"
                   onClick={() => trackEvent("cta_click", { local: "hero" })}

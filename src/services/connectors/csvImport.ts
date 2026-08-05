@@ -51,46 +51,103 @@ export class CsvImportConnector implements AssociationSystemConnector {
 
   async importAssociates(config: ConnectorConfig): Promise<SyncResult> {
     await delay(500);
-    return buildSyncResult({ connectorId: config.id, entidade: "associados", direction: "import", seedKey: `${config.id}-csv-associados`, durationMs: 500 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "associados",
+      direction: "import",
+      seedKey: `${config.id}-csv-associados`,
+      durationMs: 500,
+    });
   }
 
   async importVehicles(config: ConnectorConfig): Promise<SyncResult> {
     await delay(500);
-    return buildSyncResult({ connectorId: config.id, entidade: "veiculos", direction: "import", seedKey: `${config.id}-csv-veiculos`, durationMs: 500 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "veiculos",
+      direction: "import",
+      seedKey: `${config.id}-csv-veiculos`,
+      durationMs: 500,
+    });
   }
 
   async importMemberships(config: ConnectorConfig): Promise<SyncResult> {
     await delay(500);
-    return buildSyncResult({ connectorId: config.id, entidade: "adesoes", direction: "import", seedKey: `${config.id}-csv-adesoes`, durationMs: 500 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "adesoes",
+      direction: "import",
+      seedKey: `${config.id}-csv-adesoes`,
+      durationMs: 500,
+    });
   }
 
   async importOccurrences(config: ConnectorConfig): Promise<SyncResult> {
     await delay(400);
-    return buildSyncResult({ connectorId: config.id, entidade: "ocorrencias", direction: "import", seedKey: `${config.id}-csv-ocorrencias`, durationMs: 400 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "ocorrencias",
+      direction: "import",
+      seedKey: `${config.id}-csv-ocorrencias`,
+      durationMs: 400,
+    });
   }
 
   async importFinancialSummary(config: ConnectorConfig): Promise<SyncResult> {
     await delay(400);
-    return buildSyncResult({ connectorId: config.id, entidade: "situacao_financeira", direction: "import", seedKey: `${config.id}-csv-financeiro`, durationMs: 400 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "situacao_financeira",
+      direction: "import",
+      seedKey: `${config.id}-csv-financeiro`,
+      durationMs: 400,
+    });
   }
 
   async exportLead(config: ConnectorConfig, leadId: string): Promise<SyncResult> {
     await delay(200);
-    return buildSyncResult({ connectorId: config.id, entidade: "leads", direction: "export", seedKey: `${config.id}-csv-lead-${leadId}`, durationMs: 200 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "leads",
+      direction: "export",
+      seedKey: `${config.id}-csv-lead-${leadId}`,
+      durationMs: 200,
+    });
   }
 
-  async exportMembership(config: ConnectorConfig, request: MembershipExportRequest): Promise<SyncResult> {
+  async exportMembership(
+    config: ConnectorConfig,
+    request: MembershipExportRequest,
+  ): Promise<SyncResult> {
     await delay(200);
-    return buildSyncResult({ connectorId: config.id, entidade: "adesoes", direction: "export", seedKey: `${config.id}-csv-${request.membershipId}`, durationMs: 200 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "adesoes",
+      direction: "export",
+      seedKey: `${config.id}-csv-${request.membershipId}`,
+      durationMs: 200,
+    });
   }
 
   async syncStatus(config: ConnectorConfig, entidade: SyncEntity): Promise<SyncResult> {
     await delay(180);
-    return buildSyncResult({ connectorId: config.id, entidade, direction: "import", seedKey: `${config.id}-csv-status-${entidade}`, durationMs: 180 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade,
+      direction: "import",
+      seedKey: `${config.id}-csv-status-${entidade}`,
+      durationMs: 180,
+    });
   }
 
   async retryOperation(config: ConnectorConfig, correlationId: string): Promise<SyncResult> {
     await delay(250);
-    return buildSyncResult({ connectorId: config.id, entidade: "associados", direction: "import", seedKey: `retry-csv-${correlationId}`, durationMs: 250 });
+    return buildSyncResult({
+      connectorId: config.id,
+      entidade: "associados",
+      direction: "import",
+      seedKey: `retry-csv-${correlationId}`,
+      durationMs: 250,
+    });
   }
 }

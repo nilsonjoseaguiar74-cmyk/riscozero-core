@@ -15,12 +15,7 @@ export class ApiError extends Error {
   readonly status: number;
   readonly details?: Record<string, string[]>;
 
-  constructor(
-    kind: ApiErrorKind,
-    message: string,
-    status = 0,
-    details?: Record<string, string[]>,
-  ) {
+  constructor(kind: ApiErrorKind, message: string, status = 0, details?: Record<string, string[]>) {
     super(message);
     this.name = "ApiError";
     this.kind = kind;

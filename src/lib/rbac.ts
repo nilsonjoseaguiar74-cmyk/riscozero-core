@@ -48,7 +48,11 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Gestão da Associação",
     permission: "association.view",
     items: [
-      { label: "Visão executiva", to: "/app/association/dashboard", permission: "association.view" },
+      {
+        label: "Visão executiva",
+        to: "/app/association/dashboard",
+        permission: "association.view",
+      },
       { label: "Associados", to: "/app/association/members", permission: "association.view" },
       { label: "Veículos", to: "/app/association/vehicles", permission: "association.view" },
       { label: "Adesões", to: "/app/association/memberships", permission: "association.view" },
@@ -85,7 +89,11 @@ export const NAV_GROUPS: NavGroup[] = [
       { label: "Eventos", to: "/app/traffic/events", permission: "traffic.view" },
       { label: "Criativos", to: "/app/traffic/creatives", permission: "traffic.view" },
       { label: "Experimentos", to: "/app/traffic/experiments", permission: "traffic.manage" },
-      { label: "Integrações de mídia", to: "/app/traffic/integrations", permission: "traffic.view" },
+      {
+        label: "Integrações de mídia",
+        to: "/app/traffic/integrations",
+        permission: "traffic.view",
+      },
       { label: "Diagnósticos", to: "/app/traffic/diagnostics", permission: "traffic.view" },
       { label: "Relatórios de tráfego", to: "/app/traffic/reports", permission: "reports.view" },
     ],
@@ -110,7 +118,11 @@ export const NAV_GROUPS: NavGroup[] = [
         to: "/app/integrations/mappings",
         permission: "sync.manage",
       },
-      { label: "Logs de sincronização", to: "/app/integrations/logs", permission: "integrations.view" },
+      {
+        label: "Logs de sincronização",
+        to: "/app/integrations/logs",
+        permission: "integrations.view",
+      },
       { label: "Conflitos", to: "/app/integrations/conflicts", permission: "sync.manage" },
     ],
   },
@@ -119,7 +131,11 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Desenvolvedor",
     permission: "developer.access",
     items: [
-      { label: "Diagnósticos técnicos", to: "/app/dev/diagnostics", permission: "developer.access" },
+      {
+        label: "Diagnósticos técnicos",
+        to: "/app/dev/diagnostics",
+        permission: "developer.access",
+      },
       { label: "Feature flags", to: "/app/dev/feature-flags", permission: "developer.access" },
       { label: "Documentação da API", to: "/app/dev/api-docs", permission: "developer.access" },
       { label: "Status dos serviços", to: "/app/dev/status", permission: "developer.access" },

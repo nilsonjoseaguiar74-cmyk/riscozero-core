@@ -45,12 +45,7 @@ export function SectionHeading({
       {eyebrow ? (
         <p className={cn("eyebrow", inverted ? "text-gold-light" : "text-gold")}>{eyebrow}</p>
       ) : null}
-      <h2
-        className={cn(
-          "display-2 mt-2",
-          inverted ? "text-brand-foreground" : "text-foreground",
-        )}
-      >
+      <h2 className={cn("display-2 mt-2", inverted ? "text-brand-foreground" : "text-foreground")}>
         {title}
       </h2>
       {description ? (

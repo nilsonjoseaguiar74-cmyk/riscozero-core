@@ -86,7 +86,13 @@ const LAST = [
   "Osório",
   "Pacheco",
 ];
-const STREETS = ["Rua das Palmeiras", "Av. Central", "Rua Beira Mar", "Rua das Acácias", "Av. das Torres"];
+const STREETS = [
+  "Rua das Palmeiras",
+  "Av. Central",
+  "Rua Beira Mar",
+  "Rua das Acácias",
+  "Av. das Torres",
+];
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 function plate(): string {
@@ -147,27 +153,86 @@ const PROVIDER_NAMES = [
   "Guincho Grande Fpolis",
   "Oficina Autoserv",
 ];
-export const MOCK_PROVIDERS: Provider[] = PROVIDER_NAMES.map((nome, i) => ({
-  id: `prestador-${i + 1}`,
-  nome,
-  tipo: PROVIDER_TYPES[i % PROVIDER_TYPES.length]!,
-  cidade: pick(CITY_LIST),
-  atendimentosMes: int(5, 60),
-  avaliacaoMedia: Number((3.6 + rand() * 1.4).toFixed(1)),
-  ativo: rand() > 0.12,
-} satisfies Provider));
+export const MOCK_PROVIDERS: Provider[] = PROVIDER_NAMES.map(
+  (nome, i) =>
+    ({
+      id: `prestador-${i + 1}`,
+      nome,
+      tipo: PROVIDER_TYPES[i % PROVIDER_TYPES.length]!,
+      cidade: pick(CITY_LIST),
+      atendimentosMes: int(5, 60),
+      avaliacaoMedia: Number((3.6 + rand() * 1.4).toFixed(1)),
+      ativo: rand() > 0.12,
+    }) satisfies Provider,
+);
 
 /* ------------------------------- Benefícios ---------------------------- */
 
 export const MOCK_BENEFITS: Benefit[] = [
-  { id: "beneficio-1", nome: "Assistência 24 horas", categoria: "Assistência", descricao: "Reboque, pane elétrica e mecânica em todo o território nacional.", ativo: true, utilizacoesMes: 68 },
-  { id: "beneficio-2", nome: "Carro reserva", categoria: "Mobilidade", descricao: "Veículo reserva em caso de sinistro com reparo prolongado.", ativo: true, utilizacoesMes: 22 },
-  { id: "beneficio-3", nome: "Chaveiro emergencial", categoria: "Assistência", descricao: "Atendimento para perda ou quebra de chaves.", ativo: true, utilizacoesMes: 14 },
-  { id: "beneficio-4", nome: "Descontos em oficinas parceiras", categoria: "Convênio", descricao: "Descontos em revisões e peças na rede credenciada.", ativo: true, utilizacoesMes: 41 },
-  { id: "beneficio-5", nome: "Proteção contra roubo e furto", categoria: "Proteção", descricao: "Cobertura mutualista para roubo, furto e incêndio.", ativo: true, utilizacoesMes: 9 },
-  { id: "beneficio-6", nome: "Vidros e faróis", categoria: "Proteção", descricao: "Reparo e reposição de vidros e faróis danificados.", ativo: true, utilizacoesMes: 17 },
-  { id: "beneficio-7", nome: "Indicação premiada", categoria: "Relacionamento", descricao: "Bonificação para associados que indicam novos participantes.", ativo: false, utilizacoesMes: 3 },
-  { id: "beneficio-8", nome: "Telemedicina para motoristas", categoria: "Convênio", descricao: "Atendimento médico remoto para condutores associados.", ativo: true, utilizacoesMes: 12 },
+  {
+    id: "beneficio-1",
+    nome: "Assistência 24 horas",
+    categoria: "Assistência",
+    descricao: "Reboque, pane elétrica e mecânica em todo o território nacional.",
+    ativo: true,
+    utilizacoesMes: 68,
+  },
+  {
+    id: "beneficio-2",
+    nome: "Carro reserva",
+    categoria: "Mobilidade",
+    descricao: "Veículo reserva em caso de sinistro com reparo prolongado.",
+    ativo: true,
+    utilizacoesMes: 22,
+  },
+  {
+    id: "beneficio-3",
+    nome: "Chaveiro emergencial",
+    categoria: "Assistência",
+    descricao: "Atendimento para perda ou quebra de chaves.",
+    ativo: true,
+    utilizacoesMes: 14,
+  },
+  {
+    id: "beneficio-4",
+    nome: "Descontos em oficinas parceiras",
+    categoria: "Convênio",
+    descricao: "Descontos em revisões e peças na rede credenciada.",
+    ativo: true,
+    utilizacoesMes: 41,
+  },
+  {
+    id: "beneficio-5",
+    nome: "Proteção contra roubo e furto",
+    categoria: "Proteção",
+    descricao: "Cobertura mutualista para roubo, furto e incêndio.",
+    ativo: true,
+    utilizacoesMes: 9,
+  },
+  {
+    id: "beneficio-6",
+    nome: "Vidros e faróis",
+    categoria: "Proteção",
+    descricao: "Reparo e reposição de vidros e faróis danificados.",
+    ativo: true,
+    utilizacoesMes: 17,
+  },
+  {
+    id: "beneficio-7",
+    nome: "Indicação premiada",
+    categoria: "Relacionamento",
+    descricao: "Bonificação para associados que indicam novos participantes.",
+    ativo: false,
+    utilizacoesMes: 3,
+  },
+  {
+    id: "beneficio-8",
+    nome: "Telemedicina para motoristas",
+    categoria: "Convênio",
+    descricao: "Atendimento médico remoto para condutores associados.",
+    ativo: true,
+    utilizacoesMes: 12,
+  },
 ];
 
 /* -------------------------------- Associados ---------------------------- */
@@ -194,17 +259,26 @@ export const MOCK_MEMBERS: Member[] = Array.from({ length: MEMBER_COUNT }, (_, i
   const sistemaOrigem = pick(SISTEMAS);
   const { masked, full } = cpf();
   const situacaoFinanceira: FinancialSituation =
-    status === "inadimplente" ? pick(["atrasado", "negociacao"] as const) : status === "suspenso" ? "atrasado" : "em_dia";
+    status === "inadimplente"
+      ? pick(["atrasado", "negociacao"] as const)
+      : status === "suspenso"
+        ? "atrasado"
+        : "em_dia";
   const nome = `${pick(FIRST)} ${pick(LAST)}`;
   return {
     id: `assoc-${String(i + 1).padStart(4, "0")}`,
     codigoInterno: `RZ-${String(1000 + i)}`,
-    codigoExterno: sistemaOrigem !== "interno" ? `${sistemaOrigem.toUpperCase()}-${20000 + i}` : undefined,
+    codigoExterno:
+      sistemaOrigem !== "interno" ? `${sistemaOrigem.toUpperCase()}-${20000 + i}` : undefined,
     nome,
     cpfMasked: masked,
     cpfFull: full,
     whatsapp: `(48) 9${int(1000, 9999)}-${int(1000, 9999)}`,
-    email: `${nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, ".")}@exemplo.com`,
+    email: `${nome
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, ".")}@exemplo.com`,
     cidade: pick(CITY_LIST),
     endereco: `${pick(STREETS)}, ${int(10, 2400)}`,
     status,
@@ -214,12 +288,12 @@ export const MOCK_MEMBERS: Member[] = Array.from({ length: MEMBER_COUNT }, (_, i
     consultorNome: consultant.nome,
     situacaoFinanceira,
     sistemaOrigem,
-    ultimaSincronizacaoAt: sistemaOrigem !== "interno" ? new Date(NOW - int(0, 20) * DAY).toISOString() : undefined,
+    ultimaSincronizacaoAt:
+      sistemaOrigem !== "interno" ? new Date(NOW - int(0, 20) * DAY).toISOString() : undefined,
     externalRef:
-      sistemaOrigem !== "interno"
-        ? { system: sistemaOrigem, id: `${20000 + i}` }
-        : undefined,
-    lastSyncAt: sistemaOrigem !== "interno" ? new Date(NOW - int(0, 20) * DAY).toISOString() : undefined,
+      sistemaOrigem !== "interno" ? { system: sistemaOrigem, id: `${20000 + i}` } : undefined,
+    lastSyncAt:
+      sistemaOrigem !== "interno" ? new Date(NOW - int(0, 20) * DAY).toISOString() : undefined,
     consentimentos: [
       { tipo: "lgpd", aceitoEm: dataAdesao.toISOString(), versao: "v1.0" },
       { tipo: "termos_adesao", aceitoEm: dataAdesao.toISOString(), versao: "v1.0" },
@@ -238,13 +312,38 @@ export const MOCK_MEMBERS: Member[] = Array.from({ length: MEMBER_COUNT }, (_, i
 
 /* -------------------------------- Veículos ------------------------------- */
 
-const VEHICLE_CATEGORIES: VehicleType[] = ["carro", "moto", "caminhonete", "utilitario", "caminhao"];
+const VEHICLE_CATEGORIES: VehicleType[] = [
+  "carro",
+  "moto",
+  "caminhonete",
+  "utilitario",
+  "caminhao",
+];
 const BRANDS: Record<VehicleType, [string, string][]> = {
-  carro: [["Chevrolet", "Onix"], ["Volkswagen", "Gol"], ["Fiat", "Argo"], ["Hyundai", "HB20"]],
-  moto: [["Honda", "CG 160"], ["Yamaha", "Fazer"], ["Honda", "Biz"]],
-  caminhonete: [["Fiat", "Toro"], ["Chevrolet", "S10"], ["Volkswagen", "Saveiro"]],
-  utilitario: [["Fiat", "Fiorino"], ["Renault", "Kangoo"]],
-  caminhao: [["Volkswagen", "Delivery"], ["Mercedes-Benz", "Accelo"]],
+  carro: [
+    ["Chevrolet", "Onix"],
+    ["Volkswagen", "Gol"],
+    ["Fiat", "Argo"],
+    ["Hyundai", "HB20"],
+  ],
+  moto: [
+    ["Honda", "CG 160"],
+    ["Yamaha", "Fazer"],
+    ["Honda", "Biz"],
+  ],
+  caminhonete: [
+    ["Fiat", "Toro"],
+    ["Chevrolet", "S10"],
+    ["Volkswagen", "Saveiro"],
+  ],
+  utilitario: [
+    ["Fiat", "Fiorino"],
+    ["Renault", "Kangoo"],
+  ],
+  caminhao: [
+    ["Volkswagen", "Delivery"],
+    ["Mercedes-Benz", "Accelo"],
+  ],
 };
 
 const VEHICLE_COUNT = 150;
@@ -273,11 +372,15 @@ export const MOCK_VEHICLES: Vehicle[] = Array.from({ length: VEHICLE_COUNT }, (_
     vistoriaStatus,
     rastreador: rand() > 0.55,
     opcaoProtecao: pick(["Básica", "Intermediária", "Completa"]),
-    codigoExterno: sistemaOrigem !== "interno" ? `${sistemaOrigem.toUpperCase()}-V${30000 + i}` : undefined,
+    codigoExterno:
+      sistemaOrigem !== "interno" ? `${sistemaOrigem.toUpperCase()}-V${30000 + i}` : undefined,
     sistemaOrigem,
-    ultimaSincronizacaoAt: sistemaOrigem !== "interno" ? new Date(NOW - int(0, 15) * DAY).toISOString() : undefined,
-    externalRef: sistemaOrigem !== "interno" ? { system: sistemaOrigem, id: `${30000 + i}` } : undefined,
-    lastSyncAt: sistemaOrigem !== "interno" ? new Date(NOW - int(0, 15) * DAY).toISOString() : undefined,
+    ultimaSincronizacaoAt:
+      sistemaOrigem !== "interno" ? new Date(NOW - int(0, 15) * DAY).toISOString() : undefined,
+    externalRef:
+      sistemaOrigem !== "interno" ? { system: sistemaOrigem, id: `${30000 + i}` } : undefined,
+    lastSyncAt:
+      sistemaOrigem !== "interno" ? new Date(NOW - int(0, 15) * DAY).toISOString() : undefined,
     fotos: ["foto-frontal.jpg", "foto-lateral.jpg", "foto-traseira.jpg"],
     divergencias: hasDivergence
       ? [
@@ -320,9 +423,7 @@ const MEMBERSHIP_COUNT = 140;
 export const MOCK_MEMBERSHIPS: Membership[] = Array.from({ length: MEMBERSHIP_COUNT }, (_, i) => {
   const lead = i < convertedLeads.length ? convertedLeads[i] : undefined;
   const stage = lead ? pick(["ativa", "ativa", "enviada_erp"] as const) : pick(STAGE_LIST);
-  const iniciadaEm = new Date(
-    lead ? new Date(lead.createdAt).getTime() : NOW - int(1, 400) * DAY,
-  );
+  const iniciadaEm = new Date(lead ? new Date(lead.createdAt).getTime() : NOW - int(1, 400) * DAY);
   const atualizadaEm = new Date(iniciadaEm.getTime() + int(1, 25) * DAY);
   const consultant = pick(MOCK_CONSULTANTS);
   const member = stage === "ativa" && !lead ? pick(MOCK_MEMBERS) : undefined;
@@ -340,7 +441,8 @@ export const MOCK_MEMBERSHIPS: Membership[] = Array.from({ length: MEMBERSHIP_CO
     iniciadaEm: iniciadaEm.toISOString(),
     atualizadaEm: atualizadaEm.toISOString(),
     ativadaEm: stage === "ativa" ? atualizadaEm.toISOString() : undefined,
-    documentosPendentes: stage === "documentacao_pendente" ? ["CNH", "Comprovante de residência"] : [],
+    documentosPendentes:
+      stage === "documentacao_pendente" ? ["CNH", "Comprovante de residência"] : [],
     timeline: [
       {
         id: `adesao-${i}-tl-0`,
@@ -349,14 +451,25 @@ export const MOCK_MEMBERSHIPS: Membership[] = Array.from({ length: MEMBERSHIP_CO
         createdAt: iniciadaEm.toISOString(),
       },
     ],
-    externalRef: stage === "enviada_erp" || stage === "ativa" ? { system: "sga", id: `erp-${5000 + i}` } : undefined,
-    lastSyncAt: stage === "enviada_erp" || stage === "ativa" ? atualizadaEm.toISOString() : undefined,
+    externalRef:
+      stage === "enviada_erp" || stage === "ativa"
+        ? { system: "sga", id: `erp-${5000 + i}` }
+        : undefined,
+    lastSyncAt:
+      stage === "enviada_erp" || stage === "ativa" ? atualizadaEm.toISOString() : undefined,
   } satisfies Membership;
 });
 
 /* ------------------------------- Ocorrências ------------------------------ */
 
-const OCCURRENCE_TYPES: OccurrenceType[] = ["colisao", "furto", "roubo", "incendio", "avaria", "outro"];
+const OCCURRENCE_TYPES: OccurrenceType[] = [
+  "colisao",
+  "furto",
+  "roubo",
+  "incendio",
+  "avaria",
+  "outro",
+];
 const OCCURRENCE_STATUSES = [
   "comunicada",
   "documentacao_pendente",
@@ -419,7 +532,13 @@ const ASSISTANCE_TYPES: AssistanceType[] = [
   "carro_reserva",
   "outro",
 ];
-const ASSISTANCE_STATUSES = ["solicitada", "em_atendimento", "concluida", "concluida", "cancelada"] as const;
+const ASSISTANCE_STATUSES = [
+  "solicitada",
+  "em_atendimento",
+  "concluida",
+  "concluida",
+  "cancelada",
+] as const;
 
 const ASSISTANCE_COUNT = 70;
 export const MOCK_ASSISTANCES: Assistance[] = Array.from({ length: ASSISTANCE_COUNT }, (_, i) => {
@@ -439,7 +558,10 @@ export const MOCK_ASSISTANCES: Assistance[] = Array.from({ length: ASSISTANCE_CO
     local: `${pick(STREETS)}, ${pick(CITY_LIST)}`,
     providerId: provider.id,
     solicitadaEm: solicitadaEm.toISOString(),
-    concluidaEm: status === "concluida" ? new Date(solicitadaEm.getTime() + int(1, 5) * 3600000).toISOString() : undefined,
+    concluidaEm:
+      status === "concluida"
+        ? new Date(solicitadaEm.getTime() + int(1, 5) * 3600000).toISOString()
+        : undefined,
     custo: int(0, 650),
   } satisfies Assistance;
 });
@@ -469,7 +591,8 @@ export const MOCK_INSPECTIONS: Inspection[] = Array.from({ length: INSPECTION_CO
     vehicleId: vehicle.id,
     status,
     agendadaPara: agendadaPara.toISOString(),
-    realizadaEm: status === "aprovada" || status === "recusada" ? agendadaPara.toISOString() : undefined,
+    realizadaEm:
+      status === "aprovada" || status === "recusada" ? agendadaPara.toISOString() : undefined,
     checklist: [
       { item: "Lataria e pintura", ok: rand() > 0.2 },
       { item: "Pneus", ok: rand() > 0.15 },
@@ -481,7 +604,8 @@ export const MOCK_INSPECTIONS: Inspection[] = Array.from({ length: INSPECTION_CO
       longitude: Number((-48.6 - rand() * 0.3).toFixed(5)),
       precisaoMetros: int(5, 40),
     },
-    observacoes: status === "correcao_necessaria" ? "Foto do chassi ilegível, reenvio necessário." : undefined,
+    observacoes:
+      status === "correcao_necessaria" ? "Foto do chassi ilegível, reenvio necessário." : undefined,
   } satisfies Inspection;
 });
 
@@ -495,9 +619,7 @@ export const MOCK_BILLINGS: Billing[] = MOCK_MEMBERS.flatMap((member, mi) => {
     const emitidaEm = new Date(competenceDate.getTime() - 5 * DAY);
     const vencimento = new Date(competenceDate.getTime() + 5 * DAY);
     const status =
-      member.status === "inadimplente" && mIdx === 0
-        ? "vencida"
-        : pick(BILLING_STATUSES);
+      member.status === "inadimplente" && mIdx === 0 ? "vencida" : pick(BILLING_STATUSES);
     return {
       id: `cobranca-${member.id}-${mIdx}`,
       memberId: member.id,
@@ -507,9 +629,16 @@ export const MOCK_BILLINGS: Billing[] = MOCK_MEMBERS.flatMap((member, mi) => {
       status,
       emitidaEm: emitidaEm.toISOString(),
       vencimento: vencimento.toISOString(),
-      pagaEm: status === "paga" ? new Date(vencimento.getTime() - int(0, 4) * DAY).toISOString() : undefined,
-      referenciaExterna: member.sistemaOrigem !== "interno" ? `FIN-${member.codigoInterno}-${mIdx}` : undefined,
-      externalRef: member.sistemaOrigem !== "interno" ? { system: member.sistemaOrigem, id: `${member.id}-${mIdx}` } : undefined,
+      pagaEm:
+        status === "paga"
+          ? new Date(vencimento.getTime() - int(0, 4) * DAY).toISOString()
+          : undefined,
+      referenciaExterna:
+        member.sistemaOrigem !== "interno" ? `FIN-${member.codigoInterno}-${mIdx}` : undefined,
+      externalRef:
+        member.sistemaOrigem !== "interno"
+          ? { system: member.sistemaOrigem, id: `${member.id}-${mIdx}` }
+          : undefined,
       lastSyncAt: member.sistemaOrigem !== "interno" ? emitidaEm.toISOString() : undefined,
     } satisfies Billing;
   });
@@ -532,14 +661,17 @@ export const MOCK_APPORTIONMENTS: Apportionment[] = Array.from({ length: 6 }, (_
 
 export const MOCK_DELINQUENCY: DelinquencyRow[] = MOCK_MEMBERS.filter(
   (m) => m.situacaoFinanceira !== "em_dia",
-).map((member) => ({
-  memberId: member.id,
-  memberName: member.nome,
-  cidade: member.cidade,
-  diasAtraso: int(5, 120),
-  valorEmAberto: int(89, 620),
-  situacao: member.situacaoFinanceira,
-} satisfies DelinquencyRow));
+).map(
+  (member) =>
+    ({
+      memberId: member.id,
+      memberName: member.nome,
+      cidade: member.cidade,
+      diasAtraso: int(5, 120),
+      valorEmAberto: int(89, 620),
+      situacao: member.situacaoFinanceira,
+    }) satisfies DelinquencyRow,
+);
 
 /* -------------------------------- Documentos --------------------------------- */
 
@@ -552,30 +684,46 @@ const DOCUMENT_CATEGORIES: DocumentCategory[] = [
   "boletim_ocorrencia",
   "outro",
 ];
-const DOCUMENT_STATUSES = ["pendente", "recebido", "aprovado", "aprovado", "rejeitado", "vencido"] as const;
+const DOCUMENT_STATUSES = [
+  "pendente",
+  "recebido",
+  "aprovado",
+  "aprovado",
+  "rejeitado",
+  "vencido",
+] as const;
 
 const DOCUMENT_COUNT = 60;
-export const MOCK_DOCUMENTS: AssociationDocument[] = Array.from({ length: DOCUMENT_COUNT }, (_, i) => {
-  const member = pick(MOCK_MEMBERS);
-  const categoria = pick(DOCUMENT_CATEGORIES);
-  const enviadoEm = new Date(NOW - int(1, 400) * DAY);
-  const status = pick(DOCUMENT_STATUSES);
-  const vehicle =
-    categoria === "crlv" || categoria === "laudo_vistoria"
-      ? MOCK_VEHICLES.find((v) => v.memberId === member.id)
-      : undefined;
-  const occurrence = categoria === "boletim_ocorrencia" ? pick(MOCK_OCCURRENCES) : undefined;
-  return {
-    id: `documento-${String(i + 1).padStart(4, "0")}`,
-    categoria,
-    status,
-    memberId: member.id,
-    vehicleId: vehicle?.id,
-    occurrenceId: occurrence?.id,
-    nomeArquivo: `${categoria}-${member.codigoInterno}.pdf`,
-    validade: categoria === "cnh" || categoria === "crlv" ? new Date(NOW + int(-30, 400) * DAY).toISOString() : undefined,
-    enviadoEm: enviadoEm.toISOString(),
-    externalRef: member.sistemaOrigem !== "interno" ? { system: member.sistemaOrigem, id: `doc-${i}` } : undefined,
-    lastSyncAt: member.sistemaOrigem !== "interno" ? enviadoEm.toISOString() : undefined,
-  } satisfies AssociationDocument;
-});
+export const MOCK_DOCUMENTS: AssociationDocument[] = Array.from(
+  { length: DOCUMENT_COUNT },
+  (_, i) => {
+    const member = pick(MOCK_MEMBERS);
+    const categoria = pick(DOCUMENT_CATEGORIES);
+    const enviadoEm = new Date(NOW - int(1, 400) * DAY);
+    const status = pick(DOCUMENT_STATUSES);
+    const vehicle =
+      categoria === "crlv" || categoria === "laudo_vistoria"
+        ? MOCK_VEHICLES.find((v) => v.memberId === member.id)
+        : undefined;
+    const occurrence = categoria === "boletim_ocorrencia" ? pick(MOCK_OCCURRENCES) : undefined;
+    return {
+      id: `documento-${String(i + 1).padStart(4, "0")}`,
+      categoria,
+      status,
+      memberId: member.id,
+      vehicleId: vehicle?.id,
+      occurrenceId: occurrence?.id,
+      nomeArquivo: `${categoria}-${member.codigoInterno}.pdf`,
+      validade:
+        categoria === "cnh" || categoria === "crlv"
+          ? new Date(NOW + int(-30, 400) * DAY).toISOString()
+          : undefined,
+      enviadoEm: enviadoEm.toISOString(),
+      externalRef:
+        member.sistemaOrigem !== "interno"
+          ? { system: member.sistemaOrigem, id: `doc-${i}` }
+          : undefined,
+      lastSyncAt: member.sistemaOrigem !== "interno" ? enviadoEm.toISOString() : undefined,
+    } satisfies AssociationDocument;
+  },
+);

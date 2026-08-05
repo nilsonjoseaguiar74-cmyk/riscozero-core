@@ -111,8 +111,7 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
               vehicleYear: values.vehicleYear || undefined,
               bestTime: values.bestTime || undefined,
               contactPreference: (values.contactPreference || undefined) as
-                | ContactPreference
-                | undefined,
+                ContactPreference | undefined,
             }),
         consent: true,
         tracking: {
