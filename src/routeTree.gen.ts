@@ -27,6 +27,7 @@ import { Route as SitePoliticaDePrivacidadeRouteImport } from './routes/_site.po
 import { Route as SiteRegioesRouteImport } from './routes/_site.regioes'
 import { Route as SiteSolicitarCotacaoRouteImport } from './routes/_site.solicitar-cotacao'
 import { Route as SiteTermosDeUsoRouteImport } from './routes/_site.termos-de-uso'
+import { Route as AppIndexRouteImport } from './routes/app.index'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
@@ -117,10 +118,15 @@ const SiteTermosDeUsoRoute = SiteTermosDeUsoRouteImport.update({
   path: '/termos-de-uso',
   getParentRoute: () => SiteRoute,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
-  '/app': typeof AppRoute
+  '/app': typeof AppRouteWithChildren
   '/painel': typeof PainelRoute
   '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/login': typeof AuthLoginRoute
@@ -135,10 +141,10 @@ export interface FileRoutesByFullPath {
   '/regioes': typeof SiteRegioesRoute
   '/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
   '/termos-de-uso': typeof SiteTermosDeUsoRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof SiteIndexRoute
-  '/app': typeof AppRoute
   '/painel': typeof PainelRoute
   '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/login': typeof AuthLoginRoute
@@ -153,12 +159,13 @@ export interface FileRoutesByTo {
   '/regioes': typeof SiteRegioesRoute
   '/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
   '/termos-de-uso': typeof SiteTermosDeUsoRoute
+  '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteWithChildren
   '/_site': typeof SiteRouteWithChildren
-  '/app': typeof AppRoute
+  '/app': typeof AppRouteWithChildren
   '/painel': typeof PainelRoute
   '/_auth/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/_auth/login': typeof AuthLoginRoute
@@ -174,6 +181,7 @@ export interface FileRoutesById {
   '/_site/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
   '/_site/termos-de-uso': typeof SiteTermosDeUsoRoute
   '/_site/': typeof SiteIndexRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -194,10 +202,10 @@ export interface FileRouteTypes {
     | '/regioes'
     | '/solicitar-cotacao'
     | '/termos-de-uso'
+    | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/app'
     | '/painel'
     | '/esqueci-minha-senha'
     | '/login'
@@ -212,6 +220,7 @@ export interface FileRouteTypes {
     | '/regioes'
     | '/solicitar-cotacao'
     | '/termos-de-uso'
+    | '/app'
   id:
     | '__root__'
     | '/_auth'
@@ -232,12 +241,13 @@ export interface FileRouteTypes {
     | '/_site/solicitar-cotacao'
     | '/_site/termos-de-uso'
     | '/_site/'
+    | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   SiteRoute: typeof SiteRouteWithChildren
-  AppRoute: typeof AppRoute
+  AppRoute: typeof AppRouteWithChildren
   PainelRoute: typeof PainelRoute
 }
 
@@ -369,6 +379,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteTermosDeUsoRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -416,10 +433,20 @@ const SiteRouteChildren: SiteRouteChildren = {
 
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 
+interface AppRouteChildren {
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   SiteRoute: SiteRouteWithChildren,
-  AppRoute: AppRoute,
+  AppRoute: AppRouteWithChildren,
   PainelRoute: PainelRoute,
 }
 export const routeTree = rootRouteImport
