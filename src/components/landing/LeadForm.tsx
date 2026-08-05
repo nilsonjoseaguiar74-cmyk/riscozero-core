@@ -220,7 +220,7 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
           <>
             <Field id="vehicleType" label="Tipo de veículo (opcional)">
               <Select
-                value={form.watch("vehicleType")}
+                value={form.watch("vehicleType") ?? ""}
                 onValueChange={(v) => form.setValue("vehicleType", v)}
               >
                 <SelectTrigger id="vehicleType">
@@ -251,7 +251,7 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
 
             <Field id="bestTime" label="Melhor horário (opcional)">
               <Select
-                value={form.watch("bestTime")}
+                value={form.watch("bestTime") ?? ""}
                 onValueChange={(v) => form.setValue("bestTime", v)}
               >
                 <SelectTrigger id="bestTime">
@@ -267,7 +267,7 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
 
             <Field id="contactPreference" label="Preferência de atendimento (opcional)">
               <Select
-                value={form.watch("contactPreference")}
+                value={form.watch("contactPreference") ?? ""}
                 onValueChange={(v) => form.setValue("contactPreference", v)}
               >
                 <SelectTrigger id="contactPreference">
