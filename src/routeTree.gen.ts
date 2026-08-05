@@ -13,6 +13,7 @@ import { Route as SiteRouteImport } from './routes/_site'
 import { Route as SiteIndexRouteImport } from './routes/_site.index'
 import { Route as SiteBeneficiosRouteImport } from './routes/_site.beneficios'
 import { Route as SiteComoFuncionaRouteImport } from './routes/_site.como-funciona'
+import { Route as SiteRegioesRouteImport } from './routes/_site.regioes'
 
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
@@ -33,15 +34,22 @@ const SiteComoFuncionaRoute = SiteComoFuncionaRouteImport.update({
   path: '/como-funciona',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteRegioesRoute = SiteRegioesRouteImport.update({
+  id: '/regioes',
+  path: '/regioes',
+  getParentRoute: () => SiteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
   '/beneficios': typeof SiteBeneficiosRoute
   '/como-funciona': typeof SiteComoFuncionaRoute
+  '/regioes': typeof SiteRegioesRoute
 }
 export interface FileRoutesByTo {
   '/beneficios': typeof SiteBeneficiosRoute
   '/como-funciona': typeof SiteComoFuncionaRoute
+  '/regioes': typeof SiteRegioesRoute
   '/': typeof SiteIndexRoute
 }
 export interface FileRoutesById {
@@ -49,18 +57,20 @@ export interface FileRoutesById {
   '/_site': typeof SiteRouteWithChildren
   '/_site/beneficios': typeof SiteBeneficiosRoute
   '/_site/como-funciona': typeof SiteComoFuncionaRoute
+  '/_site/regioes': typeof SiteRegioesRoute
   '/_site/': typeof SiteIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/beneficios' | '/como-funciona'
+  fullPaths: '/' | '/beneficios' | '/como-funciona' | '/regioes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/beneficios' | '/como-funciona' | '/'
+  to: '/beneficios' | '/como-funciona' | '/regioes' | '/'
   id:
     | '__root__'
     | '/_site'
     | '/_site/beneficios'
     | '/_site/como-funciona'
+    | '/_site/regioes'
     | '/_site/'
   fileRoutesById: FileRoutesById
 }
@@ -98,18 +108,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteComoFuncionaRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/regioes': {
+      id: '/_site/regioes'
+      path: '/regioes'
+      fullPath: '/regioes'
+      preLoaderRoute: typeof SiteRegioesRouteImport
+      parentRoute: typeof SiteRoute
+    }
   }
 }
 
 interface SiteRouteChildren {
   SiteBeneficiosRoute: typeof SiteBeneficiosRoute
   SiteComoFuncionaRoute: typeof SiteComoFuncionaRoute
+  SiteRegioesRoute: typeof SiteRegioesRoute
   SiteIndexRoute: typeof SiteIndexRoute
 }
 
 const SiteRouteChildren: SiteRouteChildren = {
   SiteBeneficiosRoute: SiteBeneficiosRoute,
   SiteComoFuncionaRoute: SiteComoFuncionaRoute,
+  SiteRegioesRoute: SiteRegioesRoute,
   SiteIndexRoute: SiteIndexRoute,
 }
 
