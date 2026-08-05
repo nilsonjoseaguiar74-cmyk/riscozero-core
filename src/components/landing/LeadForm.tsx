@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -19,7 +19,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { services, apiErrorMessage } from "@/services";
 import { captureTracking, trackEvent } from "@/services/tracking";
-import { SITE, CITIES, whatsappLink } from "@/config/site";
+import { APP_CONFIG, SITE, CITIES, whatsappLink } from "@/config/site";
 import { maskPhone, normalizePlate } from "@/lib/format";
 import type { ContactPreference, VehicleType } from "@/types";
 
@@ -165,6 +165,15 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
         </p>
       </div>
 
+      {APP_CONFIG.useMockApi ? (
+        <Alert>
+          <AlertDescription>
+            Ambiente demonstrativo: o envio simula a jornada e não inicia atendimento comercial
+            real.
+          </AlertDescription>
+        </Alert>
+      ) : null}
+
       {mutation.isError ? (
         <Alert variant="destructive" role="alert">
           <AlertDescription>{apiErrorMessage(mutation.error)}</AlertDescription>
@@ -302,10 +311,18 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
         />
         <div>
           <Label htmlFor="consent" className="text-sm font-normal leading-relaxed text-foreground">
-            Autorizo o contato da equipe da {SITE.name} pelos dados informados.
+            Autorizo o contato da equipe da {SITE.name} para responder à solicitação e apresentar
+            opções compatíveis com os dados informados.
           </Label>
           <p id="consent-help" className="mt-1 text-xs text-muted-foreground">
-            Consentimento registrado na versão {SITE.consentVersion}.
+            Consentimento registrado na versão {SITE.consentVersion}. Consulte a{" "}
+            <Link
+              to="/politica-de-privacidade"
+              className="font-medium underline underline-offset-2"
+            >
+              política de privacidade
+            </Link>
+            .
           </p>
           {errors.consent?.message ? (
             <p role="alert" className="mt-1 text-xs font-medium text-destructive">

@@ -36,15 +36,15 @@ const SECTIONS = [
   },
   {
     title: "4. Base legal",
-    body: "O tratamento ocorre mediante consentimento do titular no envio do formulário, execução de procedimentos preliminares relacionados à adesão e legítimo interesse na melhoria dos canais de atendimento.",
+    body: "O formulário solicita consentimento para contato. As demais hipóteses de tratamento, suas bases legais e os procedimentos relacionados à eventual adesão devem ser validados e documentados antes da operação em produção.",
   },
   {
     title: "5. Compartilhamento",
-    body: "Os dados podem ser compartilhados com prestadores de serviço envolvidos no atendimento, na assistência e na operação tecnológica da plataforma, sempre limitados à finalidade informada.",
+    body: "Qualquer compartilhamento com prestadores, plataformas de anúncios ou fornecedores de tecnologia deve ser controlado, documentado e limitado à finalidade informada. As integrações externas ainda dependem de configuração e validação.",
   },
   {
     title: "6. Retenção e eliminação",
-    body: "Os dados são mantidos pelo período necessário ao atendimento e ao cumprimento de obrigações legais e regulatórias aplicáveis. Encerradas as finalidades, os registros são eliminados ou anonimizados.",
+    body: "O prazo de retenção, os critérios de descarte e os procedimentos de eliminação ou anonimização devem ser formalizados conforme a finalidade e as obrigações legais e regulatórias aplicáveis.",
   },
   {
     title: "7. Direitos do titular",
@@ -52,11 +52,11 @@ const SECTIONS = [
   },
   {
     title: "8. Cookies",
-    body: "O site utiliza cookies essenciais ao funcionamento e cookies de medição para identificar a origem das visitas. As preferências podem ser ajustadas no aviso exibido no primeiro acesso.",
+    body: "O site registra preferências locais e possui base técnica para parâmetros de campanha. Cookies de medição e integrações de anúncios devem respeitar a escolha exibida no aviso e dependem de configuração e validação antes da produção.",
   },
   {
     title: "9. Segurança",
-    body: "São adotadas medidas técnicas e administrativas para proteger os dados contra acessos não autorizados e situações acidentais ou ilícitas de destruição, perda e alteração.",
+    body: "A plataforma deverá aplicar medidas técnicas e administrativas, controle por perfil, registros de movimentação e proteção contra acessos indevidos. A eficácia dessas medidas requer testes e validação no ambiente de produção.",
   },
   {
     title: "10. Contato",

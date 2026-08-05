@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Section, SectionHeading, FeatureCard } from "@/components/landing/Section";
 import { LeadForm } from "@/components/landing/LeadForm";
 import { BENEFITS, DIFFERENTIALS, STEPS, FAQS } from "@/content/landing";
-import { REGIONS, SITE, whatsappLink } from "@/config/site";
+import { CITIES, SAO_JOSE_LOCALITIES, SITE, TRAVEL_CORRIDORS, whatsappLink } from "@/config/site";
 import { trackEvent } from "@/services/tracking";
 
 export const Route = createFileRoute("/_site/")({
@@ -104,8 +104,8 @@ function HomePage() {
       <Section>
         <SectionHeading
           eyebrow="Benefícios"
-          title="O que está disponível para o participante"
-          description="Coberturas, assistências e benefícios avaliados conforme o perfil do veículo e a opção contratada."
+          title="Itens que devem ser confirmados antes da adesão"
+          description="Proteção, assistências e benefícios dependem da opção apresentada, dos limites, das condições e do regulamento aplicável."
         />
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {BENEFITS.slice(0, 8).map((item) => (
@@ -118,7 +118,7 @@ function HomePage() {
         <SectionHeading
           eyebrow="Como funciona"
           title="Um processo direto, do primeiro contato à adesão"
-          description="Cada etapa é registrada pela equipe, garantindo previsibilidade e histórico do atendimento."
+          description="A plataforma deverá registrar cada etapa para oferecer previsibilidade e histórico do atendimento."
         />
         <ol className="mt-8 grid gap-4 md:grid-cols-3 lg:grid-cols-5">
           {STEPS.map((step) => (
@@ -132,19 +132,32 @@ function HomePage() {
       <Section>
         <SectionHeading
           eyebrow="Atuação regional"
-          title="Presença consolidada na Grande Florianópolis"
-          description="A operação é concentrada na região, o que aproxima o participante da equipe e da rede de prestadores homologados."
+          title="Atendimento regional na Grande Florianópolis"
+          description="Municípios, localidades de São José e corredores de deslocamento são apresentados separadamente."
         />
-        <ul className="mt-6 flex flex-wrap gap-2">
-          {REGIONS.map((region) => (
-            <li
-              key={region}
-              className="rounded-full border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground"
-            >
-              {region}
-            </li>
+        <div className="mt-6 grid gap-5 md:grid-cols-3">
+          {(
+            [
+              ["Municípios", CITIES],
+              ["Bairros e localidades de São José", SAO_JOSE_LOCALITIES],
+              ["Corredores de deslocamento", TRAVEL_CORRIDORS],
+            ] as const
+          ).map(([label, items]) => (
+            <div key={label}>
+              <h3 className="text-sm font-[650] text-foreground">{label}</h3>
+              <ul className="mt-2 flex flex-wrap gap-2">
+                {items.map((item) => (
+                  <li
+                    key={item}
+                    className="rounded-full border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ul>
+        </div>
         <Button asChild variant="outline" className="mt-6">
           <Link to="/regioes">Ver regiões atendidas</Link>
         </Button>

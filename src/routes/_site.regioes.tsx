@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Section, SectionHeading } from "@/components/landing/Section";
-import { REGIONS, SITE, CITIES } from "@/config/site";
+import { CITIES, SAO_JOSE_LOCALITIES, SITE, TRAVEL_CORRIDORS } from "@/config/site";
 
 export const Route = createFileRoute("/_site/regioes")({
   head: () => ({
@@ -11,12 +11,12 @@ export const Route = createFileRoute("/_site/regioes")({
       {
         name: "description",
         content:
-          "Atendimento em São José, Florianópolis, Palhoça, Biguaçu, Kobrasol, Campinas, Barreiros, Forquilhinhas, BR-101 e Via Expressa.",
+          "Municípios atendidos na Grande Florianópolis, localidades de São José e principais corredores de deslocamento.",
       },
       { property: "og:title", content: "Regiões atendidas | Risco Zero" },
       {
         property: "og:description",
-        content: "Cobertura de atendimento concentrada na Grande Florianópolis.",
+        content: "Atendimento concentrado na Grande Florianópolis.",
       },
     ],
   }),
@@ -59,17 +59,37 @@ function RegionsPage() {
       </Section>
 
       <Section tone="muted">
-        <SectionHeading eyebrow="Bairros e corredores" title="Áreas com atendimento frequente" />
-        <ul className="mt-8 flex flex-wrap gap-2">
-          {REGIONS.map((region) => (
-            <li
-              key={region}
-              className="rounded-full border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground"
-            >
-              {region}
-            </li>
-          ))}
-        </ul>
+        <div className="grid gap-8 md:grid-cols-2">
+          <div>
+            <SectionHeading
+              eyebrow="Bairros e localidades de São José"
+              title="Campinas, Kobrasol, Barreiros e Forquilhinhas"
+            />
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {SAO_JOSE_LOCALITIES.map((locality) => (
+                <li
+                  key={locality}
+                  className="rounded-full border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground"
+                >
+                  {locality}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <SectionHeading eyebrow="Corredores de deslocamento" title="BR-101 e Via Expressa" />
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {TRAVEL_CORRIDORS.map((corridor) => (
+                <li
+                  key={corridor}
+                  className="rounded-full border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground"
+                >
+                  {corridor}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
         <div className="card-elevated mt-8 p-5">
           <h3 className="text-base font-[650] text-foreground">Endereço de atendimento</h3>
           <p className="mt-2 text-sm text-muted-foreground">{SITE.address}</p>

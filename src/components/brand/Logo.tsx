@@ -1,4 +1,3 @@
-import logoAsset from "@/assets/risco-zero-logo.png.asset.json";
 import { cn } from "@/lib/utils";
 import { SITE } from "@/config/site";
 
@@ -25,7 +24,7 @@ interface LogoProps {
 export function Logo({ size = "md", surface = "dark", className }: LogoProps) {
   const image = (
     <img
-      src={logoAsset.url}
+      src="/risco-zero-logo.png"
       alt={`${SITE.fullName}`}
       className={cn(SIZES[size], "w-auto object-contain")}
       width={366}

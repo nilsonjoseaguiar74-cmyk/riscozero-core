@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { MapPin, MessageCircle } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
-import { SITE, REGIONS, whatsappLink } from "@/config/site";
+import { CITIES, SITE, whatsappLink } from "@/config/site";
 import { trackEvent } from "@/services/tracking";
 
 export function SiteFooter() {
@@ -11,8 +11,11 @@ export function SiteFooter() {
         <div className="space-y-4">
           <Logo size="lg" />
           <p className="max-w-xs text-sm leading-relaxed text-brand-foreground/75">
-            Associação de proteção patrimonial mutualista, assistência e benefícios para
-            participantes da Grande Florianópolis.
+            Proteção patrimonial mutualista, assistência e benefícios para participantes da Grande
+            Florianópolis, sujeitos à validação e ao regulamento aplicável.
+          </p>
+          <p className="max-w-xs text-xs leading-relaxed text-brand-foreground/55">
+            Validação documental pendente
           </p>
           <div className="h-0.5 w-16 gold-rule" />
         </div>
@@ -92,14 +95,14 @@ export function SiteFooter() {
             {SITE.address}
           </a>
           <p className="text-xs leading-relaxed text-brand-foreground/60">
-            Regiões atendidas: {REGIONS.slice(0, 6).join(", ")} e demais localidades da Grande
-            Florianópolis.
+            Municípios atendidos: {CITIES.join(", ")}. Consulte a página de regiões para bairros,
+            localidades e corredores de deslocamento.
           </p>
         </div>
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-page flex flex-col gap-2 py-5 text-xs text-brand-foreground/60 md:flex-row md:items-center md:justify-between">
+        <div className="container-page flex flex-col gap-2 pb-24 pt-5 text-xs text-brand-foreground/60 sm:py-5 md:flex-row md:items-center md:justify-between">
           <p>
             {SITE.fullName}. Proteção patrimonial mutualista, assistência e benefícios. Não se trata
             de seguro.
@@ -108,9 +111,9 @@ export function SiteFooter() {
             <p>{SITE.disclaimer}</p>
             <Link
               to="/login"
-              className="text-[11px] font-normal text-brand-foreground/45 underline-offset-2 hover:text-brand-foreground/70 hover:underline"
+              className="inline-flex min-h-10 items-center rounded-md border border-white/15 px-3 text-xs font-semibold text-brand-foreground/80 transition-colors hover:bg-white/10 hover:text-brand-foreground"
             >
-              Área restrita
+              Acessar plataforma
             </Link>
           </div>
         </div>

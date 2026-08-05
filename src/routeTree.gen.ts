@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as SiteRouteImport } from './routes/_site'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as BlueprintRouteImport } from './routes/blueprint'
 import { Route as PainelRouteImport } from './routes/painel'
 import { Route as AuthEsqueciMinhaSenhaRouteImport } from './routes/_auth.esqueci-minha-senha'
 import { Route as AuthLoginRouteImport } from './routes/_auth.login'
@@ -40,6 +41,11 @@ const SiteRoute = SiteRouteImport.update({
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlueprintRoute = BlueprintRouteImport.update({
+  id: '/blueprint',
+  path: '/blueprint',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PainelRoute = PainelRouteImport.update({
@@ -127,6 +133,7 @@ const AppIndexRoute = AppIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
   '/app': typeof AppRouteWithChildren
+  '/blueprint': typeof BlueprintRoute
   '/painel': typeof PainelRoute
   '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/login': typeof AuthLoginRoute
@@ -145,6 +152,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof SiteIndexRoute
+  '/blueprint': typeof BlueprintRoute
   '/painel': typeof PainelRoute
   '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/login': typeof AuthLoginRoute
@@ -166,6 +174,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/_site': typeof SiteRouteWithChildren
   '/app': typeof AppRouteWithChildren
+  '/blueprint': typeof BlueprintRoute
   '/painel': typeof PainelRoute
   '/_auth/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/_auth/login': typeof AuthLoginRoute
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
+    | '/blueprint'
     | '/painel'
     | '/esqueci-minha-senha'
     | '/login'
@@ -206,6 +216,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/blueprint'
     | '/painel'
     | '/esqueci-minha-senha'
     | '/login'
@@ -226,6 +237,7 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_site'
     | '/app'
+    | '/blueprint'
     | '/painel'
     | '/_auth/esqueci-minha-senha'
     | '/_auth/login'
@@ -248,6 +260,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   SiteRoute: typeof SiteRouteWithChildren
   AppRoute: typeof AppRouteWithChildren
+  BlueprintRoute: typeof BlueprintRoute
   PainelRoute: typeof PainelRoute
 }
 
@@ -272,6 +285,13 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blueprint': {
+      id: '/blueprint'
+      path: '/blueprint'
+      fullPath: '/blueprint'
+      preLoaderRoute: typeof BlueprintRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/painel': {
@@ -447,6 +467,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   SiteRoute: SiteRouteWithChildren,
   AppRoute: AppRouteWithChildren,
+  BlueprintRoute: BlueprintRoute,
   PainelRoute: PainelRoute,
 }
 export const routeTree = rootRouteImport

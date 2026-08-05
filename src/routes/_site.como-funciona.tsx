@@ -57,7 +57,7 @@ function HowItWorksPage() {
         <SectionHeading
           eyebrow="Como funciona"
           title="Do primeiro contato ao acompanhamento contínuo"
-          description="O processo é conduzido pela equipe local e registrado integralmente na plataforma da associação."
+          description="A proposta é que o processo seja conduzido pela equipe local e registrado na plataforma após a integração operacional."
         />
         <ol className="mt-10 grid gap-4 md:grid-cols-3 lg:grid-cols-5">
           {STEPS.map((step) => (

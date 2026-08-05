@@ -13,21 +13,9 @@ export const SITE = {
     "Disponibilidade, limites e condições conforme opção contratada e regulamento aplicável.",
 } as const;
 
-export const REGIONS = [
-  "São José",
-  "Florianópolis",
-  "Palhoça",
-  "Biguaçu",
-  "Kobrasol",
-  "Campinas",
-  "Barreiros",
-  "Forquilhinhas",
-  "BR-101",
-  "Via Expressa",
-  "Grande Florianópolis",
-] as const;
-
 export const CITIES = ["São José", "Florianópolis", "Palhoça", "Biguaçu"] as const;
+export const SAO_JOSE_LOCALITIES = ["Campinas", "Kobrasol", "Barreiros", "Forquilhinhas"] as const;
+export const TRAVEL_CORRIDORS = ["BR-101", "Via Expressa"] as const;
 
 export const SOURCES = ["Google Ads", "Meta Ads", "Orgânico", "Indicação", "WhatsApp"] as const;
 

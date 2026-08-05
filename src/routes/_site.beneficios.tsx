@@ -11,13 +11,13 @@ export const Route = createFileRoute("/_site/beneficios")({
       {
         name: "description",
         content:
-          "Proteção patrimonial, assistência 24 horas, carro reserva, chaveiro, vidros e rede de reparo para participantes da Risco Zero.",
+          "Itens de proteção patrimonial, assistência e benefícios sujeitos à opção apresentada e ao regulamento aplicável.",
       },
       { property: "og:title", content: "Benefícios e assistências | Risco Zero" },
       {
         property: "og:description",
         content:
-          "Conheça as coberturas, assistências e benefícios disponíveis conforme a opção contratada.",
+          "Conheça itens de proteção, assistências e benefícios que devem ser confirmados antes da adesão.",
       },
     ],
   }),
@@ -30,8 +30,8 @@ function BenefitsPage() {
       <Section>
         <SectionHeading
           eyebrow="Benefícios"
-          title="Coberturas, assistências e benefícios"
-          description="A composição final depende do perfil do veículo e da opção contratada. A equipe apresenta o detalhamento completo antes da adesão."
+          title="Proteção, assistências e benefícios"
+          description="A disponibilidade efetiva, os limites, as carências e as condições devem ser confirmados na opção apresentada e no regulamento antes da adesão."
         />
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {BENEFITS.map((item) => (

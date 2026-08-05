@@ -31,7 +31,7 @@ export function AdminSidebar() {
   return (
     <Sidebar collapsible="icon" className="border-r border-border">
       <SidebarHeader className="border-b border-border px-3 py-3">
-        <Link to="/app/dashboard" className="flex items-center gap-2" aria-label="Início do painel">
+        <Link to="/app" className="flex items-center gap-2" aria-label="Início do painel">
           <Logo size="sm" className="shrink-0" />
           {!collapsed ? (
             <span className="min-w-0">

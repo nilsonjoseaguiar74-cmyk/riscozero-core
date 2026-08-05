@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Phone } from "lucide-react";
+import { LogIn, Menu, Phone } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -79,6 +79,18 @@ export function SiteHeader() {
               </Link>
             </Button>
 
+            <Button
+              asChild
+              size="sm"
+              variant="outline"
+              className="hidden border-white/25 bg-transparent text-brand-foreground hover:bg-white/10 hover:text-brand-foreground md:inline-flex"
+            >
+              <Link to="/login">
+                <LogIn className="size-4" aria-hidden="true" />
+                Acessar plataforma
+              </Link>
+            </Button>
+
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
                 <Button
@@ -111,6 +123,16 @@ export function SiteHeader() {
                   <div className="flex flex-col gap-2">
                     <Button asChild className="bg-gold text-gold-foreground hover:bg-gold-light">
                       <Link to="/solicitar-cotacao">Solicitar cotação</Link>
+                    </Button>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="border-white/25 bg-transparent text-brand-foreground hover:bg-white/10 hover:text-brand-foreground"
+                    >
+                      <Link to="/login">
+                        <LogIn className="size-4" aria-hidden="true" />
+                        Acessar plataforma
+                      </Link>
                     </Button>
                   </div>
                 </div>
