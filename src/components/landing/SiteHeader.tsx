@@ -8,6 +8,7 @@ import { SITE, whatsappLink } from "@/config/site";
 import { trackEvent } from "@/services/tracking";
 
 const NAV = [
+  { to: "/", label: "Início" },
   { to: "/beneficios", label: "Benefícios" },
   { to: "/como-funciona", label: "Como funciona" },
   { to: "/regioes", label: "Regiões" },
@@ -67,17 +68,8 @@ export function SiteHeader() {
               className="hidden bg-gold text-gold-foreground hover:bg-gold-light sm:inline-flex"
             >
               <Link to="/solicitar-cotacao" onClick={() => trackEvent("cta_click", { local: "header" })}>
-                Solicitar uma cotação
+                Solicitar cotação
               </Link>
-            </Button>
-
-            <Button
-              asChild
-              size="sm"
-              variant="outline"
-              className="hidden border-white/25 bg-transparent text-brand-foreground hover:bg-white/10 hover:text-brand-foreground lg:inline-flex"
-            >
-              <Link to="/login">Acessar plataforma</Link>
             </Button>
 
             <Sheet open={open} onOpenChange={setOpen}>
@@ -108,14 +100,7 @@ export function SiteHeader() {
                   </nav>
                   <div className="flex flex-col gap-2">
                     <Button asChild className="bg-gold text-gold-foreground hover:bg-gold-light">
-                      <Link to="/solicitar-cotacao">Solicitar uma cotação</Link>
-                    </Button>
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="border-white/25 bg-transparent text-brand-foreground hover:bg-white/10 hover:text-brand-foreground"
-                    >
-                      <Link to="/login">Acessar plataforma</Link>
+                      <Link to="/solicitar-cotacao">Solicitar cotação</Link>
                     </Button>
                   </div>
                 </div>

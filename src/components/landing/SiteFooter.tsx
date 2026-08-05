@@ -57,11 +57,6 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
-              <Link to="/login" className="hover:text-brand-foreground">
-                Acessar plataforma
-              </Link>
-            </li>
-            <li>
               <Link to="/politica-de-privacidade" className="hover:text-brand-foreground">
                 Política de privacidade
               </Link>
@@ -109,7 +104,15 @@ export function SiteFooter() {
             {SITE.fullName}. Proteção patrimonial mutualista, assistência e benefícios. Não se trata
             de seguro.
           </p>
-          <p>{SITE.disclaimer}</p>
+          <div className="flex flex-wrap items-center gap-3">
+            <p>{SITE.disclaimer}</p>
+            <Link
+              to="/login"
+              className="text-[11px] font-normal text-brand-foreground/45 underline-offset-2 hover:text-brand-foreground/70 hover:underline"
+            >
+              Área restrita
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

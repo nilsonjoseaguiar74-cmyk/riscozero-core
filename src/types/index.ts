@@ -148,10 +148,10 @@ export interface CreateLeadRequest {
   whatsapp: string;
   plate: string;
   city: string;
-  vehicleType: VehicleType;
-  vehicleYear: string;
-  bestTime: string;
-  contactPreference: ContactPreference;
+  vehicleType?: VehicleType | undefined;
+  vehicleYear?: string | undefined;
+  bestTime?: string | undefined;
+  contactPreference?: ContactPreference | undefined;
   consent: boolean;
   tracking?: TrackingContext | undefined;
 }
