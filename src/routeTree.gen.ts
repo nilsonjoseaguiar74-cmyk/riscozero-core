@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as SiteRouteImport } from './routes/_site'
+import { Route as PainelRouteImport } from './routes/painel'
 import { Route as AuthEsqueciMinhaSenhaRouteImport } from './routes/_auth.esqueci-minha-senha'
 import { Route as AuthLoginRouteImport } from './routes/_auth.login'
 import { Route as AuthRedefinirSenhaRouteImport } from './routes/_auth.redefinir-senha'
@@ -32,6 +33,11 @@ const AuthRoute = AuthRouteImport.update({
 } as any)
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PainelRoute = PainelRouteImport.update({
+  id: '/painel',
+  path: '/painel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthEsqueciMinhaSenhaRoute = AuthEsqueciMinhaSenhaRouteImport.update({
@@ -108,6 +114,7 @@ const SiteTermosDeUsoRoute = SiteTermosDeUsoRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
+  '/painel': typeof PainelRoute
   '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/login': typeof AuthLoginRoute
   '/redefinir-senha': typeof AuthRedefinirSenhaRoute
@@ -124,6 +131,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof SiteIndexRoute
+  '/painel': typeof PainelRoute
   '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/login': typeof AuthLoginRoute
   '/redefinir-senha': typeof AuthRedefinirSenhaRoute
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteWithChildren
   '/_site': typeof SiteRouteWithChildren
+  '/painel': typeof PainelRoute
   '/_auth/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/redefinir-senha': typeof AuthRedefinirSenhaRoute
@@ -161,6 +170,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/painel'
     | '/esqueci-minha-senha'
     | '/login'
     | '/redefinir-senha'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/painel'
     | '/esqueci-minha-senha'
     | '/login'
     | '/redefinir-senha'
@@ -194,6 +205,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_auth'
     | '/_site'
+    | '/painel'
     | '/_auth/esqueci-minha-senha'
     | '/_auth/login'
     | '/_auth/redefinir-senha'
@@ -213,6 +225,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   SiteRoute: typeof SiteRouteWithChildren
+  PainelRoute: typeof PainelRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -229,6 +242,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof SiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/painel': {
+      id: '/painel'
+      path: '/painel'
+      fullPath: '/painel'
+      preLoaderRoute: typeof PainelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/esqueci-minha-senha': {
@@ -379,6 +399,7 @@ const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   SiteRoute: SiteRouteWithChildren,
+  PainelRoute: PainelRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
