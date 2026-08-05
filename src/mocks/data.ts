@@ -42,6 +42,15 @@ const ALL_PERMISSIONS: Permission[] = [
   "audit.view",
   "settings.manage",
   "developer.access",
+  "association.view",
+  "association.manage",
+  "finance.view",
+  "sensitive.view",
+  "traffic.view",
+  "traffic.manage",
+  "integrations.view",
+  "sync.manage",
+  "documents.view",
 ];
 
 export const ROLE_DEFINITIONS: RoleDefinition[] = [
@@ -53,8 +62,9 @@ export const ROLE_DEFINITIONS: RoleDefinition[] = [
   },
   {
     role: "gestor",
-    label: "Gestor",
-    description: "Acompanha a operação comercial, relatórios e desempenho da equipe.",
+    label: "Gestor da associação",
+    description:
+      "Acompanha associados, adesões, ocorrências, assistências e indicadores consolidados.",
     permissions: [
       "dashboard.view",
       "crm.view",
@@ -62,20 +72,34 @@ export const ROLE_DEFINITIONS: RoleDefinition[] = [
       "reports.view",
       "acquisition.view",
       "audit.view",
+      "association.view",
+      "association.manage",
+      "finance.view",
+      "sensitive.view",
+      "documents.view",
+      "integrations.view",
     ],
   },
   {
     role: "comercial",
     label: "Comercial",
     description: "Atende participantes interessados e conduz o funil de adesão.",
-    permissions: ["dashboard.view", "crm.view", "crm.edit"],
+    permissions: ["dashboard.view", "crm.view", "crm.edit", "association.view"],
   },
   {
     role: "gestor_trafego",
     label: "Gestor de tráfego",
     description: "Acompanha campanhas, rastreamento e qualidade da captação.",
-    permissions: ["dashboard.view", "reports.view", "acquisition.view", "integrations.manage"],
+    permissions: [
+      "dashboard.view",
+      "reports.view",
+      "acquisition.view",
+      "traffic.view",
+      "traffic.manage",
+      "integrations.view",
+    ],
   },
+
   {
     role: "desenvolvedor",
     label: "Desenvolvedor",
@@ -83,6 +107,8 @@ export const ROLE_DEFINITIONS: RoleDefinition[] = [
     permissions: [
       "dashboard.view",
       "integrations.manage",
+      "integrations.view",
+      "sync.manage",
       "developer.access",
       "audit.view",
       "reports.view",
