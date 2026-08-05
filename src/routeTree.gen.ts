@@ -13,6 +13,7 @@ import { Route as SiteRouteImport } from './routes/_site'
 import { Route as SiteIndexRouteImport } from './routes/_site.index'
 import { Route as SiteBeneficiosRouteImport } from './routes/_site.beneficios'
 import { Route as SiteComoFuncionaRouteImport } from './routes/_site.como-funciona'
+import { Route as SiteContatoRouteImport } from './routes/_site.contato'
 import { Route as SitePerguntasFrequentesRouteImport } from './routes/_site.perguntas-frequentes'
 import { Route as SiteRegioesRouteImport } from './routes/_site.regioes'
 
@@ -35,6 +36,11 @@ const SiteComoFuncionaRoute = SiteComoFuncionaRouteImport.update({
   path: '/como-funciona',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteContatoRoute = SiteContatoRouteImport.update({
+  id: '/contato',
+  path: '/contato',
+  getParentRoute: () => SiteRoute,
+} as any)
 const SitePerguntasFrequentesRoute = SitePerguntasFrequentesRouteImport.update({
   id: '/perguntas-frequentes',
   path: '/perguntas-frequentes',
@@ -50,12 +56,14 @@ export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
   '/beneficios': typeof SiteBeneficiosRoute
   '/como-funciona': typeof SiteComoFuncionaRoute
+  '/contato': typeof SiteContatoRoute
   '/perguntas-frequentes': typeof SitePerguntasFrequentesRoute
   '/regioes': typeof SiteRegioesRoute
 }
 export interface FileRoutesByTo {
   '/beneficios': typeof SiteBeneficiosRoute
   '/como-funciona': typeof SiteComoFuncionaRoute
+  '/contato': typeof SiteContatoRoute
   '/perguntas-frequentes': typeof SitePerguntasFrequentesRoute
   '/regioes': typeof SiteRegioesRoute
   '/': typeof SiteIndexRoute
@@ -65,6 +73,7 @@ export interface FileRoutesById {
   '/_site': typeof SiteRouteWithChildren
   '/_site/beneficios': typeof SiteBeneficiosRoute
   '/_site/como-funciona': typeof SiteComoFuncionaRoute
+  '/_site/contato': typeof SiteContatoRoute
   '/_site/perguntas-frequentes': typeof SitePerguntasFrequentesRoute
   '/_site/regioes': typeof SiteRegioesRoute
   '/_site/': typeof SiteIndexRoute
@@ -75,12 +84,14 @@ export interface FileRouteTypes {
     | '/'
     | '/beneficios'
     | '/como-funciona'
+    | '/contato'
     | '/perguntas-frequentes'
     | '/regioes'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/beneficios'
     | '/como-funciona'
+    | '/contato'
     | '/perguntas-frequentes'
     | '/regioes'
     | '/'
@@ -89,6 +100,7 @@ export interface FileRouteTypes {
     | '/_site'
     | '/_site/beneficios'
     | '/_site/como-funciona'
+    | '/_site/contato'
     | '/_site/perguntas-frequentes'
     | '/_site/regioes'
     | '/_site/'
@@ -128,6 +140,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteComoFuncionaRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/contato': {
+      id: '/_site/contato'
+      path: '/contato'
+      fullPath: '/contato'
+      preLoaderRoute: typeof SiteContatoRouteImport
+      parentRoute: typeof SiteRoute
+    }
     '/_site/perguntas-frequentes': {
       id: '/_site/perguntas-frequentes'
       path: '/perguntas-frequentes'
@@ -148,6 +167,7 @@ declare module '@tanstack/react-router' {
 interface SiteRouteChildren {
   SiteBeneficiosRoute: typeof SiteBeneficiosRoute
   SiteComoFuncionaRoute: typeof SiteComoFuncionaRoute
+  SiteContatoRoute: typeof SiteContatoRoute
   SitePerguntasFrequentesRoute: typeof SitePerguntasFrequentesRoute
   SiteRegioesRoute: typeof SiteRegioesRoute
   SiteIndexRoute: typeof SiteIndexRoute
@@ -156,6 +176,7 @@ interface SiteRouteChildren {
 const SiteRouteChildren: SiteRouteChildren = {
   SiteBeneficiosRoute: SiteBeneficiosRoute,
   SiteComoFuncionaRoute: SiteComoFuncionaRoute,
+  SiteContatoRoute: SiteContatoRoute,
   SitePerguntasFrequentesRoute: SitePerguntasFrequentesRoute,
   SiteRegioesRoute: SiteRegioesRoute,
   SiteIndexRoute: SiteIndexRoute,
