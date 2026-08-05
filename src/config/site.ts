@@ -1,0 +1,44 @@
+export const SITE = {
+  name: "Risco Zero",
+  fullName: "Risco Zero Proteção Veicular",
+  segment: "Proteção patrimonial mutualista, assistência e benefícios",
+  whatsapp: "(48) 98421-9634",
+  whatsappDigits: "5548984219634",
+  address: "Av. Josué di Bernardi, 239 – Campinas, São José – SC, 88101-260",
+  addressShort: "Campinas, São José – SC",
+  mapsQuery: "Av. Josué di Bernardi, 239 - Campinas, São José - SC, 88101-260",
+  serviceHours: "Horário de atendimento configurável na área administrativa.",
+  consentVersion: "v1.0",
+  disclaimer:
+    "Disponibilidade, limites e condições conforme opção contratada e regulamento aplicável.",
+} as const;
+
+export const REGIONS = [
+  "São José",
+  "Florianópolis",
+  "Palhoça",
+  "Biguaçu",
+  "Kobrasol",
+  "Campinas",
+  "Barreiros",
+  "Forquilhinhas",
+  "BR-101",
+  "Via Expressa",
+  "Grande Florianópolis",
+] as const;
+
+export const CITIES = ["São José", "Florianópolis", "Palhoça", "Biguaçu"] as const;
+
+export const SOURCES = ["Google Ads", "Meta Ads", "Orgânico", "Indicação", "WhatsApp"] as const;
+
+export const whatsappLink = (message?: string) =>
+  `https://wa.me/${SITE.whatsappDigits}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
+
+export const APP_CONFIG = {
+  apiBaseUrl: (import.meta.env["VITE_API_BASE_URL"] as string | undefined) ?? "/api",
+  useMockApi:
+    ((import.meta.env["VITE_USE_MOCK_API"] as string | undefined) ?? "true").toLowerCase() !==
+    "false",
+  version: "1.0.0-demo",
+  environment: import.meta.env.DEV ? "desenvolvimento" : "produção",
+} as const;
