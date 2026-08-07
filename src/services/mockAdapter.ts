@@ -15,6 +15,7 @@ import {
 } from "@/mocks/data";
 import { ApiError } from "@/services/http";
 import type { ServiceRegistry } from "@/services/contracts";
+import { INITIAL_TESTIMONIALS, INITIAL_UNIT_SECTION } from "@/content/siteContent";
 import type {
   Activity,
   AppSettings,
@@ -49,6 +50,8 @@ const integrations: Integration[] = clone(MOCK_INTEGRATIONS);
 const flags: FeatureFlag[] = clone(MOCK_FEATURE_FLAGS);
 const webhooks: WebhookLog[] = clone(MOCK_WEBHOOK_LOGS);
 let settings: AppSettings = clone(MOCK_SETTINGS);
+const unitSectionContent = clone(INITIAL_UNIT_SECTION);
+const siteTestimonials = clone(INITIAL_TESTIMONIALS);
 
 const SESSION_KEY = "rz.demo.session";
 
@@ -676,6 +679,17 @@ export const mockAdapter: ServiceRegistry = {
       await delay(420);
       settings = { ...settings, ...payload };
       return settings;
+    },
+  },
+
+  siteContent: {
+    async getUnitSection() {
+      await delay(180);
+      return clone(unitSectionContent);
+    },
+    async getTestimonials() {
+      await delay(180);
+      return clone(siteTestimonials);
     },
   },
 };

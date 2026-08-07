@@ -442,3 +442,5 @@ export interface TrackingEvent {
   payload?: Record<string, string | number | boolean | undefined> | undefined;
   occurredAt: string;
 }
+
+export type { SiteMediaCard, SiteTestimonial, UnitSectionContent } from "@/types/site-content";

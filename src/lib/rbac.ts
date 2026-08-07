@@ -150,6 +150,11 @@ export const NAV_GROUPS: NavGroup[] = [
       { label: "Perfis e permissões", to: "/app/admin/roles", permission: "users.manage" },
       { label: "Auditoria", to: "/app/admin/audit", permission: "audit.view" },
       { label: "Configurações", to: "/app/admin/settings", permission: "settings.manage" },
+      {
+        label: "Conteúdo do site",
+        to: "/app/settings/site-content",
+        permission: "settings.manage",
+      },
       { label: "Segurança", to: "/app/admin/security", permission: "settings.manage" },
     ],
   },

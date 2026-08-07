@@ -22,6 +22,12 @@ export const SOURCES = ["Google Ads", "Meta Ads", "Orgânico", "Indicação", "W
 export const whatsappLink = (message?: string) =>
   `https://wa.me/${SITE.whatsappDigits}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
 
+export const googleMapsLink = () =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.mapsQuery)}`;
+
+export const googleMapsEmbedLink = () =>
+  `https://www.google.com/maps?q=${encodeURIComponent(SITE.mapsQuery)}&output=embed`;
+
 export const APP_CONFIG = {
   apiBaseUrl: (import.meta.env["VITE_API_BASE_URL"] as string | undefined) ?? "/api",
   useMockApi:
