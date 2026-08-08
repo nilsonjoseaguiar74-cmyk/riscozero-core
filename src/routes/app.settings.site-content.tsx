@@ -77,6 +77,10 @@ function SiteContentSettingsRoute() {
           <UnitTextForm content={unit.data!} onSaved={refresh} />
         </TabsContent>
         <TabsContent value="unit" className="mt-5">
+          <div className="mb-4 rounded-lg border border-brand/20 bg-brand-soft p-4 text-sm text-foreground">
+            A imagem marcada como <strong>Principal</strong> também será usada como fundo do hero da
+            Home, com uma camada azul de opacidade média para preservar a leitura.
+          </div>
           <MediaManager
             items={unit.data!.media.toSorted((a, b) => a.order - b.order)}
             onSaved={refresh}
