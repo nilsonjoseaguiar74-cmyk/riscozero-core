@@ -48,6 +48,27 @@ O console web foi anunciado como `srv993737.hstgr.cloud:9090` e `72.60.147.56:90
 
 Isso indica que o frontend está publicado no subdomínio, mas o proxy público ainda não encaminha `/api/v1` para a API NestJS — ou a API ainda não está implantada nessa VPS. Esta conclusão é uma inferência a partir das respostas públicas e deve ser confirmada no servidor.
 
+## Implantação antiga confirmada na VPS
+
+- Diretório-base: `/opt/riscozero`.
+- Link ativo: `/opt/riscozero/current`.
+- Release ativa: `/opt/riscozero/releases/06c78c7c93993d67a6539f3c77dec2f6aa4c3372`.
+- Commit ativo: `06c78c7c93993d67a6539f3c77dec2f6aa4c3372`.
+- Branch observada: `integration/frontend-backend`.
+- Árvore de trabalho observada sem alterações locais.
+- Serviço: `riscozero-frontend.service`.
+- Arquivo da unidade: `/etc/systemd/system/riscozero-frontend.service`.
+- Processo: Node executando `/opt/riscozero/current/.output/server/index.mjs`.
+- Usuário e grupo: `www-data`.
+- Endereço interno: `127.0.0.1:4188`.
+- Nginx: `riscozero.vitorads.site` encaminhado para `http://127.0.0.1:4188`.
+- Reinício automático: somente em falha, após 3 segundos.
+- Limites: 768 MB de memória, 128 tarefas e 100% de uma CPU.
+
+Proteções confirmadas no serviço: `NoNewPrivileges=true`, `PrivateTmp=true`, `PrivateDevices=true`, `ProtectHome=true` e `ProtectSystem=full`. O frontend atual não deve receber permissão de escrita ampla. A nova API e o volume persistente de uploads devem ficar isolados em serviço ou contêiner próprio, com acesso gravável limitado ao diretório de uploads.
+
+O padrão de releases e o link `current` devem ser preservados. Uma nova versão deve ser construída em outro diretório e validada em portas temporárias antes da troca atômica do link. A release `06c78c7...` não deve ser alterada e será a referência imediata de rollback.
+
 ## Topologia recomendada
 
 Usar um único domínio público e encaminhar a API pelo Nginx reduz problemas de CORS e cookies:
