@@ -62,12 +62,30 @@ Isso indica que o frontend está publicado no subdomínio, mas o proxy público 
 - Usuário e grupo: `www-data`.
 - Endereço interno: `127.0.0.1:4188`.
 - Nginx: `riscozero.vitorads.site` encaminhado para `http://127.0.0.1:4188`.
+- Arquivo Nginx ativo: `/etc/nginx/sites-enabled/riscozero.vitorads.site`.
+- Logs exclusivos: `/var/log/nginx/riscozero-access.log` e `/var/log/nginx/riscozero-error.log`.
+- HTTP nas portas 80/IPv6 redirecionado para HTTPS pelo bloco gerenciado pelo Certbot.
+- Certificado: `/etc/letsencrypt/live/riscozero.vitorads.site/fullchain.pem`.
+- Chave do certificado: `/etc/letsencrypt/live/riscozero.vitorads.site/privkey.pem` (não copiar nem versionar).
+- O bloco HTTPS atual contém apenas `location /`; não existe encaminhamento para `/api/v1/`.
 - Reinício automático: somente em falha, após 3 segundos.
 - Limites: 768 MB de memória, 128 tarefas e 100% de uma CPU.
 
 Proteções confirmadas no serviço: `NoNewPrivileges=true`, `PrivateTmp=true`, `PrivateDevices=true`, `ProtectHome=true` e `ProtectSystem=full`. O frontend atual não deve receber permissão de escrita ampla. A nova API e o volume persistente de uploads devem ficar isolados em serviço ou contêiner próprio, com acesso gravável limitado ao diretório de uploads.
 
 O padrão de releases e o link `current` devem ser preservados. Uma nova versão deve ser construída em outro diretório e validada em portas temporárias antes da troca atômica do link. A release `06c78c7...` não deve ser alterada e será a referência imediata de rollback.
+
+## Isolamento planejado para a nova versão
+
+Portas propostas, observadas como livres no inventário de 7 de agosto de 2026:
+
+- `127.0.0.1:4190`: frontend temporário para homologação local na VPS.
+- `127.0.0.1:4191`: API NestJS do Risco Zero.
+- `127.0.0.1:55434`: PostgreSQL do Risco Zero somente se for necessário publicar a porta no host; preferir acesso exclusivo pela rede interna do Compose.
+
+Usar um nome de projeto Compose exclusivo, como `riscozero_prod`, e volumes com nomes próprios. Não reutilizar redes, bancos, Redis, portas ou volumes dos outros projetos.
+
+Após a homologação, o frontend continuará no endereço interno `127.0.0.1:4188`. A única ampliação planejada no Nginx será uma localização específica `/api/v1/` apontando para `127.0.0.1:4191`; a localização `/` existente permanecerá apontando para `127.0.0.1:4188`.
 
 ## Topologia recomendada
 
