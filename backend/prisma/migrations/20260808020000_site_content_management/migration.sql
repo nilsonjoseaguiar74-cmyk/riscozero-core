@@ -20,7 +20,10 @@ CREATE TABLE "site_media" (
     "active" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL,
-    CONSTRAINT "site_media_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "site_media_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "site_media_section_check" CHECK ("section" = 'unit'),
+    CONSTRAINT "site_media_position_check" CHECK ("position" IN ('primary', 'secondary', 'complementary')),
+    CONSTRAINT "site_media_order_check" CHECK ("order" >= 0)
 );
 
 CREATE TABLE "site_testimonials" (
@@ -35,7 +38,9 @@ CREATE TABLE "site_testimonials" (
     "active" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL,
-    CONSTRAINT "site_testimonials_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "site_testimonials_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "site_testimonials_rating_check" CHECK ("rating" BETWEEN 1 AND 5),
+    CONSTRAINT "site_testimonials_order_check" CHECK ("order" >= 0)
 );
 
 CREATE UNIQUE INDEX "site_media_storage_key_key" ON "site_media"("storage_key");
