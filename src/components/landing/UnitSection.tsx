@@ -2,6 +2,13 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { Section, SectionHeading } from "@/components/landing/Section";
 import { SITE, googleMapsEmbedLink, googleMapsLink } from "@/config/site";
 import { queryKeys, services } from "@/services";
@@ -16,8 +23,10 @@ export function UnitSection() {
     () => content?.media.filter((item) => item.active).toSorted((a, b) => a.order - b.order) ?? [],
     [content?.media],
   );
-  const mainPhoto = activeMedia.find((item) => item.position === "primary") ?? activeMedia[0];
-  const supportPhotos = activeMedia.filter((item) => item.id !== mainPhoto?.id);
+  const primary = activeMedia.find((item) => item.position === "primary");
+  const carouselMedia = primary
+    ? [primary, ...activeMedia.filter((item) => item.id !== primary.id)]
+    : activeMedia;
 
   return (
     <Section tone="muted">
@@ -69,28 +78,16 @@ export function UnitSection() {
           </div>
         </div>
 
-        {mainPhoto ? (
-          <div className="grid gap-4">
-            <figure>
-              <img
-                src={mainPhoto.imageUrl}
-                alt={mainPhoto.alt}
-                className="aspect-[4/3] w-full rounded-2xl border border-border object-cover shadow-raised"
-              />
-              {mainPhoto.title ? (
-                <figcaption className="mt-2 text-sm text-muted-foreground">
-                  {mainPhoto.title}
-                </figcaption>
-              ) : null}
-            </figure>
-            {supportPhotos.length > 0 ? (
-              <div className="grid gap-4 sm:grid-cols-2">
-                {supportPhotos.map((photo) => (
-                  <figure key={photo.id}>
+        {carouselMedia.length > 0 ? (
+          <Carousel opts={{ loop: carouselMedia.length > 1 }} className="mx-10">
+            <CarouselContent>
+              {carouselMedia.map((photo) => (
+                <CarouselItem key={photo.id}>
+                  <figure>
                     <img
                       src={photo.imageUrl}
                       alt={photo.alt}
-                      className="aspect-[4/3] w-full rounded-xl border border-border object-cover shadow-card"
+                      className="aspect-[4/3] w-full rounded-2xl border border-border object-cover shadow-raised"
                     />
                     {photo.title ? (
                       <figcaption className="mt-2 text-sm text-muted-foreground">
@@ -98,10 +95,16 @@ export function UnitSection() {
                       </figcaption>
                     ) : null}
                   </figure>
-                ))}
-              </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {carouselMedia.length > 1 ? (
+              <>
+                <CarouselPrevious aria-label="Imagem anterior da unidade" />
+                <CarouselNext aria-label="Próxima imagem da unidade" />
+              </>
             ) : null}
-          </div>
+          </Carousel>
         ) : null}
       </div>
     </Section>

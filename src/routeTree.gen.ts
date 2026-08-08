@@ -29,6 +29,7 @@ import { Route as SiteRegioesRouteImport } from './routes/_site.regioes'
 import { Route as SiteSolicitarCotacaoRouteImport } from './routes/_site.solicitar-cotacao'
 import { Route as SiteTermosDeUsoRouteImport } from './routes/_site.termos-de-uso'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppSettingsSiteContentRouteImport } from './routes/app.settings.site-content'
 
 const AuthRoute = AuthRouteImport.update({
@@ -130,6 +131,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppSettingsSiteContentRoute = AppSettingsSiteContentRouteImport.update({
   id: '/settings/site-content',
   path: '/settings/site-content',
@@ -154,6 +160,7 @@ export interface FileRoutesByFullPath {
   '/regioes': typeof SiteRegioesRoute
   '/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
   '/termos-de-uso': typeof SiteTermosDeUsoRoute
+  '/app/dashboard': typeof AppDashboardRoute
   '/app/': typeof AppIndexRoute
   '/app/settings/site-content': typeof AppSettingsSiteContentRoute
 }
@@ -174,6 +181,7 @@ export interface FileRoutesByTo {
   '/regioes': typeof SiteRegioesRoute
   '/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
   '/termos-de-uso': typeof SiteTermosDeUsoRoute
+  '/app/dashboard': typeof AppDashboardRoute
   '/app': typeof AppIndexRoute
   '/app/settings/site-content': typeof AppSettingsSiteContentRoute
 }
@@ -197,6 +205,7 @@ export interface FileRoutesById {
   '/_site/regioes': typeof SiteRegioesRoute
   '/_site/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
   '/_site/termos-de-uso': typeof SiteTermosDeUsoRoute
+  '/app/dashboard': typeof AppDashboardRoute
   '/_site/': typeof SiteIndexRoute
   '/app/': typeof AppIndexRoute
   '/app/settings/site-content': typeof AppSettingsSiteContentRoute
@@ -221,6 +230,7 @@ export interface FileRouteTypes {
     | '/regioes'
     | '/solicitar-cotacao'
     | '/termos-de-uso'
+    | '/app/dashboard'
     | '/app/'
     | '/app/settings/site-content'
   fileRoutesByTo: FileRoutesByTo
@@ -241,6 +251,7 @@ export interface FileRouteTypes {
     | '/regioes'
     | '/solicitar-cotacao'
     | '/termos-de-uso'
+    | '/app/dashboard'
     | '/app'
     | '/app/settings/site-content'
   id:
@@ -263,6 +274,7 @@ export interface FileRouteTypes {
     | '/_site/regioes'
     | '/_site/solicitar-cotacao'
     | '/_site/termos-de-uso'
+    | '/app/dashboard'
     | '/_site/'
     | '/app/'
     | '/app/settings/site-content'
@@ -418,6 +430,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/dashboard': {
+      id: '/app/dashboard'
+      path: '/dashboard'
+      fullPath: '/app/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/settings/site-content': {
       id: '/app/settings/site-content'
       path: '/settings/site-content'
@@ -473,11 +492,13 @@ const SiteRouteChildren: SiteRouteChildren = {
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 
 interface AppRouteChildren {
+  AppDashboardRoute: typeof AppDashboardRoute
   AppIndexRoute: typeof AppIndexRoute
   AppSettingsSiteContentRoute: typeof AppSettingsSiteContentRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppDashboardRoute: AppDashboardRoute,
   AppIndexRoute: AppIndexRoute,
   AppSettingsSiteContentRoute: AppSettingsSiteContentRoute,
 }

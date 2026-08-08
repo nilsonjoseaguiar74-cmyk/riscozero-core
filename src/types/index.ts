@@ -443,4 +443,12 @@ export interface TrackingEvent {
   occurredAt: string;
 }
 
-export type { SiteMediaCard, SiteTestimonial, UnitSectionContent } from "@/types/site-content";
+export type {
+  OrderItem,
+  SiteMediaCard,
+  SiteMediaInput,
+  SiteTestimonial,
+  SiteTestimonialInput,
+  UnitSectionContent,
+  UnitSectionInput,
+} from "@/types/site-content";

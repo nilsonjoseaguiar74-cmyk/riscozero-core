@@ -1,4 +1,4 @@
-import { httpRequest } from "@/services/http";
+import { httpRequest, setAccessToken } from "@/services/http";
 import type { ServiceRegistry } from "@/services/contracts";
 import type {
   Activity,
@@ -29,10 +29,28 @@ import type {
  */
 export const httpAdapter: ServiceRegistry = {
   auth: {
-    signIn: (email, password) =>
-      httpRequest<Session>("/auth/sign-in", { method: "POST", body: { email, password } }),
-    signOut: () => httpRequest<void>("/auth/sign-out", { method: "POST" }),
-    currentSession: () => httpRequest<Session | null>("/auth/session"),
+    async signIn(email, password) {
+      const session = await httpRequest<Session>("/auth/sign-in", {
+        method: "POST",
+        body: { email, password },
+      });
+      setAccessToken(session.token);
+      return session;
+    },
+    async signOut() {
+      await httpRequest<void>("/auth/sign-out", { method: "POST" });
+      setAccessToken(null);
+    },
+    async currentSession() {
+      try {
+        const session = await httpRequest<Session>("/auth/refresh", { method: "POST" });
+        setAccessToken(session.token);
+        return session;
+      } catch {
+        setAccessToken(null);
+        return null;
+      }
+    },
     requestPasswordReset: (email) =>
       httpRequest<void>("/auth/password-reset", { method: "POST", body: { email } }),
     resetPassword: (token, password) =>
@@ -131,6 +149,44 @@ export const httpAdapter: ServiceRegistry = {
 
   siteContent: {
     getUnitSection: () => httpRequest<UnitSectionContent>("/site-content/unit"),
+    updateUnitSection: (payload) =>
+      httpRequest<UnitSectionContent>("/site-content/unit", { method: "PATCH", body: payload }),
     getTestimonials: () => httpRequest<SiteTestimonial[]>("/site-content/testimonials"),
+    createTestimonial: (payload) =>
+      httpRequest<SiteTestimonial>("/site-content/testimonials", { method: "POST", body: payload }),
+    updateTestimonial: (id, payload) =>
+      httpRequest<SiteTestimonial>(`/site-content/testimonials/${id}`, {
+        method: "PATCH",
+        body: payload,
+      }),
+    deleteTestimonial: (id) =>
+      httpRequest<void>(`/site-content/testimonials/${id}`, { method: "DELETE" }),
+    reorderTestimonials: (items) =>
+      httpRequest<SiteTestimonial[]>("/site-content/testimonials/order", {
+        method: "PATCH",
+        body: { items },
+      }),
+    setTestimonialAvatar: (id, file) => {
+      const body = new FormData();
+      body.append("file", file);
+      return httpRequest<SiteTestimonial>(`/site-content/testimonials/${id}/avatar`, {
+        method: "POST",
+        body,
+      });
+    },
+    createMedia: (payload, file) => {
+      const body = new FormData();
+      body.append("file", file);
+      Object.entries(payload).forEach(([key, value]) => {
+        if (value !== undefined) body.append(key, String(value));
+      });
+      return httpRequest(`/site-content/media`, { method: "POST", body });
+    },
+    updateMedia: (id, payload) =>
+      httpRequest(`/site-content/media/${id}`, { method: "PATCH", body: payload }),
+    deleteMedia: (id) => httpRequest<void>(`/site-content/media/${id}`, { method: "DELETE" }),
+    reorderMedia: (items) =>
+      httpRequest("/site-content/media/order", { method: "PATCH", body: { items } }),
+    setPrimaryMedia: (id) => httpRequest(`/site-content/media/${id}/primary`, { method: "PATCH" }),
   },
 };

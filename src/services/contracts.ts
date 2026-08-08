@@ -28,6 +28,11 @@ import type {
   WebhookLog,
   SiteTestimonial,
   UnitSectionContent,
+  UnitSectionInput,
+  SiteMediaCard,
+  SiteMediaInput,
+  SiteTestimonialInput,
+  OrderItem,
 } from "@/types";
 
 export interface AuthService {
@@ -104,7 +109,21 @@ export interface SettingsService {
 
 export interface SiteContentService {
   getUnitSection(): Promise<UnitSectionContent>;
+  updateUnitSection(payload: UnitSectionInput): Promise<UnitSectionContent>;
   getTestimonials(): Promise<SiteTestimonial[]>;
+  createTestimonial(payload: SiteTestimonialInput): Promise<SiteTestimonial>;
+  updateTestimonial(id: string, payload: Partial<SiteTestimonialInput>): Promise<SiteTestimonial>;
+  deleteTestimonial(id: string): Promise<void>;
+  reorderTestimonials(items: OrderItem[]): Promise<SiteTestimonial[]>;
+  setTestimonialAvatar(id: string, file: File): Promise<SiteTestimonial>;
+  createMedia(payload: SiteMediaInput, file: File): Promise<SiteMediaCard>;
+  updateMedia(
+    id: string,
+    payload: Partial<SiteMediaInput & Pick<SiteMediaCard, "active">>,
+  ): Promise<SiteMediaCard>;
+  deleteMedia(id: string): Promise<void>;
+  reorderMedia(items: OrderItem[]): Promise<SiteMediaCard[]>;
+  setPrimaryMedia(id: string): Promise<SiteMediaCard>;
 }
 
 export interface TrackingService {

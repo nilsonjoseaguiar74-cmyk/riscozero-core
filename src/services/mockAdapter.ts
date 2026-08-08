@@ -691,5 +691,88 @@ export const mockAdapter: ServiceRegistry = {
       await delay(180);
       return clone(siteTestimonials);
     },
+    async updateUnitSection(payload) {
+      await delay(250);
+      Object.assign(unitSectionContent, payload);
+      return clone(unitSectionContent);
+    },
+    async createTestimonial(payload) {
+      await delay(250);
+      const item = { id: crypto.randomUUID(), ...payload };
+      siteTestimonials.push(item);
+      return clone(item);
+    },
+    async updateTestimonial(id, payload) {
+      await delay(250);
+      const item = siteTestimonials.find((entry) => entry.id === id);
+      if (!item) throw new ApiError("nao_encontrado", "Depoimento não encontrado.", 404);
+      Object.assign(item, payload);
+      return clone(item);
+    },
+    async deleteTestimonial(id) {
+      await delay(250);
+      const index = siteTestimonials.findIndex((entry) => entry.id === id);
+      if (index < 0) throw new ApiError("nao_encontrado", "Depoimento não encontrado.", 404);
+      siteTestimonials.splice(index, 1);
+    },
+    async reorderTestimonials(items) {
+      items.forEach(({ id, order }) => {
+        const item = siteTestimonials.find((entry) => entry.id === id);
+        if (item) item.order = order;
+      });
+      return clone(siteTestimonials);
+    },
+    async setTestimonialAvatar(id, file) {
+      const item = siteTestimonials.find((entry) => entry.id === id);
+      if (!item) throw new ApiError("nao_encontrado", "Depoimento não encontrado.", 404);
+      item.avatarUrl = URL.createObjectURL(file);
+      return clone(item);
+    },
+    async createMedia(payload, file) {
+      const item = {
+        id: crypto.randomUUID(),
+        section: "unit" as const,
+        imageUrl: URL.createObjectURL(file),
+        active: true,
+        ...payload,
+      };
+      if (item.position === "primary")
+        unitSectionContent.media.forEach((entry) => {
+          if (entry.position === "primary") entry.position = "secondary";
+        });
+      unitSectionContent.media.push(item);
+      return clone(item);
+    },
+    async updateMedia(id, payload) {
+      const item = unitSectionContent.media.find((entry) => entry.id === id);
+      if (!item) throw new ApiError("nao_encontrado", "Imagem não encontrada.", 404);
+      if (payload.position === "primary")
+        unitSectionContent.media.forEach((entry) => {
+          if (entry.id !== id && entry.position === "primary") entry.position = "secondary";
+        });
+      Object.assign(item, payload);
+      return clone(item);
+    },
+    async deleteMedia(id) {
+      const index = unitSectionContent.media.findIndex((entry) => entry.id === id);
+      if (index < 0) throw new ApiError("nao_encontrado", "Imagem não encontrada.", 404);
+      unitSectionContent.media.splice(index, 1);
+    },
+    async reorderMedia(items) {
+      items.forEach(({ id, order }) => {
+        const item = unitSectionContent.media.find((entry) => entry.id === id);
+        if (item) item.order = order;
+      });
+      return clone(unitSectionContent.media);
+    },
+    async setPrimaryMedia(id) {
+      const item = unitSectionContent.media.find((entry) => entry.id === id);
+      if (!item) throw new ApiError("nao_encontrado", "Imagem não encontrada.", 404);
+      unitSectionContent.media.forEach((entry) => {
+        entry.position =
+          entry.id === id ? "primary" : entry.position === "primary" ? "secondary" : entry.position;
+      });
+      return clone(item);
+    },
   },
 };

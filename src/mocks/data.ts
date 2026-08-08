@@ -72,6 +72,7 @@ export const ROLE_DEFINITIONS: RoleDefinition[] = [
       "reports.view",
       "acquisition.view",
       "audit.view",
+      "settings.manage",
       "association.view",
       "association.manage",
       "finance.view",

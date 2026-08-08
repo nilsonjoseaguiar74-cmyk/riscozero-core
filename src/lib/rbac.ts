@@ -169,7 +169,7 @@ export const visibleGroups = (permissions: Permission[]): NavGroup[] =>
 /** Rota inicial de cada perfil após a autenticação demonstrativa. */
 export const HOME_ROUTE_BY_ROLE: Record<UserRole, string> = {
   administrador: "/app/dashboard",
-  gestor: "/app/association/dashboard",
+  gestor: "/app/dashboard",
   gestor_trafego: "/app/traffic/dashboard",
   comercial: "/app/crm",
   desenvolvedor: "/app/integrations",
