@@ -18,6 +18,8 @@ import type {
   Session,
   Task,
   WebhookLog,
+  SiteTestimonial,
+  UnitSectionContent,
 } from "@/types";
 
 /**
@@ -125,5 +127,10 @@ export const httpAdapter: ServiceRegistry = {
   settings: {
     get: () => httpRequest<AppSettings>("/settings"),
     update: (payload) => httpRequest<AppSettings>("/settings", { method: "PATCH", body: payload }),
+  },
+
+  siteContent: {
+    getUnitSection: () => httpRequest<UnitSectionContent>("/site-content/unit"),
+    getTestimonials: () => httpRequest<SiteTestimonial[]>("/site-content/testimonials"),
   },
 };

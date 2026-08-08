@@ -31,6 +31,8 @@ export const queryKeys = {
   roles: ["roles"] as const,
   audit: (search: string) => ["audit", search] as const,
   settings: ["settings"] as const,
+  unitSection: ["site-content", "unit"] as const,
+  testimonials: ["site-content", "testimonials"] as const,
 };
 
 export { ApiError, apiErrorMessage } from "@/services/http";

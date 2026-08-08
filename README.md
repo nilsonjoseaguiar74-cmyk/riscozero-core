@@ -822,7 +822,7 @@ CONTATO
 
 Informações:
 
-WhatsApp: (48) 98421-9634.
+WhatsApp: (48) 99122-7241.
 
 Endereço: Av. Josué di Bernardi, 239 – Campinas, São José – SC, 88101-260.
 

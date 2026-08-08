@@ -9,6 +9,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Section, SectionHeading, FeatureCard } from "@/components/landing/Section";
 import { LeadForm } from "@/components/landing/LeadForm";
+import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
+import { UnitSection } from "@/components/landing/UnitSection";
 import { BENEFITS, DIFFERENTIALS, STEPS, FAQS } from "@/content/landing";
 import { CITIES, SAO_JOSE_LOCALITIES, SITE, TRAVEL_CORRIDORS, whatsappLink } from "@/config/site";
 import { trackEvent } from "@/services/tracking";
@@ -128,6 +130,10 @@ function HomePage() {
           ))}
         </ol>
       </Section>
+
+      <TestimonialsSection />
+
+      <UnitSection />
 
       <Section>
         <SectionHeading

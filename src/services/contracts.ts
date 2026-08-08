@@ -26,6 +26,8 @@ import type {
   UpdateLeadRequest,
   UserRole,
   WebhookLog,
+  SiteTestimonial,
+  UnitSectionContent,
 } from "@/types";
 
 export interface AuthService {
@@ -100,6 +102,11 @@ export interface SettingsService {
   update(payload: Partial<AppSettings>): Promise<AppSettings>;
 }
 
+export interface SiteContentService {
+  getUnitSection(): Promise<UnitSectionContent>;
+  getTestimonials(): Promise<SiteTestimonial[]>;
+}
+
 export interface TrackingService {
   capture(): TrackingContext;
   track(event: TrackingEvent["name"], payload?: TrackingEvent["payload"]): void;
@@ -117,4 +124,5 @@ export interface ServiceRegistry {
   users: UsersService;
   audit: AuditService;
   settings: SettingsService;
+  siteContent: SiteContentService;
 }
