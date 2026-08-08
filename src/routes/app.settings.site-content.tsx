@@ -172,6 +172,7 @@ function MediaManager({
   items: SiteMediaCard[];
   onSaved: () => Promise<void>;
 }) {
+  const primary = items.find((item) => item.active && item.position === "primary");
   const empty = { title: "", alt: "", position: "secondary" as SiteMediaCard["position"] };
   const [form, setForm] = useState(empty);
   const [file, setFile] = useState<File | null>(null);
@@ -210,9 +211,45 @@ function MediaManager({
   };
   return (
     <section className="space-y-5">
-      <form className="card-elevated grid gap-4 p-5 md:grid-cols-2" onSubmit={submit}>
+      <div className="card-elevated overflow-hidden">
+        <div className="border-b border-border px-5 py-4">
+          <p className="eyebrow text-gold">Hero da Home</p>
+          <h2 className="mt-1 text-lg font-semibold">Imagem de fundo publicada</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            A camada azul de 65% é aplicada automaticamente. Recomendação: imagem horizontal, 1920 ×
+            1080 px.
+          </p>
+        </div>
+        {primary ? (
+          <div className="relative aspect-[16/7] min-h-48 overflow-hidden bg-brand">
+            <img
+              src={primary.imageUrl}
+              alt={primary.alt}
+              className="absolute inset-0 size-full object-cover"
+            />
+            <div className="absolute inset-0 bg-brand/65" aria-hidden="true" />
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5 text-white">
+              <div>
+                <p className="font-semibold">{primary.title || "Imagem principal"}</p>
+                <p className="text-xs text-white/75">Prévia com a opacidade aplicada</p>
+              </div>
+              <Badge className="bg-gold text-gold-foreground">Publicada no hero</Badge>
+            </div>
+          </div>
+        ) : (
+          <div className="flex min-h-48 items-center justify-center bg-brand px-6 text-center text-sm text-brand-foreground/80">
+            Envie uma imagem abaixo e escolha a posição “Principal” para publicá-la no hero.
+          </div>
+        )}
+      </div>
+      <form className="card-elevated grid gap-5 p-5 sm:p-6 md:grid-cols-2" onSubmit={submit}>
         <div className="md:col-span-2">
-          <h2 className="heading-3">{editing ? "Editar imagem" : "Adicionar imagem"}</h2>
+          <h2 className="heading-3">
+            {editing ? "Editar informações da imagem" : "Enviar nova imagem"}
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Use “Principal” para o hero e as demais posições para o carrossel da unidade.
+          </p>
         </div>
         {!editing ? (
           <Field label="Arquivo (JPEG, PNG ou WebP; até 5 MB)">
@@ -240,7 +277,7 @@ function MediaManager({
             onChange={(e) => setForm({ ...form, alt: e.target.value })}
           />
         </Field>
-        <Field label="Posição">
+        <Field label="Uso da imagem">
           <select
             className="h-9 rounded-md border border-input bg-background px-3 text-sm"
             value={form.position}
@@ -248,9 +285,9 @@ function MediaManager({
               setForm({ ...form, position: e.target.value as SiteMediaCard["position"] })
             }
           >
-            <option value="primary">Principal</option>
-            <option value="secondary">Secundária</option>
-            <option value="complementary">Complementar</option>
+            <option value="primary">Hero da Home (principal)</option>
+            <option value="secondary">Carrossel da unidade (secundária)</option>
+            <option value="complementary">Carrossel da unidade (complementar)</option>
           </select>
         </Field>
         <div className="flex gap-2 md:col-span-2">
@@ -272,13 +309,13 @@ function MediaManager({
           ) : null}
         </div>
       </form>
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
         {items.map((item, index) => (
           <article key={item.id} className="card-elevated p-4">
             <img
               src={item.imageUrl}
               alt={item.alt}
-              className="aspect-[4/3] w-full rounded-lg object-cover"
+              className="aspect-[16/10] w-full rounded-lg object-cover"
             />
             <div className="mt-3 flex items-start justify-between gap-3">
               <div>
@@ -325,7 +362,7 @@ function MediaManager({
                 disabled={item.position === "primary"}
                 onClick={() => run.mutate(() => services.siteContent.setPrimaryMedia(item.id))}
               >
-                Principal
+                Usar no hero
               </Button>
               <Button
                 size="sm"

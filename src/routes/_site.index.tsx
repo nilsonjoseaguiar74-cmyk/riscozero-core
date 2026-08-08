@@ -55,13 +55,13 @@ function HomePage() {
   return (
     <>
       <section
-        className="surface-brand relative isolate overflow-hidden bg-cover bg-center"
+        className="surface-brand relative isolate min-h-[620px] overflow-hidden bg-cover bg-center sm:min-h-0"
         style={heroImage ? { backgroundImage: `url(${heroImage.imageUrl})` } : undefined}
       >
         {heroImage ? (
-          <div className="absolute inset-0 -z-10 bg-brand/70" aria-hidden="true" />
+          <div className="absolute inset-0 -z-10 bg-brand/65" aria-hidden="true" />
         ) : null}
-        <div className="container-page relative grid gap-8 py-10 lg:grid-cols-[1fr_minmax(0,440px)] lg:items-start lg:gap-12 lg:py-14">
+        <div className="container-page relative grid gap-8 py-10 sm:py-12 lg:grid-cols-[1fr_minmax(0,460px)] lg:items-start lg:gap-12 lg:py-16">
           <div className="max-w-xl">
             <p className="eyebrow text-gold-light">{SITE.segment}</p>
             <h1 className="display-1 mt-3 text-brand-foreground">
