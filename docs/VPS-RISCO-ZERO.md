@@ -6,13 +6,37 @@ Documento operacional para evitar perda de contexto durante a preparação do de
 
 - Aplicação: <https://riscozero.vitorads.site/>
 - Host: `riscozero.vitorads.site`
+- Nome do servidor: `srv993737`
 - IPv4 observado em 8 de agosto de 2026: `72.60.147.56`
+- IPv6 observado: `2a02:4780:66:b26e::1`
+- Sistema operacional confirmado: Ubuntu 22.04.5 LTS
+- Kernel confirmado: Linux 5.15.0-181-generic x86_64
 - Proxy público identificado: `nginx/1.18.0 (Ubuntu)`
 - Protocolo observado: HTTP/2
 - HTTPS: certificado Let's Encrypt para `riscozero.vitorads.site`
 - Validade observada do certificado: 5 de agosto de 2026 a 3 de novembro de 2026
 
 O IP, a versão do servidor e a validade do certificado são informações mutáveis. Confirmá-las novamente antes de qualquer intervenção.
+
+## Retrato operacional recebido
+
+Estado informado pelo próprio servidor em 7 de agosto de 2026, às 23:44:18 (UTC-3):
+
+- Carga do sistema: `0.87`.
+- Processos: `393`.
+- Disco raiz: `65,4%` de `193,65 GB` utilizado.
+- Memória: `55%` utilizada.
+- Swap: `0%` utilizada.
+- Usuários conectados naquele momento: `0`.
+- Um processo zumbi detectado.
+- 17 atualizações disponíveis imediatamente.
+- 30 atualizações adicionais vinculadas ao Ubuntu ESM Apps.
+- Reinicialização do sistema requerida.
+- Console web anunciado pelo servidor na porta `9090`.
+
+Esses números são um retrato pontual, não configuração permanente. Antes do deploy, identificar o processo zumbi, revisar as atualizações e programar a reinicialização em janela de manutenção. Não reiniciar antes de confirmar backups, serviços ativos e mecanismo de retorno.
+
+O console web foi anunciado como `srv993737.hstgr.cloud:9090` e `72.60.147.56:9090`. Confirmar se ele é necessário; caso contrário, restringir a porta 9090 por firewall. Se necessário, limitar o acesso a IPs administrativos ou VPN e validar o certificado usado pelo console.
 
 ## Estado público observado
 
