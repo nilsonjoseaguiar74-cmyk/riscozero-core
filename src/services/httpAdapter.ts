@@ -59,7 +59,7 @@ export const httpAdapter: ServiceRegistry = {
         query: filters as Record<string, string | number | boolean | undefined>,
       }),
     getById: (id) => httpRequest<Lead>(`/leads/${id}`),
-    create: (payload) => httpRequest<Lead>("/leads", { method: "POST", body: payload }),
+    create: (payload) => httpRequest<Lead>("/public/leads", { method: "POST", body: payload }),
     update: (id, payload) => httpRequest<Lead>(`/leads/${id}`, { method: "PATCH", body: payload }),
     assign: (id, userId) =>
       httpRequest<Lead>(`/leads/${id}/assign`, { method: "PATCH", body: { userId } }),
