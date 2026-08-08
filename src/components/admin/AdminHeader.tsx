@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { PeriodSelector } from "@/components/admin/PeriodContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { NAV_GROUPS, visibleGroups } from "@/lib/rbac";
+import { isRouteEnabled, NAV_GROUPS, visibleGroups } from "@/lib/rbac";
 import { USER_ROLE_LABEL } from "@/types";
 
 function useBreadcrumb() {
@@ -150,9 +150,13 @@ export function AdminHeader() {
                     <CommandItem
                       key={item.to}
                       value={`${group.label} ${item.label}`}
-                      onSelect={() => go(item.to)}
+                      disabled={!isRouteEnabled(item.to)}
+                      onSelect={() => (isRouteEnabled(item.to) ? go(item.to) : undefined)}
                     >
                       {item.label}
+                      {!isRouteEnabled(item.to) ? (
+                        <span className="ml-auto text-xs text-muted-foreground">Em breve</span>
+                      ) : null}
                     </CommandItem>
                   ))}
                 </CommandGroup>

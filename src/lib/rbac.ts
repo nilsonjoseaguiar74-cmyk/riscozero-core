@@ -12,6 +12,15 @@ export interface NavItem {
   description?: string;
 }
 
+export const ENABLED_ROUTES = new Set([
+  "/app/dashboard",
+  "/app/crm",
+  "/app/crm/tarefas",
+  "/app/settings/site-content",
+]);
+
+export const isRouteEnabled = (to: string) => ENABLED_ROUTES.has(to);
+
 export interface NavGroup {
   id: string;
   label: string;

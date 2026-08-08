@@ -24,7 +24,9 @@ import { Route as SiteRegioesRouteImport } from './routes/_site.regioes'
 import { Route as SiteSolicitarCotacaoRouteImport } from './routes/_site.solicitar-cotacao'
 import { Route as SiteTermosDeUsoRouteImport } from './routes/_site.termos-de-uso'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppCrmRouteImport } from './routes/app.crm'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as AppCrmTarefasRouteImport } from './routes/app.crm.tarefas'
 import { Route as AppSettingsSiteContentRouteImport } from './routes/app.settings.site-content'
 
 const AuthRoute = AuthRouteImport.update({
@@ -101,10 +103,20 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCrmRoute = AppCrmRouteImport.update({
+  id: '/crm',
+  path: '/crm',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AppRoute,
+} as any)
+const AppCrmTarefasRoute = AppCrmTarefasRouteImport.update({
+  id: '/tarefas',
+  path: '/tarefas',
+  getParentRoute: () => AppCrmRoute,
 } as any)
 const AppSettingsSiteContentRoute = AppSettingsSiteContentRouteImport.update({
   id: '/settings/site-content',
@@ -125,8 +137,10 @@ export interface FileRoutesByFullPath {
   '/regioes': typeof SiteRegioesRoute
   '/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
   '/termos-de-uso': typeof SiteTermosDeUsoRoute
+  '/app/crm': typeof AppCrmRouteWithChildren
   '/app/dashboard': typeof AppDashboardRoute
   '/app/': typeof AppIndexRoute
+  '/app/crm/tarefas': typeof AppCrmTarefasRoute
   '/app/settings/site-content': typeof AppSettingsSiteContentRoute
 }
 export interface FileRoutesByTo {
@@ -141,8 +155,10 @@ export interface FileRoutesByTo {
   '/regioes': typeof SiteRegioesRoute
   '/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
   '/termos-de-uso': typeof SiteTermosDeUsoRoute
+  '/app/crm': typeof AppCrmRouteWithChildren
   '/app/dashboard': typeof AppDashboardRoute
   '/app': typeof AppIndexRoute
+  '/app/crm/tarefas': typeof AppCrmTarefasRoute
   '/app/settings/site-content': typeof AppSettingsSiteContentRoute
 }
 export interface FileRoutesById {
@@ -160,9 +176,11 @@ export interface FileRoutesById {
   '/_site/regioes': typeof SiteRegioesRoute
   '/_site/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
   '/_site/termos-de-uso': typeof SiteTermosDeUsoRoute
+  '/app/crm': typeof AppCrmRouteWithChildren
   '/app/dashboard': typeof AppDashboardRoute
   '/_site/': typeof SiteIndexRoute
   '/app/': typeof AppIndexRoute
+  '/app/crm/tarefas': typeof AppCrmTarefasRoute
   '/app/settings/site-content': typeof AppSettingsSiteContentRoute
 }
 export interface FileRouteTypes {
@@ -180,8 +198,10 @@ export interface FileRouteTypes {
     | '/regioes'
     | '/solicitar-cotacao'
     | '/termos-de-uso'
+    | '/app/crm'
     | '/app/dashboard'
     | '/app/'
+    | '/app/crm/tarefas'
     | '/app/settings/site-content'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -196,8 +216,10 @@ export interface FileRouteTypes {
     | '/regioes'
     | '/solicitar-cotacao'
     | '/termos-de-uso'
+    | '/app/crm'
     | '/app/dashboard'
     | '/app'
+    | '/app/crm/tarefas'
     | '/app/settings/site-content'
   id:
     | '__root__'
@@ -214,9 +236,11 @@ export interface FileRouteTypes {
     | '/_site/regioes'
     | '/_site/solicitar-cotacao'
     | '/_site/termos-de-uso'
+    | '/app/crm'
     | '/app/dashboard'
     | '/_site/'
     | '/app/'
+    | '/app/crm/tarefas'
     | '/app/settings/site-content'
   fileRoutesById: FileRoutesById
 }
@@ -333,12 +357,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/crm': {
+      id: '/app/crm'
+      path: '/crm'
+      fullPath: '/app/crm'
+      preLoaderRoute: typeof AppCrmRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/dashboard': {
       id: '/app/dashboard'
       path: '/dashboard'
       fullPath: '/app/dashboard'
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/app/crm/tarefas': {
+      id: '/app/crm/tarefas'
+      path: '/tarefas'
+      fullPath: '/app/crm/tarefas'
+      preLoaderRoute: typeof AppCrmTarefasRouteImport
+      parentRoute: typeof AppCrmRoute
     }
     '/app/settings/site-content': {
       id: '/app/settings/site-content'
@@ -388,13 +426,26 @@ const SiteRouteChildren: SiteRouteChildren = {
 
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 
+interface AppCrmRouteChildren {
+  AppCrmTarefasRoute: typeof AppCrmTarefasRoute
+}
+
+const AppCrmRouteChildren: AppCrmRouteChildren = {
+  AppCrmTarefasRoute: AppCrmTarefasRoute,
+}
+
+const AppCrmRouteWithChildren =
+  AppCrmRoute._addFileChildren(AppCrmRouteChildren)
+
 interface AppRouteChildren {
+  AppCrmRoute: typeof AppCrmRouteWithChildren
   AppDashboardRoute: typeof AppDashboardRoute
   AppIndexRoute: typeof AppIndexRoute
   AppSettingsSiteContentRoute: typeof AppSettingsSiteContentRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppCrmRoute: AppCrmRouteWithChildren,
   AppDashboardRoute: AppDashboardRoute,
   AppIndexRoute: AppIndexRoute,
   AppSettingsSiteContentRoute: AppSettingsSiteContentRoute,

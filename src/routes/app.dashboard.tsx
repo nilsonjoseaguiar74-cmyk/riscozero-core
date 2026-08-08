@@ -4,6 +4,8 @@ import type { ReactNode } from "react";
 import { FileText, ListTodo, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MetricCard } from "@/components/common/MetricCard";
+import { ChartCard } from "@/components/common/MetricCard";
+import { BarsChart, DonutChart, TrendChart } from "@/components/admin/Charts";
 import { ErrorState, LoadingState, NoPermissionState } from "@/components/common/StateViews";
 import { useAuth } from "@/contexts/AuthContext";
 import { queryKeys, services } from "@/services";
@@ -41,12 +43,27 @@ function DashboardRoute() {
           <MetricCard key={metric.key} metric={metric} accent={index === 0} />
         ))}
       </div>
+      <div className="grid gap-4 xl:grid-cols-2">
+        <ChartCard title="Evolução de leads" description="Entradas registradas no período">
+          <TrendChart data={overview.data!.leadsOverTime} primaryLabel="Leads" />
+        </ChartCard>
+        <ChartCard title="Funil comercial" description="Distribuição por etapa">
+          <BarsChart data={overview.data!.funnel} horizontal colorful />
+        </ChartCard>
+        <ChartCard title="Origem dos leads" description="Participação por canal">
+          <DonutChart data={overview.data!.bySource} />
+        </ChartCard>
+        <ChartCard title="Leads por cidade" description="Distribuição regional">
+          <BarsChart data={overview.data!.byCity} colorful />
+        </ChartCard>
+      </div>
       <div className="grid gap-4 md:grid-cols-3">
         {can("crm.view") ? (
           <Shortcut
             icon={<ListTodo className="size-5" />}
             title="Tarefas"
             description={`${tasks.data?.filter((task) => task.status !== "concluida").length ?? 0} pendentes`}
+            to="/app/crm/tarefas"
           />
         ) : null}
         {can("settings.manage") ? (

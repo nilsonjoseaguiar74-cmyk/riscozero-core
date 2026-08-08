@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/brand/Logo";
 import { useAuth } from "@/contexts/AuthContext";
-import { visibleGroups } from "@/lib/rbac";
+import { isRouteEnabled, visibleGroups } from "@/lib/rbac";
 import { USER_ROLE_LABEL } from "@/types";
 import { cn } from "@/lib/utils";
 
@@ -54,17 +54,40 @@ export function AdminSidebar() {
               <SidebarMenu>
                 {group.items.map((item) => (
                   <SidebarMenuItem key={item.to}>
-                    <SidebarMenuButton asChild isActive={isActive(item.to)} tooltip={item.label}>
-                      <Link to={item.to as "/"} className="flex items-center gap-2">
+                    <SidebarMenuButton
+                      asChild={isRouteEnabled(item.to)}
+                      isActive={isActive(item.to)}
+                      disabled={!isRouteEnabled(item.to)}
+                      tooltip={isRouteEnabled(item.to) ? item.label : `${item.label} — Em breve`}
+                    >
+                      {isRouteEnabled(item.to) ? (
+                        <Link to={item.to as "/"} className="flex items-center gap-2">
+                          <span
+                            className={cn(
+                              "size-1.5 shrink-0 rounded-full",
+                              isActive(item.to) ? "bg-gold" : "bg-muted-foreground/40",
+                            )}
+                            aria-hidden="true"
+                          />
+                          <span className="truncate">{item.label}</span>
+                        </Link>
+                      ) : (
                         <span
-                          className={cn(
-                            "size-1.5 shrink-0 rounded-full",
-                            isActive(item.to) ? "bg-gold" : "bg-muted-foreground/40",
-                          )}
-                          aria-hidden="true"
-                        />
-                        <span className="truncate">{item.label}</span>
-                      </Link>
+                          className="flex w-full items-center gap-2"
+                          title="Implementação futura"
+                        >
+                          <span
+                            className="size-1.5 shrink-0 rounded-full bg-muted-foreground/25"
+                            aria-hidden="true"
+                          />
+                          <span className="truncate">{item.label}</span>
+                          {!collapsed ? (
+                            <span className="ml-auto text-[9px] uppercase tracking-wide">
+                              Em breve
+                            </span>
+                          ) : null}
+                        </span>
+                      )}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
