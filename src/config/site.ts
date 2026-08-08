@@ -31,8 +31,8 @@ export const googleMapsEmbedLink = () =>
 export const APP_CONFIG = {
   apiBaseUrl: (import.meta.env["VITE_API_BASE_URL"] as string | undefined) ?? "/api",
   useMockApi:
-    ((import.meta.env["VITE_USE_MOCK_API"] as string | undefined) ?? "true").toLowerCase() !==
+    ((import.meta.env["VITE_USE_MOCK_API"] as string | undefined) ?? "false").toLowerCase() !==
     "false",
-  version: "1.0.0-demo",
+  version: "1.0.0",
   environment: import.meta.env.DEV ? "desenvolvimento" : "produção",
 } as const;

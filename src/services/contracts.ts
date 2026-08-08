@@ -39,10 +39,6 @@ export interface AuthService {
   signIn(email: string, password: string): Promise<Session>;
   signOut(): Promise<void>;
   currentSession(): Promise<Session | null>;
-  requestPasswordReset(email: string): Promise<void>;
-  resetPassword(token: string, password: string): Promise<void>;
-  verifyAccessCode(code: string): Promise<void>;
-  switchDemoRole(role: UserRole): Promise<Session>;
 }
 
 export interface LeadsService {

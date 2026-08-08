@@ -51,17 +51,6 @@ export const httpAdapter: ServiceRegistry = {
         return null;
       }
     },
-    requestPasswordReset: (email) =>
-      httpRequest<void>("/auth/password-reset", { method: "POST", body: { email } }),
-    resetPassword: (token, password) =>
-      httpRequest<void>("/auth/password-reset/confirm", {
-        method: "POST",
-        body: { token, password },
-      }),
-    verifyAccessCode: (code) =>
-      httpRequest<void>("/auth/verify", { method: "POST", body: { code } }),
-    switchDemoRole: (role) =>
-      httpRequest<Session>("/auth/demo-role", { method: "POST", body: { role } }),
   },
 
   leads: {

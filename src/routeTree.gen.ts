@@ -12,12 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as SiteRouteImport } from './routes/_site'
 import { Route as AppRouteImport } from './routes/app'
-import { Route as BlueprintRouteImport } from './routes/blueprint'
-import { Route as PainelRouteImport } from './routes/painel'
-import { Route as AuthEsqueciMinhaSenhaRouteImport } from './routes/_auth.esqueci-minha-senha'
 import { Route as AuthLoginRouteImport } from './routes/_auth.login'
-import { Route as AuthRedefinirSenhaRouteImport } from './routes/_auth.redefinir-senha'
-import { Route as AuthVerificarAcessoRouteImport } from './routes/_auth.verificar-acesso'
 import { Route as SiteIndexRouteImport } from './routes/_site.index'
 import { Route as SiteBeneficiosRouteImport } from './routes/_site.beneficios'
 import { Route as SiteComoFuncionaRouteImport } from './routes/_site.como-funciona'
@@ -45,34 +40,9 @@ const AppRoute = AppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlueprintRoute = BlueprintRouteImport.update({
-  id: '/blueprint',
-  path: '/blueprint',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PainelRoute = PainelRouteImport.update({
-  id: '/painel',
-  path: '/painel',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthEsqueciMinhaSenhaRoute = AuthEsqueciMinhaSenhaRouteImport.update({
-  id: '/esqueci-minha-senha',
-  path: '/esqueci-minha-senha',
-  getParentRoute: () => AuthRoute,
-} as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthRedefinirSenhaRoute = AuthRedefinirSenhaRouteImport.update({
-  id: '/redefinir-senha',
-  path: '/redefinir-senha',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthVerificarAcessoRoute = AuthVerificarAcessoRouteImport.update({
-  id: '/verificar-acesso',
-  path: '/verificar-acesso',
   getParentRoute: () => AuthRoute,
 } as any)
 const SiteIndexRoute = SiteIndexRouteImport.update({
@@ -145,12 +115,7 @@ const AppSettingsSiteContentRoute = AppSettingsSiteContentRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
   '/app': typeof AppRouteWithChildren
-  '/blueprint': typeof BlueprintRoute
-  '/painel': typeof PainelRoute
-  '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/login': typeof AuthLoginRoute
-  '/redefinir-senha': typeof AuthRedefinirSenhaRoute
-  '/verificar-acesso': typeof AuthVerificarAcessoRoute
   '/beneficios': typeof SiteBeneficiosRoute
   '/como-funciona': typeof SiteComoFuncionaRoute
   '/contato': typeof SiteContatoRoute
@@ -166,12 +131,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof SiteIndexRoute
-  '/blueprint': typeof BlueprintRoute
-  '/painel': typeof PainelRoute
-  '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/login': typeof AuthLoginRoute
-  '/redefinir-senha': typeof AuthRedefinirSenhaRoute
-  '/verificar-acesso': typeof AuthVerificarAcessoRoute
   '/beneficios': typeof SiteBeneficiosRoute
   '/como-funciona': typeof SiteComoFuncionaRoute
   '/contato': typeof SiteContatoRoute
@@ -190,12 +150,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/_site': typeof SiteRouteWithChildren
   '/app': typeof AppRouteWithChildren
-  '/blueprint': typeof BlueprintRoute
-  '/painel': typeof PainelRoute
-  '/_auth/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/_auth/login': typeof AuthLoginRoute
-  '/_auth/redefinir-senha': typeof AuthRedefinirSenhaRoute
-  '/_auth/verificar-acesso': typeof AuthVerificarAcessoRoute
   '/_site/beneficios': typeof SiteBeneficiosRoute
   '/_site/como-funciona': typeof SiteComoFuncionaRoute
   '/_site/contato': typeof SiteContatoRoute
@@ -215,12 +170,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
-    | '/blueprint'
-    | '/painel'
-    | '/esqueci-minha-senha'
     | '/login'
-    | '/redefinir-senha'
-    | '/verificar-acesso'
     | '/beneficios'
     | '/como-funciona'
     | '/contato'
@@ -236,12 +186,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/blueprint'
-    | '/painel'
-    | '/esqueci-minha-senha'
     | '/login'
-    | '/redefinir-senha'
-    | '/verificar-acesso'
     | '/beneficios'
     | '/como-funciona'
     | '/contato'
@@ -259,12 +204,7 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_site'
     | '/app'
-    | '/blueprint'
-    | '/painel'
-    | '/_auth/esqueci-minha-senha'
     | '/_auth/login'
-    | '/_auth/redefinir-senha'
-    | '/_auth/verificar-acesso'
     | '/_site/beneficios'
     | '/_site/como-funciona'
     | '/_site/contato'
@@ -284,8 +224,6 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   SiteRoute: typeof SiteRouteWithChildren
   AppRoute: typeof AppRouteWithChildren
-  BlueprintRoute: typeof BlueprintRoute
-  PainelRoute: typeof PainelRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -311,46 +249,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blueprint': {
-      id: '/blueprint'
-      path: '/blueprint'
-      fullPath: '/blueprint'
-      preLoaderRoute: typeof BlueprintRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/painel': {
-      id: '/painel'
-      path: '/painel'
-      fullPath: '/painel'
-      preLoaderRoute: typeof PainelRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_auth/esqueci-minha-senha': {
-      id: '/_auth/esqueci-minha-senha'
-      path: '/esqueci-minha-senha'
-      fullPath: '/esqueci-minha-senha'
-      preLoaderRoute: typeof AuthEsqueciMinhaSenhaRouteImport
-      parentRoute: typeof AuthRoute
-    }
     '/_auth/login': {
       id: '/_auth/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/_auth/redefinir-senha': {
-      id: '/_auth/redefinir-senha'
-      path: '/redefinir-senha'
-      fullPath: '/redefinir-senha'
-      preLoaderRoute: typeof AuthRedefinirSenhaRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/_auth/verificar-acesso': {
-      id: '/_auth/verificar-acesso'
-      path: '/verificar-acesso'
-      fullPath: '/verificar-acesso'
-      preLoaderRoute: typeof AuthVerificarAcessoRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_site/': {
@@ -448,17 +351,11 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthRouteChildren {
-  AuthEsqueciMinhaSenhaRoute: typeof AuthEsqueciMinhaSenhaRoute
   AuthLoginRoute: typeof AuthLoginRoute
-  AuthRedefinirSenhaRoute: typeof AuthRedefinirSenhaRoute
-  AuthVerificarAcessoRoute: typeof AuthVerificarAcessoRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
-  AuthEsqueciMinhaSenhaRoute: AuthEsqueciMinhaSenhaRoute,
   AuthLoginRoute: AuthLoginRoute,
-  AuthRedefinirSenhaRoute: AuthRedefinirSenhaRoute,
-  AuthVerificarAcessoRoute: AuthVerificarAcessoRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -509,8 +406,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   SiteRoute: SiteRouteWithChildren,
   AppRoute: AppRouteWithChildren,
-  BlueprintRoute: BlueprintRoute,
-  PainelRoute: PainelRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

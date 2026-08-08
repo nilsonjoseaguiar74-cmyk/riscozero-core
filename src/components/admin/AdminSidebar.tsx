@@ -77,12 +77,11 @@ export function AdminSidebar() {
       {!collapsed ? (
         <SidebarFooter className="border-t border-border px-3 py-3">
           <p className="truncate text-xs font-medium text-sidebar-foreground">
-            {user?.name ?? "Sessão demonstrativa"}
+            {user?.name ?? "Usuário"}
           </p>
           <p className="truncate text-[11px] text-muted-foreground">
             {user ? USER_ROLE_LABEL[user.role] : "Perfil não definido"}
           </p>
-          <p className="mt-1 text-[11px] text-muted-foreground">Ambiente demonstrativo</p>
         </SidebarFooter>
       ) : null}
     </Sidebar>

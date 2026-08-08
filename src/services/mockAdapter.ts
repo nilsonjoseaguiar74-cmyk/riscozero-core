@@ -253,24 +253,6 @@ export const mockAdapter: ServiceRegistry = {
       await delay(80);
       return readStoredSession();
     },
-    async requestPasswordReset() {
-      await delay(450);
-    },
-    async resetPassword() {
-      await delay(450);
-    },
-    async verifyAccessCode(code) {
-      await delay(400);
-      if (code.length < 6) throw new ApiError("validacao", "Informe o código completo.");
-    },
-    async switchDemoRole(role) {
-      await delay(200);
-      const base = users.find((u) => u.role === role) ?? users[0]!;
-      const user: AuthUser = { ...base, role, permissions: permissionsForRole(role) };
-      const session = buildSession(user);
-      writeStoredSession(session);
-      return session;
-    },
   },
 
   leads: {

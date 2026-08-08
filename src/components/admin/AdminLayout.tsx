@@ -8,17 +8,13 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { LoadingState } from "@/components/common/StateViews";
 
-/**
- * Casca administrativa. A proteção aqui é apenas visual e demonstrativa:
- * a autorização definitiva ficará no backend NestJS.
- */
 export function AdminLayout({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
 
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <LoadingState label="Carregando sessão demonstrativa" />
+        <LoadingState label="Verificando sessão" />
       </div>
     );
   }
@@ -29,7 +25,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         <div className="card-elevated max-w-md p-8 text-center">
           <h1 className="heading-3 text-foreground">Área restrita</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Nenhuma sessão demonstrativa ativa. Entre para visualizar o painel de gestão.
+            Entre com uma conta autorizada para visualizar o painel de gestão.
           </p>
           <div className="mt-6 flex justify-center gap-2">
             <Button asChild>
