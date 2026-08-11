@@ -9,6 +9,7 @@ export interface NavItem {
   label: string;
   to: string;
   permission: Permission;
+  roles?: UserRole[];
   description?: string;
 }
 
@@ -16,6 +17,7 @@ export const ENABLED_ROUTES = new Set([
   "/app/dashboard",
   "/app/crm",
   "/app/crm/tarefas",
+  "/app/demo/leads",
   "/app/settings/site-content",
 ]);
 
@@ -49,6 +51,13 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: "Leads e funil", to: "/app/crm", permission: "crm.view" },
       { label: "Tarefas", to: "/app/crm/tarefas", permission: "crm.view" },
+      {
+        label: "Simulador de Leads",
+        to: "/app/demo/leads",
+        permission: "dashboard.view",
+        roles: ["administrador", "gestor", "desenvolvedor"],
+        description: "Demonstre a entrada de contatos no CRM real",
+      },
       { label: "Atividades", to: "/app/crm/atividades", permission: "crm.view" },
     ],
   },
@@ -169,10 +178,14 @@ export const NAV_GROUPS: NavGroup[] = [
   },
 ];
 
-export const visibleGroups = (permissions: Permission[]): NavGroup[] =>
+export const visibleGroups = (permissions: Permission[], role?: UserRole): NavGroup[] =>
   NAV_GROUPS.map((group) => ({
     ...group,
-    items: group.items.filter((item) => permissions.includes(item.permission)),
+    items: group.items.filter(
+      (item) =>
+        permissions.includes(item.permission) &&
+        (!item.roles || (role ? item.roles.includes(role) : false)),
+    ),
   })).filter((group) => group.items.length > 0);
 
 /** Rota inicial de cada perfil após a autenticação demonstrativa. */

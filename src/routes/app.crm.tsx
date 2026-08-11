@@ -17,6 +17,7 @@ import { apiErrorMessage, queryKeys, services } from "@/services";
 import { formatDateTime } from "@/lib/format";
 import { LEAD_STAGES, type LeadStage } from "@/types";
 import { toast } from "sonner";
+import { isSimulatedLead } from "@/features/demo/leadSimulator";
 
 export const Route = createFileRoute("/app/crm")({ component: LeadsRoute });
 
@@ -82,7 +83,17 @@ function LeadsRoute() {
             {leads.data!.items.map((lead) => (
               <TableRow key={lead.id}>
                 <TableCell>
-                  <p className="font-medium">{lead.name}</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="font-medium">{lead.name}</p>
+                    {isSimulatedLead(lead) ? (
+                      <Badge
+                        variant="outline"
+                        className="border-gold/50 text-[10px] uppercase tracking-wide text-foreground"
+                      >
+                        Simulado
+                      </Badge>
+                    ) : null}
+                  </div>
                   <p className="text-xs text-muted-foreground">{lead.plate}</p>
                 </TableCell>
                 <TableCell>{lead.whatsapp}</TableCell>

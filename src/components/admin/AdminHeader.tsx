@@ -44,7 +44,7 @@ export function AdminHeader() {
   const navigate = useNavigate();
   const crumb = useBreadcrumb();
   const [searchOpen, setSearchOpen] = useState(false);
-  const groups = visibleGroups(user?.permissions ?? []);
+  const groups = visibleGroups(user?.permissions ?? [], user?.role);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {

@@ -41,7 +41,7 @@ export function AdminSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const pathname = useRouterState({ select: (router) => router.location.pathname });
-  const groups = visibleGroups(user?.permissions ?? []);
+  const groups = visibleGroups(user?.permissions ?? [], user?.role);
 
   const isActive = (to: string) =>
     pathname === to || (to !== "/app/dashboard" && pathname.startsWith(`${to}/`));
