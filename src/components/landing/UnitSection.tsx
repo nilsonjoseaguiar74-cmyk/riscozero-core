@@ -110,7 +110,7 @@ export function UnitSection() {
           >
             <CarouselContent>
               {carouselMedia.map((photo) => (
-                <CarouselItem key={photo.id}>
+                <CarouselItem key={photo.id} className="sm:basis-1/2">
                   <figure>
                     <img
                       src={photo.imageUrl}
