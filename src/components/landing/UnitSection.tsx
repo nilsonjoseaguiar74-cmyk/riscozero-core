@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 import { Section, SectionHeading } from "@/components/landing/Section";
 import { SITE, googleMapsEmbedLink, googleMapsLink } from "@/config/site";
@@ -23,10 +24,33 @@ export function UnitSection() {
     () => content?.media.filter((item) => item.active).toSorted((a, b) => a.order - b.order) ?? [],
     [content?.media],
   );
-  const primary = activeMedia.find((item) => item.position === "primary");
-  const carouselMedia = primary
-    ? [primary, ...activeMedia.filter((item) => item.id !== primary.id)]
-    : activeMedia;
+
+  const carouselMedia = useMemo(
+    () =>
+      activeMedia.filter(
+        (item) => item.position === "secondary" || item.position === "complementary",
+      ),
+    [activeMedia],
+  );
+
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+
+  useEffect(() => {
+    if (!carouselApi || carouselMedia.length < 2) return;
+
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      carouselApi.scrollNext();
+    }, 5000);
+
+    return () => window.clearInterval(interval);
+  }, [carouselApi, carouselMedia.length]);
 
   return (
     <Section tone="muted">
@@ -79,7 +103,11 @@ export function UnitSection() {
         </div>
 
         {carouselMedia.length > 0 ? (
-          <Carousel opts={{ loop: carouselMedia.length > 1 }} className="mx-10">
+          <Carousel
+            opts={{ loop: carouselMedia.length > 1 }}
+            setApi={setCarouselApi}
+            className="mx-10"
+          >
             <CarouselContent>
               {carouselMedia.map((photo) => (
                 <CarouselItem key={photo.id}>
