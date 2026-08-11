@@ -250,7 +250,8 @@ function MediaManager({
             {editing ? "Editar informações da imagem" : "Enviar nova imagem"}
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Use “Principal” para o hero e as demais posições para o carrossel da unidade.
+            Use “Principal” para o hero, “Galeria do estabelecimento” para fotos da unidade e
+            “Outras fotos institucionais” para os demais registros.
           </p>
         </div>
         {!editing ? (
@@ -288,8 +289,8 @@ function MediaManager({
             }
           >
             <option value="primary">Hero da Home (principal)</option>
-            <option value="secondary">Carrossel da unidade (secundária)</option>
-            <option value="complementary">Carrossel da unidade (complementar)</option>
+            <option value="secondary">Galeria do estabelecimento</option>
+            <option value="complementary">Outras fotos institucionais</option>
           </select>
         </Field>
         <div className="flex gap-2 md:col-span-2">
