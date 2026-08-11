@@ -70,17 +70,19 @@ function SiteContentSettingsRoute() {
       <Tabs defaultValue="home">
         <TabsList className="h-auto flex-wrap">
           <TabsTrigger value="home">Home / Institucional</TabsTrigger>
-          <TabsTrigger value="unit">Nossa Unidade</TabsTrigger>
           <TabsTrigger value="testimonials">Depoimentos</TabsTrigger>
         </TabsList>
-        <TabsContent value="home" className="mt-5">
+
+        <TabsContent value="home" className="mt-5 space-y-6">
           <UnitTextForm content={unit.data!} onSaved={refresh} />
-        </TabsContent>
-        <TabsContent value="unit" className="mt-5">
-          <div className="mb-4 rounded-lg border border-brand/20 bg-brand-soft p-4 text-sm text-foreground">
-            A imagem marcada como <strong>Principal</strong> também será usada como fundo do hero da
-            Home, com uma camada azul de opacidade média para preservar a leitura.
+
+          <div className="rounded-lg border border-brand/20 bg-brand-soft p-4 text-sm text-foreground">
+            Gerencie aqui as imagens institucionais da unidade. A imagem marcada como
+            <strong> Principal</strong> será utilizada no hero da Home. As imagens
+            <strong> Secundária</strong> e <strong>Complementar</strong> serão utilizadas na galeria
+            da unidade.
           </div>
+
           <MediaManager
             items={unit.data!.media.toSorted((a, b) => a.order - b.order)}
             onSaved={refresh}
