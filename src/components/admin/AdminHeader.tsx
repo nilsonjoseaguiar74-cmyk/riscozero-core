@@ -25,7 +25,7 @@ import { PeriodSelector } from "@/components/admin/PeriodContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys, services } from "@/services";
-import { isRouteEnabled, NAV_GROUPS, visibleGroups } from "@/lib/rbac";
+import { getAccountDisplayName, getNavItemState, NAV_GROUPS, visibleGroups } from "@/lib/rbac";
 import { USER_ROLE_LABEL } from "@/types";
 
 function useBreadcrumb() {
@@ -115,7 +115,7 @@ export function AdminHeader() {
               <Button variant="ghost" size="sm" className="gap-2">
                 <UserCog className="size-4" aria-hidden="true" />
                 <span className="hidden max-w-[140px] truncate text-xs sm:inline">
-                  {user?.name ?? "Usuário"}
+                  {getAccountDisplayName(user?.role)}
                 </span>
               </Button>
             </DropdownMenuTrigger>
@@ -161,12 +161,18 @@ export function AdminHeader() {
                     <CommandItem
                       key={item.to}
                       value={`${group.label} ${item.label}`}
-                      disabled={!isRouteEnabled(item.to)}
-                      onSelect={() => (isRouteEnabled(item.to) ? go(item.to) : undefined)}
+                      disabled={!getNavItemState(item.to, demoMode.data?.enabled ?? false).enabled}
+                      onSelect={() =>
+                        getNavItemState(item.to, demoMode.data?.enabled ?? false).enabled
+                          ? go(item.to)
+                          : undefined
+                      }
                     >
                       {item.label}
-                      {!isRouteEnabled(item.to) ? (
-                        <span className="ml-auto text-xs text-muted-foreground">Em breve</span>
+                      {getNavItemState(item.to, demoMode.data?.enabled ?? false).label ? (
+                        <span className="ml-auto text-xs text-muted-foreground">
+                          {getNavItemState(item.to, demoMode.data?.enabled ?? false).label}
+                        </span>
                       ) : null}
                     </CommandItem>
                   ))}

@@ -16,7 +16,7 @@ import { Logo } from "@/components/brand/Logo";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys, services } from "@/services";
-import { visibleGroups } from "@/lib/rbac";
+import { getAccountDisplayName, getNavItemState, visibleGroups } from "@/lib/rbac";
 import { USER_ROLE_LABEL } from "@/types";
 import { cn } from "@/lib/utils";
 import {
@@ -89,27 +89,53 @@ export function AdminSidebar() {
               ) : null}
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {group.items.map((item) => (
-                    <SidebarMenuItem key={item.to}>
-                      <SidebarMenuButton
-                        className="h-10 rounded-lg px-3 data-[active=true]:bg-sidebar-accent data-[active=true]:font-semibold data-[active=true]:shadow-sm"
-                        asChild
-                        isActive={isActive(item.to)}
-                        tooltip={item.label}
-                      >
-                        <Link to={item.to as "/"} className="flex items-center gap-2">
-                          <span
-                            className={cn(
-                              "h-5 w-0.5 shrink-0 rounded-full",
-                              isActive(item.to) ? "bg-gold" : "bg-transparent",
-                            )}
-                            aria-hidden="true"
-                          />
-                          <span className="truncate text-[13px]">{item.label}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
+                  {group.items.map((item) => {
+                    const state = getNavItemState(item.to, demoMode.data?.enabled ?? false);
+
+                    return (
+                      <SidebarMenuItem key={item.to}>
+                        <SidebarMenuButton
+                          className={cn(
+                            "h-10 rounded-lg px-3 data-[active=true]:bg-sidebar-accent data-[active=true]:font-semibold data-[active=true]:shadow-sm",
+                            !state.enabled && "cursor-not-allowed opacity-55",
+                          )}
+                          asChild={state.enabled}
+                          isActive={state.enabled && isActive(item.to)}
+                          tooltip={state.enabled ? item.label : `${item.label} — ${state.label}`}
+                        >
+                          {state.enabled ? (
+                            <Link to={item.to as "/"} className="flex items-center gap-2">
+                              <span
+                                className={cn(
+                                  "h-5 w-0.5 shrink-0 rounded-full",
+                                  isActive(item.to) ? "bg-gold" : "bg-transparent",
+                                )}
+                                aria-hidden="true"
+                              />
+                              <span className="truncate text-[13px]">{item.label}</span>
+                            </Link>
+                          ) : (
+                            <div
+                              className="flex w-full items-center gap-2"
+                              aria-disabled="true"
+                              title={state.label ?? undefined}
+                            >
+                              <span
+                                className="h-5 w-0.5 shrink-0 rounded-full bg-transparent"
+                                aria-hidden="true"
+                              />
+                              <span className="truncate text-[13px]">{item.label}</span>
+                              {!collapsed && state.label ? (
+                                <span className="ml-auto text-[10px] text-muted-foreground">
+                                  {state.label}
+                                </span>
+                              ) : null}
+                            </div>
+                          )}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
@@ -120,7 +146,7 @@ export function AdminSidebar() {
       {!collapsed ? (
         <SidebarFooter className="border-t border-sidebar-border bg-sidebar-accent/30 px-4 py-4">
           <p className="truncate text-xs font-medium text-sidebar-foreground">
-            {user?.name ?? "Usuário"}
+            {getAccountDisplayName(user?.role)}
           </p>
           <p className="truncate text-[11px] text-muted-foreground">
             {user ? USER_ROLE_LABEL[user.role] : "Perfil não definido"}

@@ -189,17 +189,65 @@ export const visibleGroups = (
   permissions: Permission[],
   role?: UserRole,
   demoModeEnabled = true,
-): NavGroup[] =>
-  NAV_GROUPS.map((group) => ({
+): NavGroup[] => {
+  const presentationRole = role === "gestor" || role === "gestor_trafego";
+
+  return NAV_GROUPS.map((group) => ({
     ...group,
-    items: group.items.filter(
-      (item) =>
-        permissions.includes(item.permission) &&
-        isRouteEnabled(item.to) &&
-        (item.to !== "/app/demo/leads" || demoModeEnabled) &&
-        (!item.roles || (role ? item.roles.includes(role) : false)),
-    ),
+    items: group.items.filter((item) => {
+      const roleAllowed = !item.roles || (role ? item.roles.includes(role) : false);
+
+      if (!roleAllowed) return false;
+
+      if (presentationRole) {
+        if (group.id === "desenvolvedor") return false;
+
+        if (group.id === "gestao") {
+          return [
+            "/app/settings/site-content",
+            "/app/settings/demo",
+          ].includes(item.to);
+        }
+
+        return [
+          "visao",
+          "comercial",
+          "associacao",
+          "trafego",
+          "integracoes",
+        ].includes(group.id);
+      }
+
+      return permissions.includes(item.permission);
+    }),
   })).filter((group) => group.items.length > 0);
+};
+
+export const getAccountDisplayName = (role?: UserRole) => {
+  if (role === "gestor") return "Gestão";
+  if (role === "gestor_trafego") return "Gestão de Tráfego";
+  return role ? USER_ROLE_LABEL_FALLBACK[role] : "Usuário";
+};
+
+const USER_ROLE_LABEL_FALLBACK: Record<UserRole, string> = {
+  administrador: "Administrador",
+  gestor: "Gestão",
+  gestor_trafego: "Gestão de Tráfego",
+  comercial: "Comercial",
+  desenvolvedor: "Desenvolvimento",
+};
+
+export const getNavItemState = (to: string, demoModeEnabled = true) => {
+  if (to === "/app/demo/leads" && !demoModeEnabled) {
+    return { enabled: false, label: "Desabilitado" as const };
+  }
+
+  if (!isRouteEnabled(to)) {
+    return { enabled: false, label: "Em desenvolvimento" as const };
+  }
+
+  return { enabled: true, label: null };
+};
 
 /** Rota inicial de cada perfil após a autenticação demonstrativa. */
 export const HOME_ROUTE_BY_ROLE: Record<UserRole, string> = {

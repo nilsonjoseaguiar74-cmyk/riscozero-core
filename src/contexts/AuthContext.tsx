@@ -42,8 +42,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = useCallback(async () => {
-    await services.auth.signOut();
-    setSession(null);
+    try {
+      await services.auth.signOut();
+    } finally {
+      setSession(null);
+    }
   }, []);
 
   const can = useCallback(

@@ -39,8 +39,11 @@ export const httpAdapter: ServiceRegistry = {
       return session;
     },
     async signOut() {
-      await httpRequest<void>("/auth/sign-out", { method: "POST" });
-      setAccessToken(null);
+      try {
+        await httpRequest<void>("/auth/sign-out", { method: "POST" });
+      } finally {
+        setAccessToken(null);
+      }
     },
     async currentSession() {
       try {
