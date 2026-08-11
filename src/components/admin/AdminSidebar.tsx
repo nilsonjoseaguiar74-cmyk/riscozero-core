@@ -14,28 +14,58 @@ import {
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/brand/Logo";
 import { useAuth } from "@/contexts/AuthContext";
-import { visibleGroups } from "@/lib/rbac";
+import { useQuery } from "@tanstack/react-query";
+import { queryKeys, services } from "@/services";
+import { getAccountDisplayName, getNavItemState, visibleGroups } from "@/lib/rbac";
 import { USER_ROLE_LABEL } from "@/types";
 import { cn } from "@/lib/utils";
+import {
+  Building2,
+  ChartNoAxesCombined,
+  Megaphone,
+  Settings2,
+  UsersRound,
+  Wrench,
+} from "lucide-react";
+
+const GROUP_ICONS = {
+  visao: ChartNoAxesCombined,
+  comercial: UsersRound,
+  associacao: Building2,
+  trafego: Megaphone,
+  integracoes: Wrench,
+  desenvolvedor: Wrench,
+  administracao: Settings2,
+  gestao: Settings2,
+} as const;
 
 export function AdminSidebar() {
   const { user } = useAuth();
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const pathname = useRouterState({ select: (router) => router.location.pathname });
-  const groups = visibleGroups(user?.permissions ?? []);
+  const demoMode = useQuery({
+    queryKey: queryKeys.demoMode,
+    queryFn: () => services.settings.getDemoMode(),
+    enabled: Boolean(user?.permissions.includes("settings.manage")),
+  });
+  const groups = visibleGroups(
+    user?.permissions ?? [],
+    user?.role,
+    demoMode.data?.enabled ?? false,
+  );
 
   const isActive = (to: string) =>
     pathname === to || (to !== "/app/dashboard" && pathname.startsWith(`${to}/`));
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-border">
-      <SidebarHeader className="border-b border-border px-3 py-3">
-        <Link to="/app" className="flex items-center gap-2" aria-label="Início do painel">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border shadow-sm">
+      <SidebarHeader className="border-b border-sidebar-border px-4 py-4">
+        <Link to="/app" className="flex items-center gap-3" aria-label="Início do painel">
           <Logo size="sm" className="shrink-0" />
           {!collapsed ? (
             <span className="min-w-0">
-              <span className="block truncate text-sm font-[650] leading-tight text-sidebar-foreground">
+              <span className="block truncate text-base font-[650] leading-tight text-sidebar-foreground">
                 Risco Zero
               </span>
               <span className="block truncate text-[11px] leading-tight text-muted-foreground">
@@ -46,43 +76,81 @@ export function AdminSidebar() {
         </Link>
       </SidebarHeader>
 
-      <SidebarContent>
-        {groups.map((group) => (
-          <SidebarGroup key={group.id}>
-            {!collapsed ? <SidebarGroupLabel>{group.label}</SidebarGroupLabel> : null}
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {group.items.map((item) => (
-                  <SidebarMenuItem key={item.to}>
-                    <SidebarMenuButton asChild isActive={isActive(item.to)} tooltip={item.label}>
-                      <Link to={item.to as "/"} className="flex items-center gap-2">
-                        <span
+      <SidebarContent className="gap-1 px-2 py-3">
+        {groups.map((group) => {
+          const GroupIcon = GROUP_ICONS[group.id as keyof typeof GROUP_ICONS] ?? Settings2;
+          return (
+            <SidebarGroup key={group.id} className="px-1 py-2">
+              {!collapsed ? (
+                <SidebarGroupLabel className="mb-1 flex h-8 items-center gap-2 px-2 text-[11px] font-semibold uppercase tracking-[0.08em]">
+                  <GroupIcon className="size-3.5" />
+                  {group.label}
+                </SidebarGroupLabel>
+              ) : null}
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {group.items.map((item) => {
+                    const state = getNavItemState(item.to, demoMode.data?.enabled ?? false);
+
+                    return (
+                      <SidebarMenuItem key={item.to}>
+                        <SidebarMenuButton
                           className={cn(
-                            "size-1.5 shrink-0 rounded-full",
-                            isActive(item.to) ? "bg-gold" : "bg-muted-foreground/40",
+                            "h-10 rounded-lg px-3 data-[active=true]:bg-sidebar-accent data-[active=true]:font-semibold data-[active=true]:shadow-sm",
+                            !state.enabled && "cursor-not-allowed opacity-55",
                           )}
-                          aria-hidden="true"
-                        />
-                        <span className="truncate">{item.label}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
+                          asChild={state.enabled}
+                          isActive={state.enabled && isActive(item.to)}
+                          tooltip={state.enabled ? item.label : `${item.label} — ${state.label}`}
+                        >
+                          {state.enabled ? (
+                            <Link to={item.to as "/"} className="flex items-center gap-2">
+                              <span
+                                className={cn(
+                                  "h-5 w-0.5 shrink-0 rounded-full",
+                                  isActive(item.to) ? "bg-gold" : "bg-transparent",
+                                )}
+                                aria-hidden="true"
+                              />
+                              <span className="truncate text-[13px]">{item.label}</span>
+                            </Link>
+                          ) : (
+                            <div
+                              className="flex w-full items-center gap-2"
+                              aria-disabled="true"
+                              title={state.label ?? undefined}
+                            >
+                              <span
+                                className="h-5 w-0.5 shrink-0 rounded-full bg-transparent"
+                                aria-hidden="true"
+                              />
+                              <span className="truncate text-[13px]">{item.label}</span>
+                              {!collapsed && state.label ? (
+                                <span className="ml-auto text-[10px] text-muted-foreground">
+                                  {state.label}
+                                </span>
+                              ) : null}
+                            </div>
+                          )}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          );
+        })}
       </SidebarContent>
 
       {!collapsed ? (
-        <SidebarFooter className="border-t border-border px-3 py-3">
+        <SidebarFooter className="border-t border-sidebar-border bg-sidebar-accent/30 px-4 py-4">
           <p className="truncate text-xs font-medium text-sidebar-foreground">
-            {user?.name ?? "Sessão demonstrativa"}
+            {getAccountDisplayName(user?.role)}
           </p>
           <p className="truncate text-[11px] text-muted-foreground">
             {user ? USER_ROLE_LABEL[user.role] : "Perfil não definido"}
           </p>
-          <p className="mt-1 text-[11px] text-muted-foreground">Ambiente demonstrativo</p>
         </SidebarFooter>
       ) : null}
     </Sidebar>

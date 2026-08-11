@@ -12,12 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as SiteRouteImport } from './routes/_site'
 import { Route as AppRouteImport } from './routes/app'
-import { Route as BlueprintRouteImport } from './routes/blueprint'
-import { Route as PainelRouteImport } from './routes/painel'
-import { Route as AuthEsqueciMinhaSenhaRouteImport } from './routes/_auth.esqueci-minha-senha'
 import { Route as AuthLoginRouteImport } from './routes/_auth.login'
-import { Route as AuthRedefinirSenhaRouteImport } from './routes/_auth.redefinir-senha'
-import { Route as AuthVerificarAcessoRouteImport } from './routes/_auth.verificar-acesso'
 import { Route as SiteIndexRouteImport } from './routes/_site.index'
 import { Route as SiteBeneficiosRouteImport } from './routes/_site.beneficios'
 import { Route as SiteComoFuncionaRouteImport } from './routes/_site.como-funciona'
@@ -29,6 +24,11 @@ import { Route as SiteRegioesRouteImport } from './routes/_site.regioes'
 import { Route as SiteSolicitarCotacaoRouteImport } from './routes/_site.solicitar-cotacao'
 import { Route as SiteTermosDeUsoRouteImport } from './routes/_site.termos-de-uso'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppCrmRouteImport } from './routes/app.crm'
+import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as AppCrmTarefasRouteImport } from './routes/app.crm.tarefas'
+import { Route as AppDemoLeadsRouteImport } from './routes/app.demo.leads'
+import { Route as AppSettingsDemoRouteImport } from './routes/app.settings.demo'
 import { Route as AppSettingsSiteContentRouteImport } from './routes/app.settings.site-content'
 
 const AuthRoute = AuthRouteImport.update({
@@ -44,34 +44,9 @@ const AppRoute = AppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlueprintRoute = BlueprintRouteImport.update({
-  id: '/blueprint',
-  path: '/blueprint',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PainelRoute = PainelRouteImport.update({
-  id: '/painel',
-  path: '/painel',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthEsqueciMinhaSenhaRoute = AuthEsqueciMinhaSenhaRouteImport.update({
-  id: '/esqueci-minha-senha',
-  path: '/esqueci-minha-senha',
-  getParentRoute: () => AuthRoute,
-} as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthRedefinirSenhaRoute = AuthRedefinirSenhaRouteImport.update({
-  id: '/redefinir-senha',
-  path: '/redefinir-senha',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthVerificarAcessoRoute = AuthVerificarAcessoRouteImport.update({
-  id: '/verificar-acesso',
-  path: '/verificar-acesso',
   getParentRoute: () => AuthRoute,
 } as any)
 const SiteIndexRoute = SiteIndexRouteImport.update({
@@ -130,6 +105,31 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCrmRoute = AppCrmRouteImport.update({
+  id: '/crm',
+  path: '/crm',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCrmTarefasRoute = AppCrmTarefasRouteImport.update({
+  id: '/tarefas',
+  path: '/tarefas',
+  getParentRoute: () => AppCrmRoute,
+} as any)
+const AppDemoLeadsRoute = AppDemoLeadsRouteImport.update({
+  id: '/demo/leads',
+  path: '/demo/leads',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsDemoRoute = AppSettingsDemoRouteImport.update({
+  id: '/settings/demo',
+  path: '/settings/demo',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppSettingsSiteContentRoute = AppSettingsSiteContentRouteImport.update({
   id: '/settings/site-content',
   path: '/settings/site-content',
@@ -139,12 +139,7 @@ const AppSettingsSiteContentRoute = AppSettingsSiteContentRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
   '/app': typeof AppRouteWithChildren
-  '/blueprint': typeof BlueprintRoute
-  '/painel': typeof PainelRoute
-  '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/login': typeof AuthLoginRoute
-  '/redefinir-senha': typeof AuthRedefinirSenhaRoute
-  '/verificar-acesso': typeof AuthVerificarAcessoRoute
   '/beneficios': typeof SiteBeneficiosRoute
   '/como-funciona': typeof SiteComoFuncionaRoute
   '/contato': typeof SiteContatoRoute
@@ -154,17 +149,17 @@ export interface FileRoutesByFullPath {
   '/regioes': typeof SiteRegioesRoute
   '/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
   '/termos-de-uso': typeof SiteTermosDeUsoRoute
+  '/app/crm': typeof AppCrmRouteWithChildren
+  '/app/dashboard': typeof AppDashboardRoute
   '/app/': typeof AppIndexRoute
+  '/app/crm/tarefas': typeof AppCrmTarefasRoute
+  '/app/demo/leads': typeof AppDemoLeadsRoute
+  '/app/settings/demo': typeof AppSettingsDemoRoute
   '/app/settings/site-content': typeof AppSettingsSiteContentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof SiteIndexRoute
-  '/blueprint': typeof BlueprintRoute
-  '/painel': typeof PainelRoute
-  '/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/login': typeof AuthLoginRoute
-  '/redefinir-senha': typeof AuthRedefinirSenhaRoute
-  '/verificar-acesso': typeof AuthVerificarAcessoRoute
   '/beneficios': typeof SiteBeneficiosRoute
   '/como-funciona': typeof SiteComoFuncionaRoute
   '/contato': typeof SiteContatoRoute
@@ -174,7 +169,12 @@ export interface FileRoutesByTo {
   '/regioes': typeof SiteRegioesRoute
   '/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
   '/termos-de-uso': typeof SiteTermosDeUsoRoute
+  '/app/crm': typeof AppCrmRouteWithChildren
+  '/app/dashboard': typeof AppDashboardRoute
   '/app': typeof AppIndexRoute
+  '/app/crm/tarefas': typeof AppCrmTarefasRoute
+  '/app/demo/leads': typeof AppDemoLeadsRoute
+  '/app/settings/demo': typeof AppSettingsDemoRoute
   '/app/settings/site-content': typeof AppSettingsSiteContentRoute
 }
 export interface FileRoutesById {
@@ -182,12 +182,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/_site': typeof SiteRouteWithChildren
   '/app': typeof AppRouteWithChildren
-  '/blueprint': typeof BlueprintRoute
-  '/painel': typeof PainelRoute
-  '/_auth/esqueci-minha-senha': typeof AuthEsqueciMinhaSenhaRoute
   '/_auth/login': typeof AuthLoginRoute
-  '/_auth/redefinir-senha': typeof AuthRedefinirSenhaRoute
-  '/_auth/verificar-acesso': typeof AuthVerificarAcessoRoute
   '/_site/beneficios': typeof SiteBeneficiosRoute
   '/_site/como-funciona': typeof SiteComoFuncionaRoute
   '/_site/contato': typeof SiteContatoRoute
@@ -197,8 +192,13 @@ export interface FileRoutesById {
   '/_site/regioes': typeof SiteRegioesRoute
   '/_site/solicitar-cotacao': typeof SiteSolicitarCotacaoRoute
   '/_site/termos-de-uso': typeof SiteTermosDeUsoRoute
+  '/app/crm': typeof AppCrmRouteWithChildren
+  '/app/dashboard': typeof AppDashboardRoute
   '/_site/': typeof SiteIndexRoute
   '/app/': typeof AppIndexRoute
+  '/app/crm/tarefas': typeof AppCrmTarefasRoute
+  '/app/demo/leads': typeof AppDemoLeadsRoute
+  '/app/settings/demo': typeof AppSettingsDemoRoute
   '/app/settings/site-content': typeof AppSettingsSiteContentRoute
 }
 export interface FileRouteTypes {
@@ -206,12 +206,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
-    | '/blueprint'
-    | '/painel'
-    | '/esqueci-minha-senha'
     | '/login'
-    | '/redefinir-senha'
-    | '/verificar-acesso'
     | '/beneficios'
     | '/como-funciona'
     | '/contato'
@@ -221,17 +216,17 @@ export interface FileRouteTypes {
     | '/regioes'
     | '/solicitar-cotacao'
     | '/termos-de-uso'
+    | '/app/crm'
+    | '/app/dashboard'
     | '/app/'
+    | '/app/crm/tarefas'
+    | '/app/demo/leads'
+    | '/app/settings/demo'
     | '/app/settings/site-content'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/blueprint'
-    | '/painel'
-    | '/esqueci-minha-senha'
     | '/login'
-    | '/redefinir-senha'
-    | '/verificar-acesso'
     | '/beneficios'
     | '/como-funciona'
     | '/contato'
@@ -241,19 +236,19 @@ export interface FileRouteTypes {
     | '/regioes'
     | '/solicitar-cotacao'
     | '/termos-de-uso'
+    | '/app/crm'
+    | '/app/dashboard'
     | '/app'
+    | '/app/crm/tarefas'
+    | '/app/demo/leads'
+    | '/app/settings/demo'
     | '/app/settings/site-content'
   id:
     | '__root__'
     | '/_auth'
     | '/_site'
     | '/app'
-    | '/blueprint'
-    | '/painel'
-    | '/_auth/esqueci-minha-senha'
     | '/_auth/login'
-    | '/_auth/redefinir-senha'
-    | '/_auth/verificar-acesso'
     | '/_site/beneficios'
     | '/_site/como-funciona'
     | '/_site/contato'
@@ -263,8 +258,13 @@ export interface FileRouteTypes {
     | '/_site/regioes'
     | '/_site/solicitar-cotacao'
     | '/_site/termos-de-uso'
+    | '/app/crm'
+    | '/app/dashboard'
     | '/_site/'
     | '/app/'
+    | '/app/crm/tarefas'
+    | '/app/demo/leads'
+    | '/app/settings/demo'
     | '/app/settings/site-content'
   fileRoutesById: FileRoutesById
 }
@@ -272,8 +272,6 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   SiteRoute: typeof SiteRouteWithChildren
   AppRoute: typeof AppRouteWithChildren
-  BlueprintRoute: typeof BlueprintRoute
-  PainelRoute: typeof PainelRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -299,46 +297,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blueprint': {
-      id: '/blueprint'
-      path: '/blueprint'
-      fullPath: '/blueprint'
-      preLoaderRoute: typeof BlueprintRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/painel': {
-      id: '/painel'
-      path: '/painel'
-      fullPath: '/painel'
-      preLoaderRoute: typeof PainelRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_auth/esqueci-minha-senha': {
-      id: '/_auth/esqueci-minha-senha'
-      path: '/esqueci-minha-senha'
-      fullPath: '/esqueci-minha-senha'
-      preLoaderRoute: typeof AuthEsqueciMinhaSenhaRouteImport
-      parentRoute: typeof AuthRoute
-    }
     '/_auth/login': {
       id: '/_auth/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/_auth/redefinir-senha': {
-      id: '/_auth/redefinir-senha'
-      path: '/redefinir-senha'
-      fullPath: '/redefinir-senha'
-      preLoaderRoute: typeof AuthRedefinirSenhaRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/_auth/verificar-acesso': {
-      id: '/_auth/verificar-acesso'
-      path: '/verificar-acesso'
-      fullPath: '/verificar-acesso'
-      preLoaderRoute: typeof AuthVerificarAcessoRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_site/': {
@@ -418,6 +381,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/crm': {
+      id: '/app/crm'
+      path: '/crm'
+      fullPath: '/app/crm'
+      preLoaderRoute: typeof AppCrmRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/dashboard': {
+      id: '/app/dashboard'
+      path: '/dashboard'
+      fullPath: '/app/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/crm/tarefas': {
+      id: '/app/crm/tarefas'
+      path: '/tarefas'
+      fullPath: '/app/crm/tarefas'
+      preLoaderRoute: typeof AppCrmTarefasRouteImport
+      parentRoute: typeof AppCrmRoute
+    }
+    '/app/demo/leads': {
+      id: '/app/demo/leads'
+      path: '/demo/leads'
+      fullPath: '/app/demo/leads'
+      preLoaderRoute: typeof AppDemoLeadsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/settings/demo': {
+      id: '/app/settings/demo'
+      path: '/settings/demo'
+      fullPath: '/app/settings/demo'
+      preLoaderRoute: typeof AppSettingsDemoRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/settings/site-content': {
       id: '/app/settings/site-content'
       path: '/settings/site-content'
@@ -429,17 +427,11 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthRouteChildren {
-  AuthEsqueciMinhaSenhaRoute: typeof AuthEsqueciMinhaSenhaRoute
   AuthLoginRoute: typeof AuthLoginRoute
-  AuthRedefinirSenhaRoute: typeof AuthRedefinirSenhaRoute
-  AuthVerificarAcessoRoute: typeof AuthVerificarAcessoRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
-  AuthEsqueciMinhaSenhaRoute: AuthEsqueciMinhaSenhaRoute,
   AuthLoginRoute: AuthLoginRoute,
-  AuthRedefinirSenhaRoute: AuthRedefinirSenhaRoute,
-  AuthVerificarAcessoRoute: AuthVerificarAcessoRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -472,13 +464,32 @@ const SiteRouteChildren: SiteRouteChildren = {
 
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 
+interface AppCrmRouteChildren {
+  AppCrmTarefasRoute: typeof AppCrmTarefasRoute
+}
+
+const AppCrmRouteChildren: AppCrmRouteChildren = {
+  AppCrmTarefasRoute: AppCrmTarefasRoute,
+}
+
+const AppCrmRouteWithChildren =
+  AppCrmRoute._addFileChildren(AppCrmRouteChildren)
+
 interface AppRouteChildren {
+  AppCrmRoute: typeof AppCrmRouteWithChildren
+  AppDashboardRoute: typeof AppDashboardRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppDemoLeadsRoute: typeof AppDemoLeadsRoute
+  AppSettingsDemoRoute: typeof AppSettingsDemoRoute
   AppSettingsSiteContentRoute: typeof AppSettingsSiteContentRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppCrmRoute: AppCrmRouteWithChildren,
+  AppDashboardRoute: AppDashboardRoute,
   AppIndexRoute: AppIndexRoute,
+  AppDemoLeadsRoute: AppDemoLeadsRoute,
+  AppSettingsDemoRoute: AppSettingsDemoRoute,
   AppSettingsSiteContentRoute: AppSettingsSiteContentRoute,
 }
 
@@ -488,8 +499,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   SiteRoute: SiteRouteWithChildren,
   AppRoute: AppRouteWithChildren,
-  BlueprintRoute: BlueprintRoute,
-  PainelRoute: PainelRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

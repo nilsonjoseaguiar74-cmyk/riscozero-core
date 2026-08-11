@@ -43,6 +43,8 @@ Também podem ser configurados:
 - `REFRESH_COOKIE_NAME`
 - `COOKIE_SECURE`
 - `SWAGGER_ENABLED`
+- `UPLOAD_DIR` (diretório persistente montado fora do build descartável)
+- `PUBLIC_UPLOAD_BASE_URL` (URL pública correspondente ao diretório de uploads)
 
 Use segredos locais próprios. O arquivo `.env` é ignorado pelo Git e não deve ser publicado.
 
@@ -80,13 +82,13 @@ O seed é determinístico, usa IDs fixos e dados fictícios. As senhas são lida
 
 ## Usuários demonstrativos
 
-| E-mail | Perfil | Variável da senha |
-|---|---|---|
-| `admin@riscozero.demo` | Administrador | `DEMO_ADMIN_PASSWORD` |
-| `gestor@riscozero.demo` | Gestor | `DEMO_MANAGER_PASSWORD` |
-| `comercial@riscozero.demo` | Comercial | `DEMO_SALES_PASSWORD` |
-| `trafego@riscozero.demo` | Gestor de tráfego | `DEMO_TRAFFIC_PASSWORD` |
-| `dev@riscozero.demo` | Desenvolvedor | `DEMO_DEVELOPER_PASSWORD` |
+| E-mail                     | Perfil            | Variável da senha         |
+| -------------------------- | ----------------- | ------------------------- |
+| `admin@riscozero.demo`     | Administrador     | `DEMO_ADMIN_PASSWORD`     |
+| `gestor@riscozero.demo`    | Gestor            | `DEMO_MANAGER_PASSWORD`   |
+| `comercial@riscozero.demo` | Comercial         | `DEMO_SALES_PASSWORD`     |
+| `trafego@riscozero.demo`   | Gestor de tráfego | `DEMO_TRAFFIC_PASSWORD`   |
+| `dev@riscozero.demo`       | Desenvolvedor     | `DEMO_DEVELOPER_PASSWORD` |
 
 Nenhuma senha demonstrativa é registrada no código ou exibida pelo seed.
 
@@ -164,6 +166,8 @@ Não use remoção global de containers ou volumes. Não use `docker compose dow
 - CRM, atribuição, atividades, tarefas e etapas.
 - Dashboard comercial calculado do PostgreSQL.
 - Auditoria básica.
+- Gestão de conteúdo da Home, depoimentos e mídia da unidade.
+- Upload local configurável de JPEG, PNG e WebP; use volume persistente com backup na VPS.
 - Associados, veículos e adesões demonstrativos somente leitura.
 - Métricas de tráfego demonstrativas.
 - Catálogo de integrações sem conexões fictícias.

@@ -13,10 +13,19 @@ export interface SiteTestimonial {
   id: string;
   name: string;
   quote: string;
-  source: "Google";
+  source: string;
   rating: number;
+  avatarUrl?: string | undefined;
   order: number;
   active: boolean;
+}
+
+export type SiteMediaInput = Pick<SiteMediaCard, "alt" | "position" | "order"> & { title?: string };
+export type SiteTestimonialInput = Omit<SiteTestimonial, "id" | "avatarUrl">;
+export type UnitSectionInput = Omit<UnitSectionContent, "media">;
+export interface OrderItem {
+  id: string;
+  order: number;
 }
 
 export interface UnitSectionContent {

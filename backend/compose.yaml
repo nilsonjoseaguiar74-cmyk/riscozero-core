@@ -20,14 +20,17 @@ services:
     build: .
     env_file: .env
     ports:
-      - "${PORT:-3001}:${PORT:-3001}"
+      - "127.0.0.1:${PORT:-3001}:${PORT:-3001}"
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - uploads_data:/var/lib/riscozero/uploads
     networks: [internal]
 
 volumes:
   postgres_data:
+  uploads_data:
 
 networks:
   internal:

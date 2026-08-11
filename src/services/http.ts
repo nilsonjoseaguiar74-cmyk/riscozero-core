@@ -58,6 +58,11 @@ interface RequestOptions {
   timeoutMs?: number;
 }
 
+let accessToken: string | null = null;
+export const setAccessToken = (token: string | null) => {
+  accessToken = token;
+};
+
 /** Cliente HTTP usado pelo HttpAdapter quando a API REST estiver disponível. */
 export async function httpRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { method = "GET", body, query, timeoutMs = 15000 } = options;
@@ -75,10 +80,16 @@ export async function httpRequest<T>(path: string, options: RequestOptions = {})
   try {
     const response = await fetch(url.toString(), {
       method,
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      headers: {
+        Accept: "application/json",
+        ...(body instanceof FormData ? {} : { "Content-Type": "application/json" }),
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      },
       credentials: "include",
       signal: controller.signal,
-      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+      ...(body === undefined
+        ? {}
+        : { body: body instanceof FormData ? body : JSON.stringify(body) }),
     });
 
     if (!response.ok) {

@@ -65,8 +65,65 @@ model Association {
   metrics      TrafficMetricDaily[]
   integrations IntegrationCatalogItem[]
   audits       AuditEntry[]
+  settings     AssociationSettings?
 
   @@map("associations")
+}
+
+model AssociationSettings {
+  id              String      @id @default(uuid()) @db.Uuid
+  associationId   String      @unique @map("association_id") @db.Uuid
+  association     Association @relation(fields: [associationId], references: [id], onDelete: Cascade)
+  demoModeEnabled Boolean     @default(true) @map("demo_mode_enabled")
+  createdAt       DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("association_settings")
+}
+
+model SiteSection {
+  id          String   @id
+  title       String
+  description String
+  address     String
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("site_sections")
+}
+
+model SiteMedia {
+  id         String   @id @default(uuid()) @db.Uuid
+  section    String
+  title      String?
+  alt        String
+  imageUrl   String   @map("image_url")
+  storageKey String   @unique @map("storage_key")
+  position   String   @default("secondary")
+  order      Int      @default(0)
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([section, active, order])
+  @@map("site_media")
+}
+
+model SiteTestimonial {
+  id               String   @id @default(uuid()) @db.Uuid
+  name             String
+  quote            String
+  source           String   @default("Google")
+  rating           Int
+  avatarUrl        String?  @map("avatar_url")
+  avatarStorageKey String?  @unique @map("avatar_storage_key")
+  order            Int      @default(0)
+  active           Boolean  @default(true)
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([active, order])
+  @@map("site_testimonials")
 }
 
 model User {

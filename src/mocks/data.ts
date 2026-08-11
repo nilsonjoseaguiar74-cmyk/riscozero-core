@@ -62,7 +62,7 @@ export const ROLE_DEFINITIONS: RoleDefinition[] = [
   },
   {
     role: "gestor",
-    label: "Gestor da associação",
+    label: "Gestão",
     description:
       "Acompanha associados, adesões, ocorrências, assistências e indicadores consolidados.",
     permissions: [
@@ -72,6 +72,7 @@ export const ROLE_DEFINITIONS: RoleDefinition[] = [
       "reports.view",
       "acquisition.view",
       "audit.view",
+      "settings.manage",
       "association.view",
       "association.manage",
       "finance.view",
@@ -88,15 +89,18 @@ export const ROLE_DEFINITIONS: RoleDefinition[] = [
   },
   {
     role: "gestor_trafego",
-    label: "Gestor de tráfego",
+    label: "Gestão de Tráfego",
     description: "Acompanha campanhas, rastreamento e qualidade da captação.",
     permissions: [
       "dashboard.view",
+      "crm.view",
+      "crm.edit",
       "reports.view",
       "acquisition.view",
       "traffic.view",
       "traffic.manage",
       "integrations.view",
+      "settings.manage",
     ],
   },
 
@@ -122,8 +126,8 @@ export const permissionsForRole = (role: UserRole): Permission[] =>
 export const MOCK_USERS: AuthUser[] = [
   {
     id: "u-1",
-    name: "Ana Beatriz Corrêa",
-    email: "ana.correa@riscozero.demo",
+    name: "Teste Administrativo",
+    email: "admin@riscozero.demo",
     role: "administrador",
     permissions: permissionsForRole("administrador"),
     status: "ativo",
@@ -131,8 +135,8 @@ export const MOCK_USERS: AuthUser[] = [
   },
   {
     id: "u-2",
-    name: "Marcelo Tavares",
-    email: "marcelo.tavares@riscozero.demo",
+    name: "Teste Gestão",
+    email: "gestor@riscozero.demo",
     role: "gestor",
     permissions: permissionsForRole("gestor"),
     status: "ativo",
@@ -140,8 +144,8 @@ export const MOCK_USERS: AuthUser[] = [
   },
   {
     id: "u-3",
-    name: "Juliana Bertoldi",
-    email: "juliana.bertoldi@riscozero.demo",
+    name: "Teste Comercial",
+    email: "comercial@riscozero.demo",
     role: "comercial",
     permissions: permissionsForRole("comercial"),
     status: "ativo",
@@ -149,8 +153,8 @@ export const MOCK_USERS: AuthUser[] = [
   },
   {
     id: "u-4",
-    name: "Rafael Nunes",
-    email: "rafael.nunes@riscozero.demo",
+    name: "Teste Comercial 2",
+    email: "comercial2@riscozero.demo",
     role: "comercial",
     permissions: permissionsForRole("comercial"),
     status: "ativo",
@@ -158,8 +162,8 @@ export const MOCK_USERS: AuthUser[] = [
   },
   {
     id: "u-5",
-    name: "Camila Deschamps",
-    email: "camila.deschamps@riscozero.demo",
+    name: "Teste Gestão de Tráfego",
+    email: "trafego@riscozero.demo",
     role: "gestor_trafego",
     permissions: permissionsForRole("gestor_trafego"),
     status: "ativo",
@@ -167,8 +171,8 @@ export const MOCK_USERS: AuthUser[] = [
   },
   {
     id: "u-6",
-    name: "Diego Vasques",
-    email: "diego.vasques@riscozero.demo",
+    name: "Teste Desenvolvimento",
+    email: "dev@riscozero.demo",
     role: "desenvolvedor",
     permissions: permissionsForRole("desenvolvedor"),
     status: "convidado",

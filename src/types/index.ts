@@ -7,8 +7,8 @@ export type UserRole =
 
 export const USER_ROLE_LABEL: Record<UserRole, string> = {
   comercial: "Comercial",
-  gestor: "Gestor",
-  gestor_trafego: "Gestor de tráfego",
+  gestor: "Gestão",
+  gestor_trafego: "Gestão de Tráfego",
   desenvolvedor: "Desenvolvedor",
   administrador: "Administrador",
 };
@@ -417,6 +417,10 @@ export interface AppSettings {
   };
 }
 
+export interface DemoModeSettings {
+  enabled: boolean;
+}
+
 export interface RoleDefinition {
   role: UserRole;
   label: string;
@@ -443,4 +447,12 @@ export interface TrackingEvent {
   occurredAt: string;
 }
 
-export type { SiteMediaCard, SiteTestimonial, UnitSectionContent } from "@/types/site-content";
+export type {
+  OrderItem,
+  SiteMediaCard,
+  SiteMediaInput,
+  SiteTestimonial,
+  SiteTestimonialInput,
+  UnitSectionContent,
+  UnitSectionInput,
+} from "@/types/site-content";

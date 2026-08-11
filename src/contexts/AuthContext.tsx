@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { services } from "@/services";
-import type { AuthUser, Permission, Session, UserRole } from "@/types";
+import type { AuthUser, Permission, Session } from "@/types";
 
 interface AuthContextValue {
   session: Session | null;
@@ -9,7 +9,6 @@ interface AuthContextValue {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
-  switchRole: (role: UserRole) => Promise<void>;
   can: (permission: Permission) => boolean;
 }
 
@@ -43,13 +42,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = useCallback(async () => {
-    await services.auth.signOut();
-    setSession(null);
-  }, []);
-
-  const switchRole = useCallback(async (role: UserRole) => {
-    const next = await services.auth.switchDemoRole(role);
-    setSession(next);
+    try {
+      await services.auth.signOut();
+    } finally {
+      setSession(null);
+    }
   }, []);
 
   const can = useCallback(
@@ -58,8 +55,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const value = useMemo<AuthContextValue>(
-    () => ({ session, user: session?.user ?? null, loading, signIn, signOut, switchRole, can }),
-    [session, loading, signIn, signOut, switchRole, can],
+    () => ({ session, user: session?.user ?? null, loading, signIn, signOut, can }),
+    [session, loading, signIn, signOut, can],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

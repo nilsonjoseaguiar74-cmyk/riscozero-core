@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { Bell, ChevronRight, LogOut, Search, ShieldCheck, UserCog } from "lucide-react";
+import { ChevronRight, LogOut, Search, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import {
@@ -23,23 +21,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { PeriodSelector } from "@/components/admin/PeriodContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { NAV_GROUPS, visibleGroups } from "@/lib/rbac";
-import { notificationsService, NOTIFICATION_KIND_LABEL } from "@/services/notifications";
-import { formatDateTime } from "@/lib/format";
+import { useQuery } from "@tanstack/react-query";
+import { queryKeys, services } from "@/services";
+import { getAccountDisplayName, getNavItemState, NAV_GROUPS, visibleGroups } from "@/lib/rbac";
 import { USER_ROLE_LABEL } from "@/types";
-import type { UserRole } from "@/types";
-
-const ROLES: UserRole[] = [
-  "administrador",
-  "gestor",
-  "gestor_trafego",
-  "comercial",
-  "desenvolvedor",
-];
 
 function useBreadcrumb() {
   const pathname = useRouterState({ select: (router) => router.location.pathname });
@@ -55,17 +42,20 @@ function useBreadcrumb() {
 }
 
 export function AdminHeader() {
-  const { user, signOut, switchRole } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const crumb = useBreadcrumb();
   const [searchOpen, setSearchOpen] = useState(false);
-  const groups = visibleGroups(user?.permissions ?? []);
-
-  const { data: notifications = [] } = useQuery({
-    queryKey: ["notifications"],
-    queryFn: () => notificationsService.list(),
+  const demoMode = useQuery({
+    queryKey: queryKeys.demoMode,
+    queryFn: () => services.settings.getDemoMode(),
+    enabled: Boolean(user?.permissions.includes("settings.manage")),
   });
-  const unread = notifications.filter((item) => !item.read).length;
+  const groups = visibleGroups(
+    user?.permissions ?? [],
+    user?.role,
+    demoMode.data?.enabled ?? false,
+  );
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -120,80 +110,22 @@ export function AdminHeader() {
             <PeriodSelector compact />
           </div>
 
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative" aria-label="Notificações">
-                <Bell className="size-4" aria-hidden="true" />
-                {unread > 0 ? (
-                  <span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-gold" />
-                ) : null}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent align="end" className="w-[340px] p-0">
-              <div className="flex items-center justify-between border-b border-border px-3 py-2">
-                <p className="text-sm font-[650]">Notificações</p>
-                <Badge variant="secondary">{unread} não lidas</Badge>
-              </div>
-              <ScrollArea className="max-h-[320px]">
-                <ul className="divide-y divide-border">
-                  {notifications.map((item) => (
-                    <li key={item.id}>
-                      <button
-                        type="button"
-                        className="w-full px-3 py-2.5 text-left hover:bg-muted/60"
-                        onClick={() => (item.to ? go(item.to) : undefined)}
-                      >
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-[10px]">
-                            {NOTIFICATION_KIND_LABEL[item.kind]}
-                          </Badge>
-                          <span className="ml-auto text-[10px] text-muted-foreground">
-                            {formatDateTime(item.createdAt)}
-                          </span>
-                        </div>
-                        <p className="mt-1 text-xs font-medium text-foreground">{item.title}</p>
-                        <p className="text-xs text-muted-foreground">{item.description}</p>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </ScrollArea>
-            </PopoverContent>
-          </Popover>
-
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="gap-2">
                 <UserCog className="size-4" aria-hidden="true" />
                 <span className="hidden max-w-[140px] truncate text-xs sm:inline">
-                  {user?.name ?? "Sessão demonstrativa"}
+                  {getAccountDisplayName(user?.role)}
                 </span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-64">
               <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
-                {user?.email ?? "demo@riscozero.com.br"}
+                {user?.email ?? "Conta não identificada"}
                 <span className="mt-0.5 block font-medium text-foreground">
                   {user ? USER_ROLE_LABEL[user.role] : "Perfil não definido"}
                 </span>
               </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                <ShieldCheck className="size-3" aria-hidden="true" />
-                Trocar perfil demonstrativo
-              </DropdownMenuLabel>
-              {ROLES.map((role) => (
-                <DropdownMenuItem
-                  key={role}
-                  onSelect={() => void switchRole(role)}
-                  className="text-xs"
-                >
-                  {USER_ROLE_LABEL[role]}
-                  {user?.role === role ? (
-                    <span className="ml-auto text-[10px] text-muted-foreground">atual</span>
-                  ) : null}
-                </DropdownMenuItem>
-              ))}
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild className="text-xs">
                 <Link to="/">Voltar ao site institucional</Link>
@@ -229,9 +161,19 @@ export function AdminHeader() {
                     <CommandItem
                       key={item.to}
                       value={`${group.label} ${item.label}`}
-                      onSelect={() => go(item.to)}
+                      disabled={!getNavItemState(item.to, demoMode.data?.enabled ?? false).enabled}
+                      onSelect={() =>
+                        getNavItemState(item.to, demoMode.data?.enabled ?? false).enabled
+                          ? go(item.to)
+                          : undefined
+                      }
                     >
                       {item.label}
+                      {getNavItemState(item.to, demoMode.data?.enabled ?? false).label ? (
+                        <span className="ml-auto text-xs text-muted-foreground">
+                          {getNavItemState(item.to, demoMode.data?.enabled ?? false).label}
+                        </span>
+                      ) : null}
                     </CommandItem>
                   ))}
                 </CommandGroup>

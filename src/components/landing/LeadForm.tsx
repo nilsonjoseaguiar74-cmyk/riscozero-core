@@ -19,7 +19,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { services, apiErrorMessage } from "@/services";
 import { captureTracking, trackEvent } from "@/services/tracking";
-import { APP_CONFIG, SITE, CITIES, whatsappLink } from "@/config/site";
+import { SITE, CITIES, whatsappLink } from "@/config/site";
 import { maskPhone, normalizePlate } from "@/lib/format";
 import type { ContactPreference, VehicleType } from "@/types";
 
@@ -164,15 +164,6 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
           Preencha os dados essenciais e nossa equipe entrará em contato.
         </p>
       </div>
-
-      {APP_CONFIG.useMockApi ? (
-        <Alert>
-          <AlertDescription>
-            Ambiente demonstrativo: o envio simula a jornada e não inicia atendimento comercial
-            real.
-          </AlertDescription>
-        </Alert>
-      ) : null}
 
       {mutation.isError ? (
         <Alert variant="destructive" role="alert">

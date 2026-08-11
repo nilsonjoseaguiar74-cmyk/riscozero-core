@@ -1,6 +1,7 @@
 import type {
   Activity,
   AppSettings,
+  DemoModeSettings,
   AuditEntry,
   AuthUser,
   Campaign,
@@ -28,16 +29,17 @@ import type {
   WebhookLog,
   SiteTestimonial,
   UnitSectionContent,
+  UnitSectionInput,
+  SiteMediaCard,
+  SiteMediaInput,
+  SiteTestimonialInput,
+  OrderItem,
 } from "@/types";
 
 export interface AuthService {
   signIn(email: string, password: string): Promise<Session>;
   signOut(): Promise<void>;
   currentSession(): Promise<Session | null>;
-  requestPasswordReset(email: string): Promise<void>;
-  resetPassword(token: string, password: string): Promise<void>;
-  verifyAccessCode(code: string): Promise<void>;
-  switchDemoRole(role: UserRole): Promise<Session>;
 }
 
 export interface LeadsService {
@@ -100,11 +102,27 @@ export interface AuditService {
 export interface SettingsService {
   get(): Promise<AppSettings>;
   update(payload: Partial<AppSettings>): Promise<AppSettings>;
+  getDemoMode(): Promise<DemoModeSettings>;
+  updateDemoMode(enabled: boolean): Promise<DemoModeSettings>;
 }
 
 export interface SiteContentService {
   getUnitSection(): Promise<UnitSectionContent>;
+  updateUnitSection(payload: UnitSectionInput): Promise<UnitSectionContent>;
   getTestimonials(): Promise<SiteTestimonial[]>;
+  createTestimonial(payload: SiteTestimonialInput): Promise<SiteTestimonial>;
+  updateTestimonial(id: string, payload: Partial<SiteTestimonialInput>): Promise<SiteTestimonial>;
+  deleteTestimonial(id: string): Promise<void>;
+  reorderTestimonials(items: OrderItem[]): Promise<SiteTestimonial[]>;
+  setTestimonialAvatar(id: string, file: File): Promise<SiteTestimonial>;
+  createMedia(payload: SiteMediaInput, file: File): Promise<SiteMediaCard>;
+  updateMedia(
+    id: string,
+    payload: Partial<SiteMediaInput & Pick<SiteMediaCard, "active">>,
+  ): Promise<SiteMediaCard>;
+  deleteMedia(id: string): Promise<void>;
+  reorderMedia(items: OrderItem[]): Promise<SiteMediaCard[]>;
+  setPrimaryMedia(id: string): Promise<SiteMediaCard>;
 }
 
 export interface TrackingService {

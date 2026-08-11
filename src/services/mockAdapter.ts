@@ -50,6 +50,7 @@ const integrations: Integration[] = clone(MOCK_INTEGRATIONS);
 const flags: FeatureFlag[] = clone(MOCK_FEATURE_FLAGS);
 const webhooks: WebhookLog[] = clone(MOCK_WEBHOOK_LOGS);
 let settings: AppSettings = clone(MOCK_SETTINGS);
+let demoModeEnabled = true;
 const unitSectionContent = clone(INITIAL_UNIT_SECTION);
 const siteTestimonials = clone(INITIAL_TESTIMONIALS);
 
@@ -252,24 +253,6 @@ export const mockAdapter: ServiceRegistry = {
     async currentSession() {
       await delay(80);
       return readStoredSession();
-    },
-    async requestPasswordReset() {
-      await delay(450);
-    },
-    async resetPassword() {
-      await delay(450);
-    },
-    async verifyAccessCode(code) {
-      await delay(400);
-      if (code.length < 6) throw new ApiError("validacao", "Informe o código completo.");
-    },
-    async switchDemoRole(role) {
-      await delay(200);
-      const base = users.find((u) => u.role === role) ?? users[0]!;
-      const user: AuthUser = { ...base, role, permissions: permissionsForRole(role) };
-      const session = buildSession(user);
-      writeStoredSession(session);
-      return session;
     },
   },
 
@@ -680,6 +663,15 @@ export const mockAdapter: ServiceRegistry = {
       settings = { ...settings, ...payload };
       return settings;
     },
+    async getDemoMode() {
+      await delay(120);
+      return { enabled: demoModeEnabled };
+    },
+    async updateDemoMode(enabled) {
+      await delay(220);
+      demoModeEnabled = enabled;
+      return { enabled };
+    },
   },
 
   siteContent: {
@@ -690,6 +682,89 @@ export const mockAdapter: ServiceRegistry = {
     async getTestimonials() {
       await delay(180);
       return clone(siteTestimonials);
+    },
+    async updateUnitSection(payload) {
+      await delay(250);
+      Object.assign(unitSectionContent, payload);
+      return clone(unitSectionContent);
+    },
+    async createTestimonial(payload) {
+      await delay(250);
+      const item = { id: crypto.randomUUID(), ...payload };
+      siteTestimonials.push(item);
+      return clone(item);
+    },
+    async updateTestimonial(id, payload) {
+      await delay(250);
+      const item = siteTestimonials.find((entry) => entry.id === id);
+      if (!item) throw new ApiError("nao_encontrado", "Depoimento não encontrado.", 404);
+      Object.assign(item, payload);
+      return clone(item);
+    },
+    async deleteTestimonial(id) {
+      await delay(250);
+      const index = siteTestimonials.findIndex((entry) => entry.id === id);
+      if (index < 0) throw new ApiError("nao_encontrado", "Depoimento não encontrado.", 404);
+      siteTestimonials.splice(index, 1);
+    },
+    async reorderTestimonials(items) {
+      items.forEach(({ id, order }) => {
+        const item = siteTestimonials.find((entry) => entry.id === id);
+        if (item) item.order = order;
+      });
+      return clone(siteTestimonials);
+    },
+    async setTestimonialAvatar(id, file) {
+      const item = siteTestimonials.find((entry) => entry.id === id);
+      if (!item) throw new ApiError("nao_encontrado", "Depoimento não encontrado.", 404);
+      item.avatarUrl = URL.createObjectURL(file);
+      return clone(item);
+    },
+    async createMedia(payload, file) {
+      const item = {
+        id: crypto.randomUUID(),
+        section: "unit" as const,
+        imageUrl: URL.createObjectURL(file),
+        active: true,
+        ...payload,
+      };
+      if (item.position === "primary")
+        unitSectionContent.media.forEach((entry) => {
+          if (entry.position === "primary") entry.position = "secondary";
+        });
+      unitSectionContent.media.push(item);
+      return clone(item);
+    },
+    async updateMedia(id, payload) {
+      const item = unitSectionContent.media.find((entry) => entry.id === id);
+      if (!item) throw new ApiError("nao_encontrado", "Imagem não encontrada.", 404);
+      if (payload.position === "primary")
+        unitSectionContent.media.forEach((entry) => {
+          if (entry.id !== id && entry.position === "primary") entry.position = "secondary";
+        });
+      Object.assign(item, payload);
+      return clone(item);
+    },
+    async deleteMedia(id) {
+      const index = unitSectionContent.media.findIndex((entry) => entry.id === id);
+      if (index < 0) throw new ApiError("nao_encontrado", "Imagem não encontrada.", 404);
+      unitSectionContent.media.splice(index, 1);
+    },
+    async reorderMedia(items) {
+      items.forEach(({ id, order }) => {
+        const item = unitSectionContent.media.find((entry) => entry.id === id);
+        if (item) item.order = order;
+      });
+      return clone(unitSectionContent.media);
+    },
+    async setPrimaryMedia(id) {
+      const item = unitSectionContent.media.find((entry) => entry.id === id);
+      if (!item) throw new ApiError("nao_encontrado", "Imagem não encontrada.", 404);
+      unitSectionContent.media.forEach((entry) => {
+        entry.position =
+          entry.id === id ? "primary" : entry.position === "primary" ? "secondary" : entry.position;
+      });
+      return clone(item);
     },
   },
 };

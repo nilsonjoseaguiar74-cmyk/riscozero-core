@@ -104,7 +104,7 @@ export function SiteHeader() {
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="w-[88vw] max-w-sm surface-brand border-white/10"
+                className="w-[88vw] max-w-sm !border-white/15 !bg-brand-deep !text-brand-foreground"
               >
                 <SheetTitle className="sr-only">Navegação</SheetTitle>
                 <div className="flex flex-col gap-6 p-6">
@@ -114,7 +114,10 @@ export function SiteHeader() {
                       <Link
                         key={item.to}
                         to={item.to}
-                        className="rounded-md px-3 py-3 text-base font-medium text-brand-foreground/90 hover:bg-white/10"
+                        className="rounded-md border border-transparent px-3 py-3 text-base font-semibold !text-brand-foreground transition-colors hover:border-white/10 hover:bg-white/10 hover:!text-white focus-visible:!text-white"
+                        activeProps={{
+                          className: "border-white/15 bg-white/10 !text-white",
+                        }}
                       >
                         {item.label}
                       </Link>

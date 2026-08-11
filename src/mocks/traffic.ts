@@ -481,7 +481,7 @@ export const MOCK_UTM_HISTORY: UtmHistoryEntry[] = Array.from({ length: 16 }, (_
     utmContent:
       source === "meta" ? pick(["criativo_a", "criativo_b", "criativo_video"]) : undefined,
     createdAt: new Date(NOW - i * 3 * DAY).toISOString(),
-    authorName: pick(["Camila Deschamps", "Ana Beatriz Corrêa"]),
+    authorName: pick(["Teste Gestão de Tráfego", "Teste Administrativo"]),
   } satisfies UtmHistoryEntry;
 });
 

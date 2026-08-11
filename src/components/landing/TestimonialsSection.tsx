@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Star } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Section, SectionHeading } from "@/components/landing/Section";
 import { queryKeys, services } from "@/services";
 
@@ -44,10 +45,18 @@ export function TestimonialsSection() {
               “{testimonial.quote}”
             </blockquote>
             <footer className="mt-5 border-t border-border pt-4">
-              <p className="font-[650] text-foreground">{testimonial.name}</p>
-              <p className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
-                Avaliação no {testimonial.source}
-              </p>
+              <div className="flex items-center gap-3">
+                <Avatar className="size-9">
+                  <AvatarImage src={testimonial.avatarUrl} alt={`Foto de ${testimonial.name}`} />
+                  <AvatarFallback>{testimonial.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-[650] text-foreground">{testimonial.name}</p>
+                  <p className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                    Avaliação no {testimonial.source}
+                  </p>
+                </div>
+              </div>
             </footer>
           </article>
         ))}

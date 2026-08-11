@@ -9,8 +9,20 @@ export interface NavItem {
   label: string;
   to: string;
   permission: Permission;
+  roles?: UserRole[];
   description?: string;
 }
+
+export const ENABLED_ROUTES = new Set([
+  "/app/dashboard",
+  "/app/crm",
+  "/app/crm/tarefas",
+  "/app/demo/leads",
+  "/app/settings/demo",
+  "/app/settings/site-content",
+]);
+
+export const isRouteEnabled = (to: string) => ENABLED_ROUTES.has(to);
 
 export interface NavGroup {
   id: string;
@@ -40,6 +52,13 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: "Leads e funil", to: "/app/crm", permission: "crm.view" },
       { label: "Tarefas", to: "/app/crm/tarefas", permission: "crm.view" },
+      {
+        label: "Simulador de Leads",
+        to: "/app/demo/leads",
+        permission: "dashboard.view",
+        roles: ["administrador", "gestor", "gestor_trafego", "desenvolvedor"],
+        description: "Demonstre a entrada de contatos no CRM real",
+      },
       { label: "Atividades", to: "/app/crm/atividades", permission: "crm.view" },
     ],
   },
@@ -142,9 +161,9 @@ export const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    id: "administracao",
-    label: "Administração",
-    permission: "users.manage",
+    id: "gestao",
+    label: "Gestão",
+    permission: "settings.manage",
     items: [
       { label: "Usuários", to: "/app/admin/users", permission: "users.manage" },
       { label: "Perfis e permissões", to: "/app/admin/roles", permission: "users.manage" },
@@ -155,22 +174,86 @@ export const NAV_GROUPS: NavGroup[] = [
         to: "/app/settings/site-content",
         permission: "settings.manage",
       },
+      {
+        label: "Recursos de demonstração",
+        to: "/app/settings/demo",
+        permission: "settings.manage",
+        roles: ["gestor", "gestor_trafego"],
+      },
       { label: "Segurança", to: "/app/admin/security", permission: "settings.manage" },
     ],
   },
 ];
 
-export const visibleGroups = (permissions: Permission[]): NavGroup[] =>
-  NAV_GROUPS.map((group) => ({
+export const visibleGroups = (
+  permissions: Permission[],
+  role?: UserRole,
+  demoModeEnabled = true,
+): NavGroup[] => {
+  const presentationRole = role === "gestor" || role === "gestor_trafego";
+
+  return NAV_GROUPS.map((group) => ({
     ...group,
-    items: group.items.filter((item) => permissions.includes(item.permission)),
+    items: group.items.filter((item) => {
+      const roleAllowed = !item.roles || (role ? item.roles.includes(role) : false);
+
+      if (!roleAllowed) return false;
+
+      if (presentationRole) {
+        if (group.id === "desenvolvedor") return false;
+
+        if (group.id === "gestao") {
+          return [
+            "/app/settings/site-content",
+            "/app/settings/demo",
+          ].includes(item.to);
+        }
+
+        return [
+          "visao",
+          "comercial",
+          "associacao",
+          "trafego",
+          "integracoes",
+        ].includes(group.id);
+      }
+
+      return permissions.includes(item.permission);
+    }),
   })).filter((group) => group.items.length > 0);
+};
+
+export const getAccountDisplayName = (role?: UserRole) => {
+  if (role === "gestor") return "Gestão";
+  if (role === "gestor_trafego") return "Gestão de Tráfego";
+  return role ? USER_ROLE_LABEL_FALLBACK[role] : "Usuário";
+};
+
+const USER_ROLE_LABEL_FALLBACK: Record<UserRole, string> = {
+  administrador: "Administrador",
+  gestor: "Gestão",
+  gestor_trafego: "Gestão de Tráfego",
+  comercial: "Comercial",
+  desenvolvedor: "Desenvolvimento",
+};
+
+export const getNavItemState = (to: string, demoModeEnabled = true) => {
+  if (to === "/app/demo/leads" && !demoModeEnabled) {
+    return { enabled: false, label: "Desabilitado" as const };
+  }
+
+  if (!isRouteEnabled(to)) {
+    return { enabled: false, label: "Em desenvolvimento" as const };
+  }
+
+  return { enabled: true, label: null };
+};
 
 /** Rota inicial de cada perfil após a autenticação demonstrativa. */
 export const HOME_ROUTE_BY_ROLE: Record<UserRole, string> = {
   administrador: "/app/dashboard",
-  gestor: "/app/association/dashboard",
-  gestor_trafego: "/app/traffic/dashboard",
+  gestor: "/app/dashboard",
+  gestor_trafego: "/app/dashboard",
   comercial: "/app/crm",
   desenvolvedor: "/app/integrations",
 };

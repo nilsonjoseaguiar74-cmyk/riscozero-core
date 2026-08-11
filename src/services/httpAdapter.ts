@@ -1,8 +1,9 @@
-import { httpRequest } from "@/services/http";
+import { httpRequest, setAccessToken } from "@/services/http";
 import type { ServiceRegistry } from "@/services/contracts";
 import type {
   Activity,
   AppSettings,
+  DemoModeSettings,
   AuditEntry,
   AuthUser,
   Campaign,
@@ -29,21 +30,31 @@ import type {
  */
 export const httpAdapter: ServiceRegistry = {
   auth: {
-    signIn: (email, password) =>
-      httpRequest<Session>("/auth/sign-in", { method: "POST", body: { email, password } }),
-    signOut: () => httpRequest<void>("/auth/sign-out", { method: "POST" }),
-    currentSession: () => httpRequest<Session | null>("/auth/session"),
-    requestPasswordReset: (email) =>
-      httpRequest<void>("/auth/password-reset", { method: "POST", body: { email } }),
-    resetPassword: (token, password) =>
-      httpRequest<void>("/auth/password-reset/confirm", {
+    async signIn(email, password) {
+      const session = await httpRequest<Session>("/auth/sign-in", {
         method: "POST",
-        body: { token, password },
-      }),
-    verifyAccessCode: (code) =>
-      httpRequest<void>("/auth/verify", { method: "POST", body: { code } }),
-    switchDemoRole: (role) =>
-      httpRequest<Session>("/auth/demo-role", { method: "POST", body: { role } }),
+        body: { email, password },
+      });
+      setAccessToken(session.token);
+      return session;
+    },
+    async signOut() {
+      try {
+        await httpRequest<void>("/auth/sign-out", { method: "POST" });
+      } finally {
+        setAccessToken(null);
+      }
+    },
+    async currentSession() {
+      try {
+        const session = await httpRequest<Session>("/auth/refresh", { method: "POST" });
+        setAccessToken(session.token);
+        return session;
+      } catch {
+        setAccessToken(null);
+        return null;
+      }
+    },
   },
 
   leads: {
@@ -52,7 +63,7 @@ export const httpAdapter: ServiceRegistry = {
         query: filters as Record<string, string | number | boolean | undefined>,
       }),
     getById: (id) => httpRequest<Lead>(`/leads/${id}`),
-    create: (payload) => httpRequest<Lead>("/leads", { method: "POST", body: payload }),
+    create: (payload) => httpRequest<Lead>("/public/leads", { method: "POST", body: payload }),
     update: (id, payload) => httpRequest<Lead>(`/leads/${id}`, { method: "PATCH", body: payload }),
     assign: (id, userId) =>
       httpRequest<Lead>(`/leads/${id}/assign`, { method: "PATCH", body: { userId } }),
@@ -127,10 +138,54 @@ export const httpAdapter: ServiceRegistry = {
   settings: {
     get: () => httpRequest<AppSettings>("/settings"),
     update: (payload) => httpRequest<AppSettings>("/settings", { method: "PATCH", body: payload }),
+    getDemoMode: () => httpRequest<DemoModeSettings>("/settings/demo-mode"),
+    updateDemoMode: (enabled) =>
+      httpRequest<DemoModeSettings>("/settings/demo-mode", {
+        method: "PATCH",
+        body: { enabled },
+      }),
   },
 
   siteContent: {
     getUnitSection: () => httpRequest<UnitSectionContent>("/site-content/unit"),
+    updateUnitSection: (payload) =>
+      httpRequest<UnitSectionContent>("/site-content/unit", { method: "PATCH", body: payload }),
     getTestimonials: () => httpRequest<SiteTestimonial[]>("/site-content/testimonials"),
+    createTestimonial: (payload) =>
+      httpRequest<SiteTestimonial>("/site-content/testimonials", { method: "POST", body: payload }),
+    updateTestimonial: (id, payload) =>
+      httpRequest<SiteTestimonial>(`/site-content/testimonials/${id}`, {
+        method: "PATCH",
+        body: payload,
+      }),
+    deleteTestimonial: (id) =>
+      httpRequest<void>(`/site-content/testimonials/${id}`, { method: "DELETE" }),
+    reorderTestimonials: (items) =>
+      httpRequest<SiteTestimonial[]>("/site-content/testimonials/order", {
+        method: "PATCH",
+        body: { items },
+      }),
+    setTestimonialAvatar: (id, file) => {
+      const body = new FormData();
+      body.append("file", file);
+      return httpRequest<SiteTestimonial>(`/site-content/testimonials/${id}/avatar`, {
+        method: "POST",
+        body,
+      });
+    },
+    createMedia: (payload, file) => {
+      const body = new FormData();
+      body.append("file", file);
+      Object.entries(payload).forEach(([key, value]) => {
+        if (value !== undefined) body.append(key, String(value));
+      });
+      return httpRequest(`/site-content/media`, { method: "POST", body });
+    },
+    updateMedia: (id, payload) =>
+      httpRequest(`/site-content/media/${id}`, { method: "PATCH", body: payload }),
+    deleteMedia: (id) => httpRequest<void>(`/site-content/media/${id}`, { method: "DELETE" }),
+    reorderMedia: (items) =>
+      httpRequest("/site-content/media/order", { method: "PATCH", body: { items } }),
+    setPrimaryMedia: (id) => httpRequest(`/site-content/media/${id}/primary`, { method: "PATCH" }),
   },
 };
