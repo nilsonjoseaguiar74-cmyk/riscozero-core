@@ -22,11 +22,11 @@ async function user(id: string, name: string, email: string, role: UserRole, pas
 
 async function main() {
   await prisma.association.upsert({ where: { id: ASSOCIATION_ID }, update: {}, create: { id: ASSOCIATION_ID, name: "Risco Zero — Demonstração" } });
-  await user(ids.admin, "Ana Administradora", "admin@riscozero.demo", "administrador", required("DEMO_ADMIN_PASSWORD"));
-  await user(ids.manager, "Marcelo Gestor", "gestor@riscozero.demo", "gestor", required("DEMO_MANAGER_PASSWORD"));
-  await user(ids.sales, "Juliana Comercial", "comercial@riscozero.demo", "comercial", required("DEMO_SALES_PASSWORD"));
-  await user(ids.traffic, "Camila Tráfego", "trafego@riscozero.demo", "gestor_trafego", required("DEMO_TRAFFIC_PASSWORD"));
-  await user(ids.developer, "Diego Desenvolvedor", "dev@riscozero.demo", "desenvolvedor", required("DEMO_DEVELOPER_PASSWORD"));
+  await user(ids.admin, "Teste Administrativo", "admin@riscozero.demo", "administrador", required("DEMO_ADMIN_PASSWORD"));
+  await user(ids.manager, "Teste Gestão", "gestor@riscozero.demo", "gestor", required("DEMO_MANAGER_PASSWORD"));
+  await user(ids.sales, "Teste Comercial", "comercial@riscozero.demo", "comercial", required("DEMO_SALES_PASSWORD"));
+  await user(ids.traffic, "Teste Gestão de Tráfego", "trafego@riscozero.demo", "gestor_trafego", required("DEMO_TRAFFIC_PASSWORD"));
+  await user(ids.developer, "Teste Desenvolvimento", "dev@riscozero.demo", "desenvolvedor", required("DEMO_DEVELOPER_PASSWORD"));
 
   const leadSeeds = [
     ["00000000-0000-4000-8000-000000001001", "Bruno Machado", "5548991111001", "ABC1D23", "São José", "novo_contato", "Google", "protecao-sc"],
