@@ -28,6 +28,7 @@ import { Route as AppCrmRouteImport } from './routes/app.crm'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppCrmTarefasRouteImport } from './routes/app.crm.tarefas'
 import { Route as AppDemoLeadsRouteImport } from './routes/app.demo.leads'
+import { Route as AppSettingsDemoRouteImport } from './routes/app.settings.demo'
 import { Route as AppSettingsSiteContentRouteImport } from './routes/app.settings.site-content'
 
 const AuthRoute = AuthRouteImport.update({
@@ -124,6 +125,11 @@ const AppDemoLeadsRoute = AppDemoLeadsRouteImport.update({
   path: '/demo/leads',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSettingsDemoRoute = AppSettingsDemoRouteImport.update({
+  id: '/settings/demo',
+  path: '/settings/demo',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppSettingsSiteContentRoute = AppSettingsSiteContentRouteImport.update({
   id: '/settings/site-content',
   path: '/settings/site-content',
@@ -148,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/app/': typeof AppIndexRoute
   '/app/crm/tarefas': typeof AppCrmTarefasRoute
   '/app/demo/leads': typeof AppDemoLeadsRoute
+  '/app/settings/demo': typeof AppSettingsDemoRoute
   '/app/settings/site-content': typeof AppSettingsSiteContentRoute
 }
 export interface FileRoutesByTo {
@@ -167,6 +174,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppIndexRoute
   '/app/crm/tarefas': typeof AppCrmTarefasRoute
   '/app/demo/leads': typeof AppDemoLeadsRoute
+  '/app/settings/demo': typeof AppSettingsDemoRoute
   '/app/settings/site-content': typeof AppSettingsSiteContentRoute
 }
 export interface FileRoutesById {
@@ -190,6 +198,7 @@ export interface FileRoutesById {
   '/app/': typeof AppIndexRoute
   '/app/crm/tarefas': typeof AppCrmTarefasRoute
   '/app/demo/leads': typeof AppDemoLeadsRoute
+  '/app/settings/demo': typeof AppSettingsDemoRoute
   '/app/settings/site-content': typeof AppSettingsSiteContentRoute
 }
 export interface FileRouteTypes {
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
     | '/app/'
     | '/app/crm/tarefas'
     | '/app/demo/leads'
+    | '/app/settings/demo'
     | '/app/settings/site-content'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -231,6 +241,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/crm/tarefas'
     | '/app/demo/leads'
+    | '/app/settings/demo'
     | '/app/settings/site-content'
   id:
     | '__root__'
@@ -253,6 +264,7 @@ export interface FileRouteTypes {
     | '/app/'
     | '/app/crm/tarefas'
     | '/app/demo/leads'
+    | '/app/settings/demo'
     | '/app/settings/site-content'
   fileRoutesById: FileRoutesById
 }
@@ -397,6 +409,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDemoLeadsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/settings/demo': {
+      id: '/app/settings/demo'
+      path: '/settings/demo'
+      fullPath: '/app/settings/demo'
+      preLoaderRoute: typeof AppSettingsDemoRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/settings/site-content': {
       id: '/app/settings/site-content'
       path: '/settings/site-content'
@@ -461,6 +480,7 @@ interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppIndexRoute: typeof AppIndexRoute
   AppDemoLeadsRoute: typeof AppDemoLeadsRoute
+  AppSettingsDemoRoute: typeof AppSettingsDemoRoute
   AppSettingsSiteContentRoute: typeof AppSettingsSiteContentRoute
 }
 
@@ -469,6 +489,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppIndexRoute: AppIndexRoute,
   AppDemoLeadsRoute: AppDemoLeadsRoute,
+  AppSettingsDemoRoute: AppSettingsDemoRoute,
   AppSettingsSiteContentRoute: AppSettingsSiteContentRoute,
 }
 

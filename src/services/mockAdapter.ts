@@ -50,6 +50,7 @@ const integrations: Integration[] = clone(MOCK_INTEGRATIONS);
 const flags: FeatureFlag[] = clone(MOCK_FEATURE_FLAGS);
 const webhooks: WebhookLog[] = clone(MOCK_WEBHOOK_LOGS);
 let settings: AppSettings = clone(MOCK_SETTINGS);
+let demoModeEnabled = true;
 const unitSectionContent = clone(INITIAL_UNIT_SECTION);
 const siteTestimonials = clone(INITIAL_TESTIMONIALS);
 
@@ -661,6 +662,15 @@ export const mockAdapter: ServiceRegistry = {
       await delay(420);
       settings = { ...settings, ...payload };
       return settings;
+    },
+    async getDemoMode() {
+      await delay(120);
+      return { enabled: demoModeEnabled };
+    },
+    async updateDemoMode(enabled) {
+      await delay(220);
+      demoModeEnabled = enabled;
+      return { enabled };
     },
   },
 

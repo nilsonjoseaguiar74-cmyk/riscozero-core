@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import type { LeadStage, Prisma } from "@prisma/client";
 import { PrismaService } from "../../database/prisma.service";
 import { AuditService } from "../audit/audit.service";
@@ -14,6 +14,15 @@ export class LeadsService {
 
   async createPublic(associationId: string, dto: CreateLeadDto, idempotencyKey?: string) {
     if (dto.website) throw new ConflictException("Solicitação inválida.");
+    if (dto.tracking?.conversionCta === "simulator_demo") {
+      const settings = await this.prisma.associationSettings.findUnique({
+        where: { associationId },
+        select: { demoModeEnabled: true },
+      });
+      if (settings?.demoModeEnabled === false) {
+        throw new ForbiddenException("Modo demonstração desabilitado.");
+      }
+    }
     const whatsapp = normalizePhone(dto.whatsapp); const plate = normalizePlate(dto.plate);
     if (idempotencyKey) {
       const existing = await this.prisma.lead.findFirst({ where: { associationId, idempotencyKey }, include });

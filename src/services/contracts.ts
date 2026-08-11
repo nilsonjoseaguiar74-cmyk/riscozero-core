@@ -1,6 +1,7 @@
 import type {
   Activity,
   AppSettings,
+  DemoModeSettings,
   AuditEntry,
   AuthUser,
   Campaign,
@@ -101,6 +102,8 @@ export interface AuditService {
 export interface SettingsService {
   get(): Promise<AppSettings>;
   update(payload: Partial<AppSettings>): Promise<AppSettings>;
+  getDemoMode(): Promise<DemoModeSettings>;
+  updateDemoMode(enabled: boolean): Promise<DemoModeSettings>;
 }
 
 export interface SiteContentService {

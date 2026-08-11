@@ -18,6 +18,7 @@ import { TrafficModule } from "./modules/traffic/traffic.module";
 import { IntegrationsModule } from "./modules/integrations/integrations.module";
 import { SiteContentModule } from "./modules/site-content/site-content.module";
 import { StorageModule } from "./modules/storage/storage.module";
+import { SettingsModule } from "./modules/settings/settings.module";
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { StorageModule } from "./modules/storage/storage.module";
     IntegrationsModule,
     StorageModule,
     SiteContentModule,
+    SettingsModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },

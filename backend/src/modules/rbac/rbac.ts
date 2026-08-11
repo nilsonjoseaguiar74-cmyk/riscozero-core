@@ -37,11 +37,14 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly string[]> = {
   comercial: ["dashboard.view", "crm.view", "crm.edit", "association.view"],
   gestor_trafego: [
     "dashboard.view",
+    "crm.view",
+    "crm.edit",
     "reports.view",
     "acquisition.view",
     "traffic.view",
     "traffic.manage",
     "integrations.view",
+    "settings.manage",
   ],
   desenvolvedor: [
     "dashboard.view",

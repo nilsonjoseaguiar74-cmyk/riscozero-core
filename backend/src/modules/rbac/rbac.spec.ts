@@ -14,7 +14,14 @@ describe("RBAC", () => {
       expect.arrayContaining(["dashboard.view", "crm.view", "crm.edit"]),
     );
     expect(ROLE_PERMISSIONS.gestor_trafego).toEqual(
-      expect.arrayContaining(["traffic.view", "traffic.manage"]),
+      expect.arrayContaining([
+        "dashboard.view",
+        "crm.view",
+        "crm.edit",
+        "settings.manage",
+        "traffic.view",
+        "traffic.manage",
+      ]),
     );
     expect(ROLE_PERMISSIONS.desenvolvedor).toEqual(
       expect.arrayContaining(["developer.access", "integrations.view"]),

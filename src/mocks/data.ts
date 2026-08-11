@@ -62,7 +62,7 @@ export const ROLE_DEFINITIONS: RoleDefinition[] = [
   },
   {
     role: "gestor",
-    label: "Gestor da associação",
+    label: "Gestão",
     description:
       "Acompanha associados, adesões, ocorrências, assistências e indicadores consolidados.",
     permissions: [
@@ -89,15 +89,18 @@ export const ROLE_DEFINITIONS: RoleDefinition[] = [
   },
   {
     role: "gestor_trafego",
-    label: "Gestor de tráfego",
+    label: "Gestão de Tráfego",
     description: "Acompanha campanhas, rastreamento e qualidade da captação.",
     permissions: [
       "dashboard.view",
+      "crm.view",
+      "crm.edit",
       "reports.view",
       "acquisition.view",
       "traffic.view",
       "traffic.manage",
       "integrations.view",
+      "settings.manage",
     ],
   },
 

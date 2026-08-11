@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Activity, CircleStop, FlaskConical, Loader2, Play, Plus, Users } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -15,15 +15,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { NoPermissionState } from "@/components/common/StateViews";
+import { LoadingState, NoPermissionState } from "@/components/common/StateViews";
 import { useAuth } from "@/contexts/AuthContext";
 import { createSimulatedLead, type SimulatedLeadDraft } from "@/features/demo/leadSimulator";
-import { apiErrorMessage, services } from "@/services";
+import { apiErrorMessage, queryKeys, services } from "@/services";
 import type { Lead, UserRole } from "@/types";
 
 export const Route = createFileRoute("/app/demo/leads")({ component: LeadSimulatorRoute });
 
-const ALLOWED_ROLES: UserRole[] = ["administrador", "gestor", "desenvolvedor"];
+const ALLOWED_ROLES: UserRole[] = ["administrador", "gestor", "gestor_trafego", "desenvolvedor"];
 const FREQUENCIES = [10, 30, 60] as const;
 
 interface SimulationActivity {
@@ -46,6 +46,11 @@ function LeadSimulatorRoute() {
   const [lastGenerationAt, setLastGenerationAt] = useState<string | null>(null);
   const [activities, setActivities] = useState<SimulationActivity[]>([]);
   const generateRef = useRef<() => void>(() => undefined);
+  const demoMode = useQuery({
+    queryKey: queryKeys.demoMode,
+    queryFn: () => services.settings.getDemoMode(),
+    enabled: Boolean(user?.permissions.includes("settings.manage")),
+  });
 
   const mutation = useMutation({
     mutationFn: (draft: SimulatedLeadDraft) => services.leads.create(draft.payload),
@@ -84,7 +89,7 @@ function LeadSimulatorRoute() {
   };
 
   useEffect(() => {
-    if (!active) return;
+    if (!active || !demoMode.data?.enabled) return;
     if (generated >= target) {
       setActive(false);
       return;
@@ -92,10 +97,24 @@ function LeadSimulatorRoute() {
 
     const timeout = window.setTimeout(generateRef.current, generated === 0 ? 0 : frequency * 1000);
     return () => window.clearTimeout(timeout);
-  }, [active, frequency, generated, target]);
+  }, [active, demoMode.data?.enabled, frequency, generated, target]);
 
   if (!user || !ALLOWED_ROLES.includes(user.role)) {
     return <NoPermissionState area="o simulador de leads" />;
+  }
+  if (demoMode.isLoading) return <LoadingState label="Verificando modo demonstração" />;
+  if (!demoMode.data?.enabled) {
+    return (
+      <div className="card-elevated mx-auto max-w-xl p-8 text-center">
+        <h1 className="heading-3">Modo demonstração desabilitado.</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Habilite o recurso nas configurações para usar o simulador de leads.
+        </p>
+        <Button asChild variant="outline" className="mt-6">
+          <Link to="/app/dashboard">Voltar ao painel</Link>
+        </Button>
+      </div>
+    );
   }
 
   const begin = () => {

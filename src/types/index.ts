@@ -7,8 +7,8 @@ export type UserRole =
 
 export const USER_ROLE_LABEL: Record<UserRole, string> = {
   comercial: "Comercial",
-  gestor: "Gestor",
-  gestor_trafego: "Gestor de tráfego",
+  gestor: "Gestão",
+  gestor_trafego: "Gestão de Tráfego",
   desenvolvedor: "Desenvolvedor",
   administrador: "Administrador",
 };
@@ -415,6 +415,10 @@ export interface AppSettings {
     dailyDigest: boolean;
     taskReminders: boolean;
   };
+}
+
+export interface DemoModeSettings {
+  enabled: boolean;
 }
 
 export interface RoleDefinition {

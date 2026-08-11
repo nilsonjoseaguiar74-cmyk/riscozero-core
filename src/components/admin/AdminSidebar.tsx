@@ -14,7 +14,9 @@ import {
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/brand/Logo";
 import { useAuth } from "@/contexts/AuthContext";
-import { isRouteEnabled, visibleGroups } from "@/lib/rbac";
+import { useQuery } from "@tanstack/react-query";
+import { queryKeys, services } from "@/services";
+import { visibleGroups } from "@/lib/rbac";
 import { USER_ROLE_LABEL } from "@/types";
 import { cn } from "@/lib/utils";
 import {
@@ -34,6 +36,7 @@ const GROUP_ICONS = {
   integracoes: Wrench,
   desenvolvedor: Wrench,
   administracao: Settings2,
+  gestao: Settings2,
 } as const;
 
 export function AdminSidebar() {
@@ -41,7 +44,16 @@ export function AdminSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const pathname = useRouterState({ select: (router) => router.location.pathname });
-  const groups = visibleGroups(user?.permissions ?? [], user?.role);
+  const demoMode = useQuery({
+    queryKey: queryKeys.demoMode,
+    queryFn: () => services.settings.getDemoMode(),
+    enabled: Boolean(user?.permissions.includes("settings.manage")),
+  });
+  const groups = visibleGroups(
+    user?.permissions ?? [],
+    user?.role,
+    demoMode.data?.enabled ?? false,
+  );
 
   const isActive = (to: string) =>
     pathname === to || (to !== "/app/dashboard" && pathname.startsWith(`${to}/`));
@@ -81,39 +93,20 @@ export function AdminSidebar() {
                     <SidebarMenuItem key={item.to}>
                       <SidebarMenuButton
                         className="h-10 rounded-lg px-3 data-[active=true]:bg-sidebar-accent data-[active=true]:font-semibold data-[active=true]:shadow-sm"
-                        asChild={isRouteEnabled(item.to)}
+                        asChild
                         isActive={isActive(item.to)}
-                        disabled={!isRouteEnabled(item.to)}
-                        tooltip={isRouteEnabled(item.to) ? item.label : `${item.label} — Em breve`}
+                        tooltip={item.label}
                       >
-                        {isRouteEnabled(item.to) ? (
-                          <Link to={item.to as "/"} className="flex items-center gap-2">
-                            <span
-                              className={cn(
-                                "h-5 w-0.5 shrink-0 rounded-full",
-                                isActive(item.to) ? "bg-gold" : "bg-transparent",
-                              )}
-                              aria-hidden="true"
-                            />
-                            <span className="truncate text-[13px]">{item.label}</span>
-                          </Link>
-                        ) : (
+                        <Link to={item.to as "/"} className="flex items-center gap-2">
                           <span
-                            className="flex w-full items-center gap-2"
-                            title="Implementação futura"
-                          >
-                            <span
-                              className="h-5 w-0.5 shrink-0 rounded-full bg-transparent"
-                              aria-hidden="true"
-                            />
-                            <span className="truncate text-[13px]">{item.label}</span>
-                            {!collapsed ? (
-                              <span className="ml-auto rounded-full bg-muted px-2 py-0.5 text-[9px] font-medium uppercase tracking-wide text-muted-foreground">
-                                Em breve
-                              </span>
-                            ) : null}
-                          </span>
-                        )}
+                            className={cn(
+                              "h-5 w-0.5 shrink-0 rounded-full",
+                              isActive(item.to) ? "bg-gold" : "bg-transparent",
+                            )}
+                            aria-hidden="true"
+                          />
+                          <span className="truncate text-[13px]">{item.label}</span>
+                        </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}

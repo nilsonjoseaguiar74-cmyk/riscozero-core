@@ -18,6 +18,7 @@ export const ENABLED_ROUTES = new Set([
   "/app/crm",
   "/app/crm/tarefas",
   "/app/demo/leads",
+  "/app/settings/demo",
   "/app/settings/site-content",
 ]);
 
@@ -55,7 +56,7 @@ export const NAV_GROUPS: NavGroup[] = [
         label: "Simulador de Leads",
         to: "/app/demo/leads",
         permission: "dashboard.view",
-        roles: ["administrador", "gestor", "desenvolvedor"],
+        roles: ["administrador", "gestor", "gestor_trafego", "desenvolvedor"],
         description: "Demonstre a entrada de contatos no CRM real",
       },
       { label: "Atividades", to: "/app/crm/atividades", permission: "crm.view" },
@@ -160,9 +161,9 @@ export const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    id: "administracao",
-    label: "Administração",
-    permission: "users.manage",
+    id: "gestao",
+    label: "Gestão",
+    permission: "settings.manage",
     items: [
       { label: "Usuários", to: "/app/admin/users", permission: "users.manage" },
       { label: "Perfis e permissões", to: "/app/admin/roles", permission: "users.manage" },
@@ -173,17 +174,29 @@ export const NAV_GROUPS: NavGroup[] = [
         to: "/app/settings/site-content",
         permission: "settings.manage",
       },
+      {
+        label: "Recursos de demonstração",
+        to: "/app/settings/demo",
+        permission: "settings.manage",
+        roles: ["gestor", "gestor_trafego"],
+      },
       { label: "Segurança", to: "/app/admin/security", permission: "settings.manage" },
     ],
   },
 ];
 
-export const visibleGroups = (permissions: Permission[], role?: UserRole): NavGroup[] =>
+export const visibleGroups = (
+  permissions: Permission[],
+  role?: UserRole,
+  demoModeEnabled = true,
+): NavGroup[] =>
   NAV_GROUPS.map((group) => ({
     ...group,
     items: group.items.filter(
       (item) =>
         permissions.includes(item.permission) &&
+        isRouteEnabled(item.to) &&
+        (item.to !== "/app/demo/leads" || demoModeEnabled) &&
         (!item.roles || (role ? item.roles.includes(role) : false)),
     ),
   })).filter((group) => group.items.length > 0);
@@ -192,7 +205,7 @@ export const visibleGroups = (permissions: Permission[], role?: UserRole): NavGr
 export const HOME_ROUTE_BY_ROLE: Record<UserRole, string> = {
   administrador: "/app/dashboard",
   gestor: "/app/dashboard",
-  gestor_trafego: "/app/traffic/dashboard",
+  gestor_trafego: "/app/dashboard",
   comercial: "/app/crm",
   desenvolvedor: "/app/integrations",
 };

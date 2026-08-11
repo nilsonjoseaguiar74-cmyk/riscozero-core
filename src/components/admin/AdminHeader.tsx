@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { PeriodSelector } from "@/components/admin/PeriodContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { queryKeys, services } from "@/services";
 import { isRouteEnabled, NAV_GROUPS, visibleGroups } from "@/lib/rbac";
 import { USER_ROLE_LABEL } from "@/types";
 
@@ -44,7 +46,16 @@ export function AdminHeader() {
   const navigate = useNavigate();
   const crumb = useBreadcrumb();
   const [searchOpen, setSearchOpen] = useState(false);
-  const groups = visibleGroups(user?.permissions ?? [], user?.role);
+  const demoMode = useQuery({
+    queryKey: queryKeys.demoMode,
+    queryFn: () => services.settings.getDemoMode(),
+    enabled: Boolean(user?.permissions.includes("settings.manage")),
+  });
+  const groups = visibleGroups(
+    user?.permissions ?? [],
+    user?.role,
+    demoMode.data?.enabled ?? false,
+  );
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {

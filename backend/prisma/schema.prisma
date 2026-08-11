@@ -65,8 +65,20 @@ model Association {
   metrics      TrafficMetricDaily[]
   integrations IntegrationCatalogItem[]
   audits       AuditEntry[]
+  settings     AssociationSettings?
 
   @@map("associations")
+}
+
+model AssociationSettings {
+  id              String      @id @default(uuid()) @db.Uuid
+  associationId   String      @unique @map("association_id") @db.Uuid
+  association     Association @relation(fields: [associationId], references: [id], onDelete: Cascade)
+  demoModeEnabled Boolean     @default(true) @map("demo_mode_enabled")
+  createdAt       DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("association_settings")
 }
 
 model SiteSection {

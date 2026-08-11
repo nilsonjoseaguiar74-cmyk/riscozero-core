@@ -3,6 +3,7 @@ import type { ServiceRegistry } from "@/services/contracts";
 import type {
   Activity,
   AppSettings,
+  DemoModeSettings,
   AuditEntry,
   AuthUser,
   Campaign,
@@ -134,6 +135,12 @@ export const httpAdapter: ServiceRegistry = {
   settings: {
     get: () => httpRequest<AppSettings>("/settings"),
     update: (payload) => httpRequest<AppSettings>("/settings", { method: "PATCH", body: payload }),
+    getDemoMode: () => httpRequest<DemoModeSettings>("/settings/demo-mode"),
+    updateDemoMode: (enabled) =>
+      httpRequest<DemoModeSettings>("/settings/demo-mode", {
+        method: "PATCH",
+        body: { enabled },
+      }),
   },
 
   siteContent: {
